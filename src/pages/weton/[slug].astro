@@ -1,0 +1,80 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { SEMUA_WETON } from '../../lib/jawa.js';
+import { WATAK_DINA, WATAK_PASARAN, CATATAN_NEPTU, PEMBUKA_WETON } from '../../lib/konten.js';
+
+export function getStaticPaths() {
+  return SEMUA_WETON.map((w, i) => ({
+    params: { slug: w.slug },
+    props: {
+      weton: w,
+      sebelum: SEMUA_WETON[(i + SEMUA_WETON.length - 1) % SEMUA_WETON.length],
+      sesudah: SEMUA_WETON[(i + 1) % SEMUA_WETON.length],
+    },
+  }));
+}
+
+const { weton: w, sebelum, sesudah } = Astro.props;
+const title = `Weton ${w.nama} — Neptu ${w.neptu}, Watak Menurut Primbon | Wetonan`;
+const description = `Entri weton ${w.nama}: neptu ${w.neptu} (dina ${w.hari.nama} ${w.neptuHari} + pasaran ${w.pasaran.nama} ${w.neptuPasaran}), uraian watak ${w.hari.nama} dan ${w.pasaran.nama} menurut tradisi primbon Jawa, serta catatan wetonan.`;
+---
+<Almanak title={title} description={description}>
+  <div class="bungkus-sempit">
+    <p class="jejak">
+      <a href={u('/')}>Beranda</a> · <a href={u('/weton/')}>Indeks Weton</a> · {w.nama}
+    </p>
+  </div>
+
+  <section class="bungkus-sempit" style="padding-top:10px">
+    <p class="kicker">Entri Weton · Neptu {w.neptu}</p>
+    <h1>{w.nama}</h1>
+    <p style="font-size:1.15rem"><strong>{PEMBUKA_WETON[w.slug]}</strong></p>
+
+    <table class="fakta">
+      <tbody>
+        <tr><th>Dina</th><td>{w.hari.nama} ({w.hari.jawa}) — neptu <span class="mono">{w.neptuHari}</span></td></tr>
+        <tr><th>Pasaran</th><td>{w.pasaran.nama} — neptu <span class="mono">{w.neptuPasaran}</span></td></tr>
+        <tr><th>Jumlah neptu</th><td class="angka"><strong>{w.neptuHari} + {w.neptuPasaran} = {w.neptu}</strong></td></tr>
+        <tr><th>Cari tanggalnya</th><td><a href={u('/kalender-jawa/')}>Lihat pada Kalender Jawa</a> atau <a href={u('/kalkulator-weton/')}>hitung tanggal lahir</a></td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:2.2rem">Watak Dina {w.hari.nama}</h2>
+    <p>{WATAK_DINA[w.hari.id]}</p>
+
+    <h2 style="margin-top:2rem">Watak Pasaran {w.pasaran.nama}</h2>
+    <p>{WATAK_PASARAN[w.pasaran.id]}</p>
+
+    <h2 style="margin-top:2rem">Catatan Neptu {w.neptu}</h2>
+    <p>{CATATAN_NEPTU[w.neptu]}</p>
+
+    <h2 style="margin-top:2rem">Wetonan: Merawat Hari Kelahiran</h2>
+    <p>
+      Dalam masyarakat Jawa, weton bukan sekadar dicatat — ia dirawat. Banyak keluarga memperingati
+      <em>wetonan</em>, hari ketika weton seseorang datang kembali setiap 35 hari, dengan doa dan
+      slametan kecil: bubur merah putih, tumpeng sederhana, atau sekadar kenduri bersama tetangga.
+      Momen yang lebih besar adalah <em>selapanan</em> bayi pada usia 35 hari pertama dan peringatan
+      tahunan yang mengikuti putaran windu. Tradisi ini pada hakikatnya adalah cara komunitas
+      menandai waktu bersama — pengingat bahwa seseorang dilahirkan ke dalam sebuah lingkungan, dan
+      lingkungannya ikut menjaganya.
+    </p>
+    <p>
+      Bagi pemilik weton {w.nama}, putaran 35 hari berikutnya dapat dicari lewat
+      <a href={u('/kalender-jawa/')}>Kalender Jawa</a>: temukan tanggal dengan pasaran {w.pasaran.nama} pada
+      hari {w.hari.nama}. Bila hendak menilai kecocokan dengan pasangan, jumlah neptu {w.neptu} ini
+      adalah bahan dasar <a href={u('/weton-jodoh/')}>petungan jodoh</a> — tambahkan dengan neptu weton
+      pasangan, lalu bagi delapan.
+    </p>
+    <p class="kecil">
+      <em>Uraian watak adalah bacaan tradisi primbon yang kami tulis kembali sebagai warisan budaya —
+      bukan kepastian tentang pribadi seseorang dan bukan dasar untuk menilai orang lain.</em>
+    </p>
+
+    <nav class="navigasi-urut" aria-label="Weton sebelum dan sesudah">
+      <a href={u(`/weton/${sebelum.slug}/`)}>← {sebelum.nama} (neptu {sebelum.neptu})</a>
+      <a href={u('/weton/')}>Indeks 35 Weton</a>
+      <a href={u(`/weton/${sesudah.slug}/`)}>{sesudah.nama} (neptu {sesudah.neptu}) →</a>
+    </nav>
+  </section>
+</Almanak>

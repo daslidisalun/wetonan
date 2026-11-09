@@ -1,0 +1,123 @@
+---
+import Almanak from '../layouts/Almanak.astro';
+import { JODOH_DESKRIPSI } from '../lib/konten.js';
+
+const urutan = ['Pegat', 'Ratu', 'Jodoh', 'Topo', 'Tinari', 'Padu', 'Sujanan', 'Pesthi'];
+const sisaLabel = { Pegat: 1, Ratu: 2, Jodoh: 3, Topo: 4, Tinari: 5, Padu: 6, Sujanan: 7, Pesthi: 0 };
+
+const faq = [
+  ['Bagaimana tepatnya cara membagi neptu untuk jodoh?', 'Jumlahkan neptu weton kedua orang (masing-masing adalah neptu hari + neptu pasaran dari tanggal lahirnya). Jumlah bersama itu dibagi delapan; sisanya menentukan golongan. Sisa 1 Pegat, 2 Ratu, 3 Jodoh, 4 Topo, 5 Tinari, 6 Padu, 7 Sujanan, dan bila habis terbagi (sisa 0) golongannya Pesthi. Cara ini adalah pakem yang paling luas beredar dalam primbon Jawa.'],
+  ['Hasilku Pegat atau Padu. Apakah kami sebaiknya berpisah?', 'Tidak ada primbon yang kami hormati yang menyuruh demikian. Dalam pemakaian tradisional, hasil yang "berat" dibaca sebagai peta medan — hal yang perlu dijaga — dan pada masa lalu biasanya dijawab dengan laku: slametan, pemilihan hari baik, atau nasihat sesepuh. Keputusan hidup adalah milik kedua orang yang menjalaninya, bukan milik sebuah tabel. Kami menyajikan petungan ini sebagai warisan budaya, dan menganjurkan membacanya dengan kepala dingin.'],
+  ['Apakah ada versi petungan jodoh yang lain?', 'Ada. Sebagian daerah membagi jumlah neptu dengan angka lain, dan ada pula petungan yang memperhitungkan sisa pembagian tujuh atau sembilan dengan golongan berbeda. Perbedaan antarversi adalah hal yang wajar dalam tradisi lisan. Versi yang dipakai di halaman ini adalah pembagian delapan, yang paling umum ditemukan dalam primbon cetak.'],
+  ['Tanggal lahir pasangan tidak diketahui pasti, hanya wetonnya. Bisa dihitung?', 'Bisa. Petungan hanya memerlukan neptu kedua weton. Bila wetonnya diketahui — misalnya Rabu Pon (7 + 7 = 14) — neptunya dapat langsung dipakai. Kalkulator di halaman ini memang bekerja dari tanggal lahir demi ketepatan; untuk perhitungan dari weton langsung, jumlahkan saja neptu hari dan pasarannya dari tabel di halaman Kalkulator Weton.'],
+];
+---
+<Almanak
+  title="Weton Jodoh — Petungan Neptu Pasangan Menurut Primbon | Wetonan"
+  description="Hitung petungan jodoh menurut tradisi Jawa: jumlahkan neptu weton dua tanggal lahir, bagi delapan, dan baca golongannya — Pegat, Ratu, Jodoh, Topo, Tinari, Padu, Sujanan, Pesthi — lengkap dengan uraian makna budaya kedelapannya."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Bab II — Petungan Berdua</p>
+    <h1>Weton Jodoh</h1>
+    <p>
+      Di antara seluruh petungan Jawa, yang paling sering dicari adalah kecocokan pasangan. Pakemnya
+      sederhana: neptu kedua calon dijumlahkan, lalu dibagi delapan. Sisa pembagiannya menunjuk satu
+      dari delapan golongan, masing-masing dengan watak bacaannya sendiri dalam tradisi.
+    </p>
+  </section>
+
+  <section class="bungkus" style="margin-top:1.4rem">
+    <div class="panel-almanak">
+      <h2 style="font-size:1.5rem">Dua Tanggal Lahir</h2>
+      <form class="form-baris" id="form-jodoh">
+        <div class="lapangan">
+          <label for="tgl-a">Tanggal lahir orang pertama</label>
+          <input type="date" id="tgl-a" min="1800-01-01" max="2100-12-31" required />
+        </div>
+        <div class="lapangan">
+          <label for="tgl-b">Tanggal lahir orang kedua</label>
+          <input type="date" id="tgl-b" min="1800-01-01" max="2100-12-31" required />
+        </div>
+        <button class="tombol" type="submit">Hitung Petungan</button>
+      </form>
+      <div class="entri" id="hasil-jodoh" hidden></div>
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:3rem">
+    <p class="kicker">Delapan Golongan</p>
+    <h2>Tabel Lengkap Kategori Petung Jodoh</h2>
+    <p class="huruf-awal">
+      Kedelapan golongan di bawah ini adalah warisan bacaan primbon yang telah disalin dari kitab ke
+      kitab selama beberapa generasi. Kami menuliskannya kembali dengan bahasa kami sendiri dan dengan
+      penekanan yang menurut kami paling setia pada semangat aslinya: petungan adalah bahan
+      pertimbangan dan pengingat, bukan vonis. Pasangan dengan hasil yang dibaca "berat" tidak
+      ditakdirkan gagal, sebagaimana pasangan bergolongan "baik" tidak dijamin langgeng tanpa usaha.
+    </p>
+    {urutan.map((nama) => (
+      <h3 style="margin-top:1.6rem">{nama} <span class="kecil" style="font-weight:400">— sisa {sisaLabel[nama]}</span></h3>
+      <p>{JODOH_DESKRIPSI[nama]}</p>
+    ))}
+
+    <h2 style="margin-top:2.4rem">Catatan tentang Cara Membaca</h2>
+    <p>
+      Pada masyarakat Jawa tempo dulu, hasil petungan jarang berdiri sendiri. Ia dibicarakan dalam
+      keluarga, ditimbang bersama hari baik, dan kerap "dijawab" dengan laku kebudayaan — slametan,
+      tirakat, atau sekadar kesepakatan untuk lebih berhati-hati pada hal yang ditunjuk petungan itu.
+      Dengan kata lain, tradisi sendiri memperlakukan petungan sebagai awal percakapan, bukan akhir
+      keputusan. Wetonan meneruskan sikap itu: hitunglah, bacalah, lalu putuskanlah berdua dengan
+      pertimbangan yang jauh lebih kaya daripada sekadar angka.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker tengah">Tanya Jawab</p>
+    <h2 class="tengah">Seputar Petungan Jodoh</h2>
+    <div class="faq">
+      {faq.map(([t, j]) => (
+        <details>
+          <summary>{t}</summary>
+          <p>{j}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <script>
+    import { wetonOf, kategoriJodoh } from '../lib/jawa.js';
+    import { JODOH_DESKRIPSI } from '../lib/konten.js';
+    import { esc } from '../lib/entri.js';
+
+    const form = document.getElementById('form-jodoh');
+    const hasil = document.getElementById('hasil-jodoh');
+
+    function uraian(iso) {
+      const [y, m, d] = iso.split('-').map(Number);
+      return wetonOf(y, m, d);
+    }
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const aISO = document.getElementById('tgl-a').value;
+      const bISO = document.getElementById('tgl-b').value;
+      if (!aISO || !bISO) return;
+      const A = uraian(aISO);
+      const B = uraian(bISO);
+      const total = A.neptu + B.neptu;
+      const sisa = total % 8;
+      const kategori = kategoriJodoh(total);
+      hasil.innerHTML =
+        `<h3 class="entri-judul">${esc(kategori)}</h3>` +
+        `<p class="entri-sub">Jumlah neptu ${total} · dibagi 8 bersisa ${sisa}</p>` +
+        `<table class="fakta"><tbody>` +
+        `<tr><th>Orang pertama</th><td>${esc(A.nama)} — ${A.neptuHari} + ${A.neptuPasaran} = <span class="mono">${A.neptu}</span></td></tr>` +
+        `<tr><th>Orang kedua</th><td>${esc(B.nama)} — ${B.neptuHari} + ${B.neptuPasaran} = <span class="mono">${B.neptu}</span></td></tr>` +
+        `<tr><th>Jumlah neptu berdua</th><td class="angka"><strong>${A.neptu} + ${B.neptu} = ${total}</strong></td></tr>` +
+        `<tr><th>Petungan</th><td class="angka">${total} ÷ 8 = ${Math.floor(total / 8)} sisa ${sisa} → golongan <strong>${esc(kategori)}</strong></td></tr>` +
+        `</tbody></table>` +
+        `<p>${esc(JODOH_DESKRIPSI[kategori])}</p>` +
+        `<p class="kecil"><em>Bacaan tradisi primbon — bahan perenungan dan percakapan, bukan kepastian tentang hubungan siapa pun.</em></p>`;
+      hasil.hidden = false;
+      hasil.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</Almanak>

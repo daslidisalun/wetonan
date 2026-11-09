@@ -1,0 +1,46 @@
+---
+import { u } from '../lib/base.js';
+import Almanak from '../layouts/Almanak.astro';
+---
+<Almanak
+  title="Tentang Wetonan — Almanak Jawa Digital | Wetonan"
+  description="Tentang Wetonan: almanak digital yang menyajikan weton, kalender Jawa, petungan jodoh, dan pawukon sebagai warisan budaya — dengan metode perhitungan yang terbuka dan dikalibrasi ke kalender resmi."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Lembaran Redaksi</p>
+    <h1>Tentang Almanak Ini</h1>
+    <p class="huruf-awal">
+      Wetonan lahir dari pengamatan sederhana: petungan Jawa masih dicari jutaan orang setiap bulan —
+      untuk mengetahui weton anak yang baru lahir, menimbang hari pernikahan, atau sekadar memahami
+      catatan kakek-nenek — tetapi penyajiannya di internet kebanyakan serampangan, tertutup, dan
+      dibalut klaim ramalan yang berlebihan. Almanak ini mencoba jalan lain: menyajikan tradisi itu
+      sebagaimana buku primbon lama menyajikannya — terbuka tabelnya, jelas cara hitungnya, dan jujur
+      tentang kedudukannya sebagai warisan budaya.
+    </p>
+    <h2 style="margin-top:2rem">Yang Kami Sajikan</h2>
+    <p>
+      Empat perkakas utama: <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> untuk mencari weton dan
+      neptu dari tanggal lahir; <a href={u('/weton-jodoh/')}>Weton Jodoh</a> untuk petungan kecocokan
+      pasangan; <a href={u('/kalender-jawa/')}>Kalender Jawa</a> untuk menelusuri padanan tanggal bulan demi
+      bulan; dan indeks lengkap <a href={u('/weton/')}>35 weton</a> serta <a href={u('/wuku/')}>30 wuku</a> dengan
+      uraian budaya masing-masing.
+    </p>
+    <h2 style="margin-top:2rem">Metode &amp; Kalibrasi</h2>
+    <p>
+      Seluruh perhitungan berjalan di peramban Anda dan di server kami dengan satu pustaka hitung yang
+      sama. Padanan pasaran dihitung dari acuan 17 Agustus 1945 (Jumat Legi); penanggalan Jawa mengikuti
+      sistem Sultan Agung dengan siklus windu, dan hasilnya kami uji terhadap kalender resmi Kementerian
+      Agama RI pada titik-titik yang dapat diverifikasi publik — 1 Suro 1959 (27 Juni 2025, Jumat
+      Kliwon), 12 Rejeb 1959 (1 Januari 2026, Kamis Pon), dan seterusnya. Bila Anda menemukan selisih
+      dengan penanggalan keluarga atau keraton yang Anda anut, perbedaan metode hisab adalah hal yang
+      dikenal dalam tradisi ini; kami dengan senang hati menerima catatan lewat halaman kontak.
+    </p>
+    <h2 style="margin-top:2rem">Sikap Kami terhadap Tradisi</h2>
+    <p>
+      Primbon adalah sastra budaya: cara sebuah peradaban memberi makna pada waktu. Kami menghormatinya
+      dengan menyajikannya secara utuh dan berimbang — termasuk pada hasil petungan yang dibaca berat —
+      tanpa mengubahnya menjadi klaim kepastian. Keputusan hidup pembaca adalah milik pembaca; tugas
+      almanak ini hanya membuka halamannya.
+    </p>
+  </section>
+</Almanak>

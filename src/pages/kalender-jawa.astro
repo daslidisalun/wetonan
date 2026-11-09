@@ -1,0 +1,123 @@
+---
+import Almanak from '../layouts/Almanak.astro';
+import { BULAN_JAWA, PANJANG_BULAN, WINDU, PANJANG_TAHUN_WINDU } from '../lib/jawa.js';
+import { kalenderHTML } from '../lib/entri.js';
+
+const kini = new Date();
+const kalenderAwal = kalenderHTML(kini.getFullYear(), kini.getMonth() + 1);
+const nilaiBulanAwal = `${kini.getFullYear()}-${String(kini.getMonth() + 1).padStart(2, '0')}`;
+---
+<Almanak
+  title="Kalender Jawa — Penanggalan Jawa Bulan demi Bulan | Wetonan"
+  description="Kalender Jawa interaktif: berpindah bulan untuk melihat padanan tanggal Masehi, pasaran, weton, dan tanggal Jawa setiap hari, lengkap dengan penjelasan dua belas bulan Jawa dan siklus windu delapan tahun."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Bab III — Penanggalan</p>
+    <h1>Kalender Jawa</h1>
+    <p>
+      Penanggalan ini mempertemukan tiga putaran waktu sekaligus: tanggal Masehi, hari pasaran, dan
+      tanggal Jawa. Geser bulan untuk menelusuri tahun-tahun lampau atau yang akan datang — setiap
+      tanggal dapat diketuk untuk membuka entri wetonnya.
+    </p>
+  </section>
+
+  <section class="bagian-gelap" style="margin-top:1.6rem">
+    <div class="bungkus">
+      <div class="panah-bulan">
+        <button class="tombol sekunder" id="bln-sebelum" type="button" style="color:#efe6cf;border-color:#efe6cf">← Bulan Sebelumnya</button>
+        <form id="form-lompat" style="display:flex;gap:10px;align-items:end;flex-wrap:wrap">
+          <div class="lapangan">
+            <label for="lompat-bulan" style="color:#cbbd97">Lompat ke bulan</label>
+            <input type="month" id="lompat-bulan" value={nilaiBulanAwal} min="1800-01" max="2100-12" style="font-family:var(--mono);font-size:1rem;padding:9px 12px;border:1.5px solid #efe6cf;background:#fffdf6;color:#2a211a" />
+          </div>
+          <button class="tombol" type="submit">Tampilkan</button>
+          <button class="tombol sekunder" id="bln-ini" type="button" style="color:#efe6cf;border-color:#efe6cf">Bulan Ini</button>
+        </form>
+        <button class="tombol sekunder" id="bln-berikut" type="button" style="color:#efe6cf;border-color:#efe6cf">Bulan Berikutnya →</button>
+      </div>
+      <div class="bungkus-tabel" id="wadah-kalender" set:html={kalenderAwal}></div>
+      <p class="kecil" style="color:#cbbd97;margin-top:14px">
+        Keterangan: angka besar adalah tanggal Masehi; di bawahnya nama pasaran dan neptu weton hari itu
+        (n = neptu); baris ketiga adalah tanggal dan bulan Jawa. Tanggal hari ini tertanda merah bata.
+      </p>
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:3rem">
+    <p class="kicker">Dua Belas Bulan</p>
+    <h2>Bulan-Bulan dalam Kalender Jawa</h2>
+    <p class="huruf-awal">
+      Nama bulan Jawa adalah warisan dua zaman. Suro berasal dari Asyura, Sapar dari Safar, Mulud dari
+      maulid Nabi, Poso dari puasa — jejak penyelarasan Sultan Agung dengan kalender Hijriah masih
+      terbaca jelas hingga kini. Umur bulan berselang-seling 30 dan 29 hari, mengikuti peredaran bulan
+      yang sebenarnya; hanya bulan pamungkas, Besar, yang berubah: 29 hari pada tahun biasa dan 30 hari
+      pada tahun wuntu (kabisat).
+    </p>
+    <table class="fakta">
+      <tbody>
+        {BULAN_JAWA.map((b, i) => (
+          <tr>
+            <th>{i + 1}. {b.nama}</th>
+            <td>bertepatan bulan {b.alt} — {PANJANG_BULAN[i]} hari{i === 11 ? ' (30 pada tahun wuntu)' : ''}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:2.4rem">Windu: Lingkaran Delapan Tahun</h2>
+    <p>
+      Delapan tahun Jawa membentuk satu <strong>windu</strong>. Tiga tahun di dalamnya berumur 355 hari
+      — Ehe, Dal, dan Jimakir — karena bulan Besar-nya berumur genap 30 hari; lima tahun lainnya berumur
+      354 hari. Sebutan untuk kedelapan tahun itu sarat makna dalam budaya Jawa: tahun Alip misalnya
+      kerap dikaitkan dengan awal dan kemakmuran, sedangkan tahun Dal — tahun ketika banyak peristiwa
+      besar dicatat dalam babad — dipandang berwibawa sekaligus berat.
+    </p>
+    <table class="fakta">
+      <tbody>
+        {WINDU.map((nama, i) => (
+          <tr>
+            <th>Tahun ke-{i + 1}: {nama}</th>
+            <td class="angka">{PANJANG_TAHUN_WINDU[i]} hari{PANJANG_TAHUN_WINDU[i] === 355 ? ' — tahun wuntu (kabisat)' : ''}</td>
+          </tr>
+        ))}
+        <tr><th>Jumlah satu windu</th><td class="angka"><strong>2.835 hari</strong></td></tr>
+      </tbody>
+    </table>
+    <p>
+      Satu catatan penting bagi pembaca penanggalan cetak: hari Jawa dimulai saat matahari terbenam.
+      Karena itu peringatan malam 1 Suro selalu jatuh pada senja <em>sebelum</em> tanggal 1 Suro-nya —
+      misalnya malam 1 Suro 1959 dimulai Kamis senja, 26 Juni 2025, sedangkan tanggal 1 Suro-nya sendiri
+      adalah Jumat, 27 Juni 2025. Kalender di halaman ini mengikuti padanan tanggal sipil resmi, sama
+      seperti kalender Kementerian Agama RI.
+    </p>
+  </section>
+
+  <script>
+    import { kalenderHTML } from '../lib/entri.js';
+    const wadah = document.getElementById('wadah-kalender');
+    const lompat = document.getElementById('lompat-bulan');
+    let tahun = Number(lompat.value.slice(0, 4));
+    let bulan = Number(lompat.value.slice(5, 7));
+
+    function tampil() {
+      wadah.innerHTML = kalenderHTML(tahun, bulan);
+      lompat.value = `${tahun}-${String(bulan).padStart(2, '0')}`;
+    }
+    document.getElementById('bln-sebelum').addEventListener('click', () => {
+      bulan--; if (bulan < 1) { bulan = 12; tahun--; } tampil();
+    });
+    document.getElementById('bln-berikut').addEventListener('click', () => {
+      bulan++; if (bulan > 12) { bulan = 1; tahun++; } tampil();
+    });
+    document.getElementById('bln-ini').addEventListener('click', () => {
+      const n = new Date(); tahun = n.getFullYear(); bulan = n.getMonth() + 1; tampil();
+    });
+    document.getElementById('form-lompat').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!lompat.value) return;
+      tahun = Number(lompat.value.slice(0, 4));
+      bulan = Number(lompat.value.slice(5, 7));
+      tampil();
+    });
+  </script>
+</Almanak>

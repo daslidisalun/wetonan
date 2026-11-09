@@ -1,0 +1,133 @@
+---
+import Almanak from '../layouts/Almanak.astro';
+import { HARI, PASARAN, wetonOf } from '../lib/jawa.js';
+
+const contoh = wetonOf(1945, 8, 17); // Jumat Legi, neptu 11
+
+const faq = [
+  ['Tanggal lahirku tercatat sesudah matahari terbenam. Wetonku ikut hari apa?', 'Dalam adat Jawa, hari berganti saat matahari terbenam (bakda magrib), bukan tengah malam. Karena itu kelahiran pada petang hari — misalnya Selasa pukul 19.00 — oleh sebagian keluarga dicatat sudah memasuki weton hari berikutnya, Rabu. Kalkulator ini memakai batas tengah malam kalender Masehi, yang lazim dipakai catatan sipil. Bila kelahiran Anda persis di sekitar senja, hasil kedua cara dapat berbeda satu hari; sebutkan keadaan itu apa adanya dan pilih yang sesuai keyakinan keluarga.'],
+  ['Mengapa neptu Jumat Legi disebut istimewa?', 'Sebab Jumat Legi adalah weton hari Proklamasi Kemerdekaan, 17 Agustus 1945. Dalam banyak catatan sejarah populer, pemilihan tanggal itu memang dikaitkan dengan makna baik Jumat Legi dalam pandangan Jawa. Di luar kisah itu, neptu 11 termasuk golongan menengah — tidak terbesar, tidak terkecil.'],
+  ['Bolehkah menghitung weton untuk tanggal yang belum terjadi?', 'Boleh. Roda weton berputar teratur tanpa akhir, sehingga tanggal berapa pun — kelahiran anak yang diperkirakan, rencana pernikahan, atau hari memulai usaha — dapat dicari wetonnya. Kalkulator ini menerima tanggal tahun 1800–2100.'],
+  ['Dari mana angka neptu hari dan pasaran berasal?', 'Dari pakem primbon yang telah baku beredar berabad-abad: Minggu 5, Senin 4, Selasa 3, Rabu 7, Kamis 8, Jumat 6, Sabtu 9; dan Legi 5, Pahing 9, Pon 7, Wage 4, Kliwon 8. Angka-angka ini tidak kami ubah; yang kami jaga adalah ketepatan padanan tanggalnya.'],
+];
+---
+<Almanak
+  title="Kalkulator Weton — Hitung Weton & Neptu dari Tanggal Lahir | Wetonan"
+  description="Kalkulator weton: masukkan tanggal lahir untuk mengetahui weton, neptu hari dan pasaran, tanggal Jawa lengkap dengan tahun windu, serta wuku — lengkap dengan cara menghitung neptu langkah demi langkah dan tabel neptu."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Bab I — Weton</p>
+    <h1>Kalkulator Weton</h1>
+    <p>
+      Masukkan tanggal lahir, dan almanak akan membuka entrinya: weton beserta neptunya, padanan tanggal
+      Jawa dengan tahun dan windunya, serta wuku pada hari itu. Di bawah kalkulator kami uraikan cara
+      menghitungnya dengan tangan, agar setiap angka dapat diperiksa sendiri.
+    </p>
+  </section>
+
+  <section class="bungkus" style="margin-top:1.4rem">
+    <div class="panel-almanak">
+      <h2 style="font-size:1.5rem">Tanggal yang Dicari</h2>
+      <form class="form-baris" id="form-kalkulator">
+        <div class="lapangan">
+          <label for="tgl-kalkulator">Tanggal lahir / tanggal dicari</label>
+          <input type="date" id="tgl-kalkulator" min="1800-01-01" max="2100-12-31" required />
+        </div>
+        <button class="tombol" type="submit">Hitung Weton</button>
+      </form>
+      <div class="entri" id="hasil-kalkulator" hidden></div>
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:3rem">
+    <p class="kicker">Cara Menghitung</p>
+    <h2>Menghitung Neptu, Langkah demi Langkah</h2>
+    <p class="huruf-awal">
+      Petungan weton pada dasarnya hanya penjumlahan dua angka. Pertama, tentukan <strong>hari</strong>
+      dan <strong>pasaran</strong> tanggal yang dicari. Pasaran ditemukan dengan menghitung selisih hari
+      dari tanggal acuan yang pasarannya sudah pasti, lalu mengambil sisa pembagiannya dengan lima.
+      Kalkulator di halaman ini memakai acuan yang sama dengan yang dipakai banyak penanggal:
+      17 Agustus 1945 adalah Jumat Legi. Kedua, ambil <strong>neptu hari</strong> dari tabel dina dan
+      <strong>neptu pasaran</strong> dari tabel pasaran. Ketiga, jumlahkan keduanya — itulah neptu weton,
+      angka yang menjadi dasar hampir semua petungan lain, dari watak sampai jodoh.
+    </p>
+    <h3>Contoh terhitung: 17 Agustus 1945</h3>
+    <table class="fakta">
+      <tbody>
+        <tr><th>Hari (dina)</th><td>{contoh.hari.nama} — neptu <span class="mono">{contoh.neptuHari}</span></td></tr>
+        <tr><th>Pasaran</th><td>{contoh.pasaran.nama} — neptu <span class="mono">{contoh.neptuPasaran}</span></td></tr>
+        <tr><th>Neptu weton</th><td class="angka"><strong>{contoh.neptuHari} + {contoh.neptuPasaran} = {contoh.neptu}</strong></td></tr>
+        <tr><th>Tanggal Jawa</th><td>{contoh.jawa.tanggal} {contoh.jawa.bulan.nama} {contoh.jawa.tahun} AJ (tahun {contoh.jawa.windu})</td></tr>
+        <tr><th>Wuku</th><td>{contoh.wuku.nama}</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Tabel Neptu Dina (Hari)</h3>
+    <table class="fakta">
+      <tbody>
+        {HARI.map((h) => (
+          <tr><th>{h.nama}</th><td>{h.jawa} — neptu <span class="mono">{h.neptu}</span></td></tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h3>Tabel Neptu Pasaran</h3>
+    <table class="fakta">
+      <tbody>
+        {PASARAN.map((p) => (
+          <tr><th>{p.nama}</th><td>neptu <span class="mono">{p.neptu}</span></td></tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:2.4rem">Pasaran &amp; Windu, Sekilas</h2>
+    <p>
+      Lima pasaran — Legi, Pahing, Pon, Wage, Kliwon — adalah denyut tertua penanggalan Jawa, sisa dari
+      pekan pasar masa lampau ketika setiap desa menggelar pasaran bergiliran lima hari sekali. Hingga
+      hari ini nama pasaran masih hidup pada nama tempat dan hari pasar di banyak kota di Jawa. Adapun
+      <strong>windu</strong> adalah lingkaran delapan tahun — Alip, Ehe, Jimawal, Je, Dal, Be, Wawu,
+      Jimakir. Tiga tahun di antaranya (Ehe, Dal, Jimakir) berumur 355 hari karena bulan Besar-nya
+      berumur 30 hari; selebihnya 354 hari. Satu windu genap berumur 2.835 hari, dan dari irama inilah
+      tanggal Jawa dapat dihitung jauh ke depan maupun ke belakang tanpa terputus.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker tengah">Tanya Jawab</p>
+    <h2 class="tengah">Seputar Kalkulator Ini</h2>
+    <div class="faq">
+      {faq.map(([t, j]) => (
+        <details>
+          <summary>{t}</summary>
+          <p>{j}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <script>
+    import { entriHTML } from '../lib/entri.js';
+    const form = document.getElementById('form-kalkulator');
+    const input = document.getElementById('tgl-kalkulator');
+    const hasil = document.getElementById('hasil-kalkulator');
+
+    function hitung(iso) {
+      if (!iso) return;
+      const [y, m, d] = iso.split('-').map(Number);
+      hasil.innerHTML = entriHTML(y, m, d, { watak: true });
+      hasil.hidden = false;
+      hasil.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      hitung(input.value);
+      const url = new URL(location.href);
+      url.searchParams.set('tgl', input.value);
+      history.replaceState(null, '', url);
+    });
+    const dariURL = new URLSearchParams(location.search).get('tgl');
+    const awal = dariURL || new Date().toISOString().slice(0, 10);
+    input.value = awal;
+    if (dariURL) hitung(awal);
+  </script>
+</Almanak>

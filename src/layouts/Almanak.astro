@@ -1,0 +1,143 @@
+---
+import { u } from '../lib/base.js';
+import '../styles/global.css';
+import { wetonOfDate, NAMA_BULAN_MASEHI } from '../lib/jawa.js';
+
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+// Canonical dibangun dari site + base pada astro.config.mjs (import.meta.env),
+// agar selalu mengikuti alamat terbit — demo ini: daslidisalun.github.io/wetonan/.
+const asal = (import.meta.env.SITE ?? '').replace(/\/$/, '');
+const dasar = import.meta.env.BASE_URL.replace(/\/$/, ''); // mis. '/wetonan'
+let jalur = Astro.url.pathname;
+if (jalur === dasar) jalur = '/';
+else if (jalur.startsWith(dasar + '/')) jalur = jalur.slice(dasar.length);
+const canonical = asal + dasar + jalur;
+
+// Tanggal Jawa hari ini (dihitung saat build; disegarkan lagi di browser).
+const sekarang = new Date();
+const w = wetonOfDate(sekarang);
+const barisTanggal = {
+  masehi: `${w.hari.nama}, ${sekarang.getDate()} ${NAMA_BULAN_MASEHI[sekarang.getMonth()]} ${sekarang.getFullYear()}`,
+  weton: w.nama,
+  jawa: `${w.jawa.tanggal} ${w.jawa.bulan.nama} ${w.jawa.tahun} ${w.jawa.windu}`,
+  wuku: w.wuku.nama,
+  iso: `${sekarang.getFullYear()}-${String(sekarang.getMonth() + 1).padStart(2, '0')}-${String(sekarang.getDate()).padStart(2, '0')}`,
+};
+
+const tautan = [
+  ['/', 'Beranda'],
+  ['/kalkulator-weton/', 'Kalkulator Weton'],
+  ['/weton-jodoh/', 'Weton Jodoh'],
+  ['/kalender-jawa/', 'Kalender Jawa'],
+  ['/weton/', 'Indeks Weton'],
+  ['/wuku/', 'Wuku'],
+  ['/tentang/', 'Tentang'],
+];
+---
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23241b12'/%3E%3Cg fill='none' stroke='%23f4ecda' stroke-width='5'%3E%3Cellipse cx='50' cy='26' rx='13' ry='18'/%3E%3Cellipse cx='50' cy='74' rx='13' ry='18'/%3E%3Cellipse cx='26' cy='50' rx='18' ry='13'/%3E%3Cellipse cx='74' cy='50' rx='18' ry='13'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='6' fill='%23a03a28'/%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="masthead">
+      <div class="bungkus">
+        <div class="masthead-atas">
+          <span>Edisi Digital — Terbit Setiap Hari</span>
+          <span>Almanak &amp; Petungan Jawa</span>
+          <span class="sembunyi-kecil">Harga: Sepenuhnya Gratis</span>
+        </div>
+        <div class="masthead-tengah">
+          <div class="hiasan" aria-hidden="true">
+            <svg width="150" height="18" viewBox="0 0 150 18" fill="none" stroke="#a03a28" stroke-width="1.4">
+              <line x1="0" y1="9" x2="58" y2="9" />
+              <line x1="92" y1="9" x2="150" y2="9" />
+              <path d="M75 2 L82 9 L75 16 L68 9 Z" />
+              <circle cx="63" cy="9" r="1.8" fill="#a03a28" />
+              <circle cx="87" cy="9" r="1.8" fill="#a03a28" />
+            </svg>
+          </div>
+          <p class="wordmark">WETONAN<span class="titik">.</span></p>
+          <p class="tagline-masthead">Almanak Jawa Digital — weton, kalender Jawa, dan pawukon, disajikan sebagai warisan budaya.</p>
+        </div>
+        <p class="masthead-tanggal" id="baris-tanggal" data-iso={barisTanggal.iso}>
+          Hari ini: <strong>{barisTanggal.masehi}</strong> — weton <strong>{barisTanggal.weton}</strong> —
+          tanggal Jawa <strong>{barisTanggal.jawa}</strong> — wuku <strong>{barisTanggal.wuku}</strong>
+        </p>
+      </div>
+      <div class="nav-strip">
+        <div class="bungkus">
+          <nav aria-label="Navigasi utama">
+            {tautan.map(([href, label], i) => (
+              <>
+                {i > 0 && <span class="pisah" aria-hidden="true">◆</span>}
+                <a href={u(href)}>{label}</a>
+              </>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="kolofon">
+      <div class="bungkus">
+        <div class="mf" aria-hidden="true">
+          <svg width="44" height="44" viewBox="0 0 72 72" fill="none" stroke="#2a211a" stroke-width="2">
+            <ellipse cx="36" cy="15" rx="10" ry="14" />
+            <ellipse cx="36" cy="57" rx="10" ry="14" />
+            <ellipse cx="15" cy="36" rx="14" ry="10" />
+            <ellipse cx="57" cy="36" rx="14" ry="10" />
+            <circle cx="36" cy="36" r="4.5" fill="#a03a28" stroke="none" />
+          </svg>
+        </div>
+        <p><strong>Wetonan</strong> adalah almanak digital yang menyajikan petungan Jawa sebagai warisan budaya. Seluruh isi bersifat informatif dan hiburan budaya — bukan ramalan, bukan pula nasihat untuk mengambil keputusan hidup.</p>
+        <nav aria-label="Navigasi bawah">
+          <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a>
+          <a href={u('/weton-jodoh/')}>Weton Jodoh</a>
+          <a href={u('/kalender-jawa/')}>Kalender Jawa</a>
+          <a href={u('/weton/')}>Indeks Weton</a>
+          <a href={u('/wuku/')}>Wuku</a>
+          <a href={u('/tentang/')}>Tentang</a>
+          <a href={u('/kontak/')}>Kontak</a>
+          <a href={u('/privasi/')}>Privasi</a>
+          <a href={u('/disclaimer/')}>Disclaimer</a>
+        </nav>
+        <p class="sign-off">— Dipetik &amp; disusun dari tradisi primbon, diterbitkan di atas kertas daluang maya —</p>
+        <p>© {sekarang.getFullYear()} Wetonan · daslidisalun.github.io/wetonan</p>
+      </div>
+    </footer>
+
+    <script>
+      // Segarkan baris tanggal masthead ke "hari ini" menurut jam pengunjung.
+      import { wetonOfDate, NAMA_BULAN_MASEHI } from '../lib/jawa.js';
+      const el = document.getElementById('baris-tanggal');
+      if (el) {
+        const now = new Date();
+        const w = wetonOfDate(now);
+        el.innerHTML =
+          `Hari ini: <strong>${w.hari.nama}, ${now.getDate()} ${NAMA_BULAN_MASEHI[now.getMonth()]} ${now.getFullYear()}</strong>` +
+          ` — weton <strong>${w.nama}</strong> — tanggal Jawa <strong>${w.jawa.tanggal} ${w.jawa.bulan.nama} ${w.jawa.tahun} ${w.jawa.windu}</strong>` +
+          ` — wuku <strong>${w.wuku.nama}</strong>`;
+      }
+    </script>
+  </body>
+</html>

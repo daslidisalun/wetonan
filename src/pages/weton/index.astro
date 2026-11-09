@@ -1,0 +1,48 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { SEMUA_WETON, HARI } from '../../lib/jawa.js';
+
+const romawi = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+---
+<Almanak
+  title="Indeks 35 Weton — Daftar Lengkap Weton & Neptu | Wetonan"
+  description="Indeks lengkap 35 weton dalam penanggalan Jawa, tersusun menurut dina: setiap weton dengan neptu hari, neptu pasaran, jumlah neptu, dan tautan ke uraian wataknya menurut tradisi primbon."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Daftar Isi Almanak</p>
+    <h1>Tiga Puluh Lima Weton</h1>
+    <p>
+      Inilah seluruh isi "buku" petungan: tiga puluh lima weton, tersusun dalam tujuh bab menurut
+      dinanya. Angka di ujung garis titik-titik adalah jumlah neptu — kunci yang membuka hampir semua
+      petungan dalam tradisi Jawa. Ketuk nama weton untuk membaca entrinya.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:1rem">
+    {HARI.map((h, i) => (
+      <>
+        <h2 style="margin-top:2.2rem;font-size:1.45rem">
+          Bab {romawi[i]} — Weton {h.nama} <span class="kecil" style="font-weight:400">({h.jawa}, neptu dina {h.neptu})</span>
+        </h2>
+        <ul class="daftar-isi">
+          {SEMUA_WETON.filter((w) => w.hari.id === h.id).map((w) => (
+            <li>
+              <a href={u(`/weton/${w.slug}/`)}>
+                <span class="nama">{w.nama}</span>
+                <span class="ket">{w.neptuHari} + {w.neptuPasaran}</span>
+                <span class="titik"></span>
+                <span class="nopol">neptu {w.neptu}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </>
+    ))}
+    <p class="kecil" style="margin-top:2rem">
+      Susunan mengikuti putaran hari: setiap bab memuat lima weton dari dina yang sama dengan kelima
+      pasaran. Dari bab ke bab, neptu dina berubah mengikuti pakem — Selasa terkecil (3) dan Sabtu
+      terbesar (9) — sedangkan neptu terbesar keseluruhan, 18, hanya dimiliki Sabtu Pahing.
+    </p>
+  </section>
+</Almanak>

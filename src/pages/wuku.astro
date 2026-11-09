@@ -1,0 +1,63 @@
+---
+import { u } from '../lib/base.js';
+import Almanak from '../layouts/Almanak.astro';
+import { WUKU } from '../lib/jawa.js';
+import { WUKU_DESKRIPSI } from '../lib/konten.js';
+import { wetonOfDate } from '../lib/jawa.js';
+
+const kini = wetonOfDate(new Date());
+---
+<Almanak
+  title="Wuku & Pawukon — Putaran 210 Hari Kalender Jawa-Bali | Wetonan"
+  description="Mengenal pawukon: putaran 210 hari yang terbagi dalam 30 wuku, masing-masing tujuh hari — lengkap dengan daftar dan gambaran singkat ketiga puluh wuku menurut tradisi, dari Sinta sampai Watugunung."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Bab IV — Pawukon</p>
+    <h1>Wuku: Putaran 210 Hari</h1>
+    <p>
+      Berjalan sejajar dengan weton dan penanggalan bulan, ada satu putaran waktu lagi yang lebih tua:
+      <strong>pawukon</strong>. Tiga puluh pekan bernama — <em>wuku</em> — masing-masing tujuh hari,
+      membentuk satu lingkaran genap 210 hari yang tidak terikat bulan maupun tahun. Hari ini, menurut
+      hitungan kami, adalah hari ke-{kini.wuku.hariKe} dalam wuku <strong>{kini.wuku.nama}</strong>.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:1rem">
+    <p class="huruf-awal">
+      Pawukon diwarisi dari zaman yang lebih tua daripada kalender Sultan Agung, dan hingga kini menjadi
+      penanggalan hidup yang utama di Bali — hari raya Galungan dan Kuningan, misalnya, ditentukan oleh
+      wuku, bukan oleh tanggal. Setiap wuku dalam tradisi memiliki dewa pelindung, watak, dan lambang
+      alamnya sendiri; para penulis pawukon membaca pekan yang sedang berjalan sebagaimana mereka
+      membaca musim: bukan untuk meramalkan nasib seseorang, melainkan untuk merasakan iklim waktu yang
+      sedang dilalui bersama. Daftar di bawah memuat gambaran singkat ketiga puluh wuku sebagaimana
+      dibaca dalam tradisi.
+    </p>
+
+    <table class="fakta" style="margin-top:1.6rem">
+      <tbody>
+        {WUKU.map((nama, i) => (
+          <tr>
+            <th style="width:26%">{String(i + 1).padStart(2, '0')} · {nama}</th>
+            <td>{WUKU_DESKRIPSI[nama]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:2.4rem">Cara Membaca Wuku Hari Ini</h2>
+    <p>
+      Setiap tanggal dalam <a href={u('/kalender-jawa/')}>Kalender Jawa</a> dan setiap hasil
+      <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> di situs ini mencantumkan wukunya. Karena putaran
+      pawukon berumur 210 hari — kelipatan dari 7 maupun 35 — wuku dan weton berjalan beriringan dengan
+      irama yang tetap: weton yang sama selalu jatuh pada urutan hari yang dapat diperhitungkan dalam
+      pekannya, dan satu putaran penuh weton (35 hari) tepat menghabiskan lima wuku. Keteraturan inilah
+      yang membuat para penanggal lama dapat menyusun almanak bertahun-tahun ke depan hanya dengan bekal
+      satu tanggal acuan.
+    </p>
+    <p class="kecil">
+      Gambaran tiap wuku adalah ringkasan budaya yang kami tulis dari tema-tema umum tradisi pawukon
+      Jawa-Bali. Rincian dewa pelindung dan lambang berbeda antar sumber primbon; kami sengaja tidak
+      mengutip satu versi sebagai satu-satunya yang benar.
+    </p>
+  </section>
+</Almanak>

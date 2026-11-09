@@ -1,0 +1,34 @@
+---
+import { u } from '../lib/base.js';
+import Almanak from '../layouts/Almanak.astro';
+---
+<Almanak
+  title="Kontak — Wetonan"
+  description="Hubungi redaksi Wetonan untuk koreksi padanan tanggal, pertanyaan seputar metode perhitungan, dan kerja sama budaya."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Lembaran Redaksi</p>
+    <h1>Kontak</h1>
+    <p>
+      Redaksi menerima koreksi, pertanyaan, dan catatan budaya melalui surat elektronik:
+    </p>
+    <p style="font-size:1.3rem"><a href="mailto:wetonan@gmail.com"><strong>wetonan@gmail.com</strong></a></p>
+    <h2 style="margin-top:2rem">Yang Paling Sering Kami Terima</h2>
+    <p>
+      <strong>Koreksi tanggal.</strong> Bila padanan tanggal Jawa atau pasaran di situs ini berbeda dengan
+      penanggalan yang Anda pegang (almanak keraton, kalender pondok, atau catatan keluarga), kirimkan
+      tanggal dan versi acuannya. Perbedaan hisab adalah hal yang wajar; setiap laporan kami periksa
+      terhadap acuan resmi sebelum dijawab.
+    </p>
+    <p>
+      <strong>Pertanyaan metode.</strong> Cara kami menghitung diuraikan terbuka di halaman
+      <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> dan <a href={u('/tentang/')}>Tentang</a>. Bila ada
+      langkah yang belum jelas, tanyakan saja.
+    </p>
+    <p>
+      <strong>Yang tidak kami layani.</strong> Wetonan tidak menyediakan jasa ramalan pribadi, konsultasi
+      jodoh berbayar, atau penentuan hari baik untuk keperluan pribadi. Seluruh isi situs bersifat
+      informasi budaya yang dapat dibaca siapa pun secara gratis.
+    </p>
+  </section>
+</Almanak>

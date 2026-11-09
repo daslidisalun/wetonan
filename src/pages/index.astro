@@ -1,0 +1,185 @@
+---
+import { u } from '../lib/base.js';
+import Almanak from '../layouts/Almanak.astro';
+import { SEMUA_WETON, HARI, wetonOfDate } from '../lib/jawa.js';
+import { kalenderHTML } from '../lib/entri.js';
+
+const kini = new Date();
+const kalenderBulanIni = kalenderHTML(kini.getFullYear(), kini.getMonth() + 1);
+const wetonHariIni = wetonOfDate(kini);
+const isoHariIni = `${kini.getFullYear()}-${String(kini.getMonth() + 1).padStart(2, '0')}-${String(kini.getDate()).padStart(2, '0')}`;
+
+// Ringkasan indeks untuk teaser daftar isi: per dina, rentang neptu anak wetonnya.
+const ringkasDina = HARI.map((h) => {
+  const anak = SEMUA_WETON.filter((w) => w.hari.id === h.id);
+  const ns = anak.map((w) => w.neptu);
+  return { ...h, min: Math.min(...ns), max: Math.max(...ns) };
+});
+
+const faq = [
+  ['Apa sebenarnya weton itu?', 'Weton adalah pertemuan dua putaran waktu dalam penanggalan Jawa: saptawara (tujuh hari, Senin sampai Minggu) dan pancawara atau pasaran (lima hari: Legi, Pahing, Pon, Wage, Kliwon). Karena 7 dan 5 bertemu, seluruh kombinasi weton berjumlah 35 dan berulang setiap 35 hari. Setiap weton diberi nilai yang disebut neptu — neptu hari ditambah neptu pasaran — dan dari jumlah inilah berbagai petungan tradisi diturunkan.'],
+  ['Dari mana asal-usul kalender Jawa yang dipakai di sini?', 'Kalender Jawa modern dirumuskan pada masa Sultan Agung dari Mataram (abad ke-17), yang menyelaraskan penanggalan Saka yang lama dengan kalender Hijriah. Akibatnya bulan-bulan Jawa — Suro, Sapar, Mulud, dan seterusnya — sejajar dengan bulan Hijriah, sedangkan nama hari pasaran dan siklus windu delapan tahun adalah warisan khas Jawa. Perhitungan di Wetonan mengikuti sistem Sultan Agung ini dan dikalibrasi terhadap kalender resmi Kementerian Agama RI.'],
+  ['Apakah hasil petungan di situs ini bisa dipercaya sebagai ramalan?', 'Tidak, dan situs ini tidak mengklaimnya. Yang kami sajikan adalah sistem budayanya: cara leluhur Jawa memberi makna pada waktu, lengkap dengan tabel neptu dan kategori petungan sebagaimana tertulis dalam tradisi primbon. Bacaan watak dan jodoh adalah warisan sastra budaya — silakan dinikmati sebagai bahan mengenal tradisi, bukan sebagai kepastian tentang masa depan atau dasar mengambil keputusan penting.'],
+  ['Mengapa tanggal Jawa bisa berbeda satu hari dengan situs lain?', 'Ada dua sebab lazim. Pertama, hari dalam kalender Jawa dan Hijriah berganti saat matahari terbenam, bukan tengah malam — sehingga "malam 1 Suro" dimulai pada senja hari sebelumnya; inilah yang sering menimbulkan selisih satu hari dalam pemberitaan. Kedua, sebagian penanggal memakai hisab yang berbeda. Wetonan memakai padanan tanggal yang sama dengan kalender resmi Kemenag RI, dan seluruhnya dapat diperiksa lewat halaman kalender kami.'],
+  ['Apa itu windu dan pawukon?', 'Windu adalah siklus delapan tahun dalam kalender Jawa — Alip, Ehe, Jimawal, Je, Dal, Be, Wawu, Jimakir — yang menentukan tahun mana yang berumur 355 hari. Pawukon adalah sistem lain yang berjalan sejajar: putaran 210 hari yang terbagi dalam 30 pekan bernama (wuku), masing-masing tujuh hari. Satu tanggal selalu memiliki weton, tanggal Jawa, dan wuku sekaligus; ketiganya ditampilkan di setiap entri almanak kami.'],
+];
+---
+<Almanak
+  title="Wetonan — Almanak Jawa Digital: Weton, Kalender Jawa & Pawukon"
+  description="Almanak Jawa digital: hitung weton dan neptu dari tanggal lahir, telusuri kalender Jawa bulan demi bulan, petungan jodoh menurut tradisi primbon, serta indeks lengkap 35 weton dan 30 wuku — disajikan sebagai warisan budaya."
+>
+  <!-- ===== Lembaran utama ===== -->
+  <section class="bungkus" style="padding-top:34px">
+    <p class="kicker">Lembaran Utama · Petungan &amp; Penanggalan</p>
+    <h1>Membaca Hari dengan Cara Jawa: Weton, Neptu, dan Putaran Waktu Leluhur</h1>
+    <p style="font-size:1.2rem;max-width:56ch">
+      Sejak masa Mataram, orang Jawa membaca waktu dengan tiga putaran sekaligus — tujuh hari, lima
+      pasaran, dan 210 hari pawukon. Almanak ini menghidupkan kembali cara membaca itu: masukkan
+      tanggal lahir, dan temukan weton Anda sebagaimana dicatat tradisi.
+    </p>
+    <p class="kecil">
+      Weton hari ini adalah <a href={u(`/weton/${wetonHariIni.slug}/`)}><strong>{wetonHariIni.nama}</strong></a>
+      (neptu {wetonHariIni.neptu}) — {wetonHariIni.jawa.tanggal} {wetonHariIni.jawa.bulan.nama} {wetonHariIni.jawa.tahun} AJ, wuku {wetonHariIni.wuku.nama}.
+    </p>
+  </section>
+
+  <div class="bungkus">
+    <div class="ornamen" aria-hidden="true">
+      <svg width="34" height="18" viewBox="0 0 34 18" fill="none" stroke="#a03a28" stroke-width="1.4"><path d="M17 1 L24 9 L17 17 L10 9 Z" /><circle cx="17" cy="9" r="2" fill="#a03a28" /></svg>
+    </div>
+  </div>
+
+  <!-- ===== Editorial: apa itu weton ===== -->
+  <section class="bungkus">
+    <p class="kicker">Bab Pembuka</p>
+    <h2>Apa Itu Weton?</h2>
+    <div class="kolom-dua">
+      <p class="huruf-awal">
+        Weton, dari kata <em>wetu</em> yang berarti keluar atau lahir, adalah sebutan bagi hari kelahiran
+        seseorang dalam penanggalan Jawa — bukan hanya harinya, melainkan pertemuan harinya dengan
+        pasaran pada saat ia dilahirkan. Seorang anak yang lahir pada Jumat Kliwon, misalnya, membawa
+        weton itu seumur hidupnya: ia menjadi penanda dalam slametan, bahan petungan jodoh, dan acuan
+        memilih hari baik untuk memulai pekerjaan, pindah rumah, atau menggelar hajatan.
+      </p>
+      <p>
+        Di balik kebiasaan itu berdiri sebuah sistem waktu yang rapi. Tujuh hari saptawara berjalan
+        bersama lima hari pasaran; keduanya berpadu menjadi 35 weton yang berulang seperti roda.
+        Setiap unsur diberi nilai — neptu — dan penjumlahan neptu inilah yang dibaca para penulis
+        primbon selama berabad-abad untuk menyusun gambaran watak, kecocokan, dan waktu. Wetonan
+        menyajikan sistem itu apa adanya: tabelnya terbuka, cara hitungnya dapat diperiksa, dan
+        tafsirnya selalu kami sebut sebagaimana adanya — bacaan tradisi, bukan kepastian.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Panel pencari weton ===== -->
+  <section class="bungkus" style="margin-top:2.6rem">
+    <div class="panel-almanak">
+      <p class="kicker tengah">Petungan Cepat</p>
+      <h2>Cari Weton dari Tanggal Lahir</h2>
+      <p class="subjudul">Tuliskan tanggal lahir — almanak akan membukakan entrinya: weton, neptu, tanggal Jawa, dan wuku.</p>
+      <form class="form-baris" id="form-beranda" action={u('/kalkulator-weton/')} method="get">
+        <div class="lapangan">
+          <label for="tgl-beranda">Tanggal lahir</label>
+          <input type="date" id="tgl-beranda" name="tgl" value={isoHariIni} min="1800-01-01" max="2100-12-31" required />
+        </div>
+        <button class="tombol" type="submit">Buka Entri Almanak</button>
+      </form>
+      <p class="kecil tengah" style="margin:16px 0 0">
+        Contoh termasyhur: 17 Agustus 1945 — hari Proklamasi — adalah <strong>Jumat Legi</strong>, neptu 11.
+        Cobalah tanggal itu untuk memeriksa hitungan kami.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== Kalender bulan ini (bagian gelap) ===== -->
+  <section class="bagian-gelap">
+    <div class="bungkus">
+      <p class="kicker">Penanggalan Bulan Ini</p>
+      <h2>Kalender Jawa Bulan Berjalan</h2>
+      <p style="max-width:62ch">
+        Setiap tanggal Masehi berdiri berdampingan dengan pasaran dan tanggal Jawanya. Tanggal hari ini
+        ditandai merah bata. Ketuk tanggal mana pun untuk membuka entri wetonnya, atau lanjutkan ke
+        <a href={u('/kalender-jawa/')}>kalender Jawa lengkap</a> untuk berpindah bulan.
+      </p>
+      <div class="bungkus-tabel" set:html={kalenderBulanIni}></div>
+    </div>
+  </section>
+
+  <!-- ===== Daftar isi weton + jodoh ===== -->
+  <section class="bungkus" style="margin-top:3rem">
+    <div class="kolom-dua">
+      <div>
+        <p class="kicker">Daftar Isi Almanak</p>
+        <h2>Tiga Puluh Lima Weton</h2>
+        <p>
+          Seluruh weton tersusun menurut dinanya, seperti bab-bab dalam buku primbon. Indeks lengkap
+          memuat neptu masing-masing weton beserta uraian wataknya.
+        </p>
+        <ul class="daftar-isi">
+          {ringkasDina.map((h) => (
+            <li>
+              <a href={u('/weton/')}>
+                <span class="nama">Weton {h.nama}</span>
+                <span class="ket">({h.jawa})</span>
+                <span class="titik"></span>
+                <span class="nopol">5 weton · neptu {h.min}–{h.max}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p style="margin-top:14px"><a href={u('/weton/')}>Buka indeks lengkap 35 weton →</a></p>
+      </div>
+      <div>
+        <p class="kicker">Petungan Berdua</p>
+        <h2>Weton Jodoh</h2>
+        <p>
+          Tradisi Jawa menilai kecocokan pasangan dari jumlah neptu kedua weton. Jumlah itu dibagi
+          delapan, dan sisanya menentukan golongannya: <em>Pegat, Ratu, Jodoh, Topo, Tinari, Padu,
+          Sujanan,</em> atau <em>Pesthi</em>. Ada yang dibaca mulia, ada pula yang dibaca sebagai
+          pengingat untuk berhati-hati — semuanya kami uraikan dengan seimbang, tanpa vonis.
+        </p>
+        <p class="kutip-bingkai">
+          "Petungan bukan untuk menakut-nakuti; ia peta lama tentang hal-hal yang perlu dijaga
+          sepasang manusia yang hendak berjalan bersama."
+        </p>
+        <p><a href={u('/weton-jodoh/')}>Hitung petungan jodoh dari dua tanggal lahir →</a></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="bungkus">
+    <div class="ornamen" aria-hidden="true">
+      <svg width="34" height="18" viewBox="0 0 34 18" fill="none" stroke="#a03a28" stroke-width="1.4"><path d="M17 1 L24 9 L17 17 L10 9 Z" /><circle cx="17" cy="9" r="2" fill="#a03a28" /></svg>
+    </div>
+  </div>
+
+  <!-- ===== FAQ ===== -->
+  <section class="bungkus-sempit">
+    <p class="kicker tengah">Tanya Jawab</p>
+    <h2 class="tengah">Yang Sering Ditanyakan</h2>
+    <div class="faq">
+      {faq.map(([t, j]) => (
+        <details>
+          <summary>{t}</summary>
+          <p>{j}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <!-- ===== Sumber & metode ===== -->
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker">Catatan Redaksi</p>
+    <h2>Sumber &amp; Cara Kami Menghitung</h2>
+    <p>
+      Padanan tanggal Jawa di Wetonan dihitung dengan sistem Sultan Agung dan dikalibrasi terhadap
+      kalender resmi yang diterbitkan Kementerian Agama RI — antara lain teruji pada tiga titik:
+      17 Agustus 1945 (Jumat Legi), 27 Juni 2025 (1 Suro 1959, Jumat Kliwon), dan 1 Januari 2026
+      (Kamis Pon, 12 Rejeb 1959). Tabel neptu dan kategori petungan mengikuti pakem primbon yang
+      beredar luas. Uraian watak adalah parafrase budaya yang kami tulis sendiri dari tema-tema
+      tradisi tersebut, bukan kutipan dari kitab mana pun dan bukan klaim kebenaran tentang
+      seseorang. Baca juga <a href={u('/disclaimer/')}>disclaimer</a> kami.
+    </p>
+  </section>
+</Almanak>

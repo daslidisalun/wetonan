@@ -1,0 +1,17 @@
+---
+import { u } from '../lib/base.js';
+import Almanak from '../layouts/Almanak.astro';
+---
+<Almanak
+  title="Halaman Tidak Ditemukan — Wetonan"
+  description="Halaman yang dicari tidak ada dalam almanak ini."
+>
+  <section class="bungkus-sempit judul-halaman" style="text-align:center;padding-top:56px">
+    <p class="kicker tengah">Lembaran Hilang</p>
+    <h1>404 — Halaman Ini Tidak Ada di Almanak</h1>
+    <p>
+      Mungkin alamatnya berubah, atau lembarannya terselip di antara bab. Silakan kembali ke
+      <a href={u('/')}>lembaran utama</a> atau buka <a href={u('/weton/')}>indeks 35 weton</a>.
+    </p>
+  </section>
+</Almanak>

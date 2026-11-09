@@ -1,0 +1,45 @@
+---
+import { u } from '../lib/base.js';
+import Almanak from '../layouts/Almanak.astro';
+---
+<Almanak
+  title="Kebijakan Privasi — Wetonan"
+  description="Kebijakan privasi Wetonan: perhitungan tanggal berjalan sepenuhnya di peramban Anda; kami tidak menyimpan tanggal lahir yang Anda masukkan."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Lembaran Redaksi</p>
+    <h1>Kebijakan Privasi</h1>
+    <p><em>Berlaku sejak pertama diterbitkan; terakhir ditinjau pada masa penerbitan edisi ini.</em></p>
+    <h2 style="margin-top:1.8rem">Tanggal yang Anda Masukkan Tidak Meninggalkan Peramban</h2>
+    <p>
+      Kalkulator Weton, Weton Jodoh, dan Kalender Jawa di situs ini bekerja sepenuhnya di peramban Anda
+      (client-side). Tanggal lahir atau tanggal lain yang Anda ketikkan <strong>tidak dikirim ke server,
+      tidak disimpan, dan tidak dicatat</strong> oleh Wetonan dalam bentuk apa pun. Menutup halaman berarti
+      menghapusnya.
+    </p>
+    <h2 style="margin-top:1.8rem">Data yang Dikumpulkan Server</h2>
+    <p>
+      Seperti lazimnya situs web, penyedia hosting dapat mencatat data teknis standar (alamat IP, jenis
+      peramban, halaman yang dikunjungi, waktu kunjungan) untuk keperluan keamanan dan statistik agregat.
+      Data itu tidak kami gunakan untuk mengidentifikasi pengunjung secara pribadi dan tidak kami jual
+      kepada pihak mana pun.
+    </p>
+    <h2 style="margin-top:1.8rem">Iklan &amp; Kuki Pihak Ketiga</h2>
+    <p>
+      Bila situs ini menayangkan iklan dari jaringan periklanan (misalnya Google AdSense), penyedia iklan
+      dapat memakai kuki untuk menayangkan iklan berdasarkan kunjungan Anda ke situs ini dan situs lain.
+      Anda dapat menolak iklan yang dipersonalisasi melalui pengaturan iklan penyedia terkait dan
+      pengaturan kuki peramban Anda. Berkas penjual resmi kami tercantum pada /ads.txt.
+    </p>
+    <h2 style="margin-top:1.8rem">Surat Elektronik</h2>
+    <p>
+      Bila Anda menulis ke wetonan@gmail.com, alamat dan isi surat Anda hanya kami pakai untuk menjawab
+      keperluan Anda. Kami tidak menyusun daftar langganan dan tidak mengirim surat massal.
+    </p>
+    <h2 style="margin-top:1.8rem">Perubahan</h2>
+    <p>
+      Perubahan kebijakan ini akan diterbitkan pada halaman ini juga. Pertanyaan seputar privasi dapat
+      diajukan lewat halaman <a href={u('/kontak/')}>Kontak</a>.
+    </p>
+  </section>
+</Almanak>
