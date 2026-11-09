@@ -1,14 +1,35 @@
 ---
 import Almanak from '../layouts/Almanak.astro';
+import { u } from '../lib/base.js';
 import { HARI, PASARAN, wetonOf } from '../lib/jawa.js';
 
 const contoh = wetonOf(1945, 8, 17); // Jumat Legi, neptu 11
+
+const CATATAN_HARI = [
+  'Hari pertama saptawara; dalam bahasa Jawa disebut Ngahad.',
+  'Neptu kecil kedua; pembuka pekan kerja dalam hitungan umum.',
+  'Neptu dina terkecil, hanya 3.',
+  'Disebut Rebo; neptu menengah atas, 7.',
+  'Disebut Kemis; neptu kedua terbesar, 8.',
+  'Jangkar contoh Proklamasi: Jumat Legi, 17 Agustus 1945.',
+  'Disebut Setu; neptu dina terbesar, 9.',
+];
+
+const CATATAN_PASARAN = [
+  'Pasaran jangkar Proklamasi bersama Jumat; neptunya 5.',
+  'Neptu pasaran terbesar, 9.',
+  'Pasaran hasil contoh hitungan 1 Januari 2026: Kamis Pon.',
+  'Neptu pasaran terkecil, hanya 4.',
+  'Neptu 8; kerap disebut pasaran paling dikenal dalam primbon.',
+];
 
 const faq = [
   ['Tanggal lahirku tercatat sesudah matahari terbenam. Wetonku ikut hari apa?', 'Dalam adat Jawa, hari berganti saat matahari terbenam (bakda magrib), bukan tengah malam. Karena itu kelahiran pada petang hari — misalnya Selasa pukul 19.00 — oleh sebagian keluarga dicatat sudah memasuki weton hari berikutnya, Rabu. Kalkulator ini memakai batas tengah malam kalender Masehi, yang lazim dipakai catatan sipil. Bila kelahiran Anda persis di sekitar senja, hasil kedua cara dapat berbeda satu hari; sebutkan keadaan itu apa adanya dan pilih yang sesuai keyakinan keluarga.'],
   ['Mengapa neptu Jumat Legi disebut istimewa?', 'Sebab Jumat Legi adalah weton hari Proklamasi Kemerdekaan, 17 Agustus 1945. Dalam banyak catatan sejarah populer, pemilihan tanggal itu memang dikaitkan dengan makna baik Jumat Legi dalam pandangan Jawa. Di luar kisah itu, neptu 11 termasuk golongan menengah — tidak terbesar, tidak terkecil.'],
   ['Bolehkah menghitung weton untuk tanggal yang belum terjadi?', 'Boleh. Roda weton berputar teratur tanpa akhir, sehingga tanggal berapa pun — kelahiran anak yang diperkirakan, rencana pernikahan, atau hari memulai usaha — dapat dicari wetonnya. Kalkulator ini menerima tanggal tahun 1800–2100.'],
   ['Dari mana angka neptu hari dan pasaran berasal?', 'Dari pakem primbon yang telah baku beredar berabad-abad: Minggu 5, Senin 4, Selasa 3, Rabu 7, Kamis 8, Jumat 6, Sabtu 9; dan Legi 5, Pahing 9, Pon 7, Wage 4, Kliwon 8. Angka-angka ini tidak kami ubah; yang kami jaga adalah ketepatan padanan tanggalnya.'],
+  ['Bagaimana dengan tanggal lahir 29 Februari?', 'Tanggal kabisat Masehi diperlakukan sama seperti tanggal lain: roda pasaran dan saptawara berjalan tanpa jeda melewati 29 Februari, jadi wetonnya ditemukan dengan hitungan selisih hari biasa. Yang perlu diperhatikan hanya perayaannya — keluarga yang merayakan ulang tahun pada tahun non-kabisat lazim memilih 28 Februari atau 1 Maret, tetapi weton kelahirannya sendiri tidak berubah.'],
+  ['Anak kembar kami lahir mengapit magrib. Apakah weton mereka bisa berbeda?', 'Bisa, menurut hitungan adat. Karena hari Jawa berganti saat matahari terbenam, bayi yang lahir beberapa menit sebelum magrib dan saudaranya yang lahir beberapa menit sesudahnya tercatat pada dua hari Jawa yang berbeda — dina, pasaran, dan wetonnya pun berbeda, meski tanggal Masehi mereka sama. Kalkulator ini mengikuti batas tengah malam catatan sipil; untuk keadaan seperti ini, keluarga biasanya menetapkan weton mengikuti cara adat dan mencatatnya apa adanya.'],
 ];
 ---
 <Almanak
@@ -36,6 +57,10 @@ const faq = [
         <button class="tombol" type="submit">Hitung Weton</button>
       </form>
       <div class="entri" id="hasil-kalkulator" hidden></div>
+      <div class="tengah" id="wadah-kartu" style="margin-top:22px" hidden>
+        <button class="tombol sekunder" id="unduh-kartu" type="button">Unduh Kartu Weton (PNG)</button>
+        <p class="kecil" style="margin-top:10px">Kartu bergaya almanak cetak, 1080 × 1350 piksel — untuk disimpan atau dibagikan.</p>
+      </div>
     </div>
   </section>
 
@@ -62,11 +87,30 @@ const faq = [
       </tbody>
     </table>
 
+    <h3>Contoh terhitung penuh: dari 1945 ke 1 Januari 2026</h3>
+    <p>
+      Agar cara kerja pasaran terlihat utuh, mari hitung satu tanggal jauh dengan tangan,
+      memakai acuan yang sama: 17 Agustus 1945 adalah Jumat Legi. Tanggal sasarannya adalah
+      1 Januari 2026. Langkahnya sebagai berikut:
+    </p>
+    <ol>
+      <li><strong>Hitung selisih hari.</strong> Dari 17 Agustus 1945 sampai 1 Januari 2026 terdapat <span class="mono">29.357</span> hari.</li>
+      <li><strong>Cari pasaran dari sisa bagi lima.</strong> 29.357 ÷ 5 menyisakan <span class="mono">2</span>. Maju dua langkah pasaran sesudah Legi — Legi → Pahing → <strong>Pon</strong> — jadi pasarannya Pon.</li>
+      <li><strong>Cari dina dari sisa bagi tujuh.</strong> 29.357 ÷ 7 menyisakan <span class="mono">6</span>. Maju enam langkah hari sesudah Jumat — Sabtu, Minggu, Senin, Selasa, Rabu, <strong>Kamis</strong> — jadi dinanya Kamis.</li>
+      <li><strong>Gabungkan dan jumlahkan neptunya.</strong> Wetonnya adalah <strong>Kamis Pon</strong>, dengan neptu Kamis 8 + Pon 7 = <strong>15</strong>.</li>
+      <li><strong>Baca padanan Jawanya.</strong> Dengan hitungan bulan dan windu yang sama, tanggal itu bertepatan dengan <strong>12 Rejeb 1959</strong>, tahun <strong>Dal</strong>. Hasil ini sama dengan yang ditampilkan kalkulator di atas — silakan periksa dengan memasukkan tanggalnya.</li>
+    </ol>
+    <p>
+      Perhatikan bahwa kedua sisa pembagian itu bekerja sendiri-sendiri: sisa bagi lima hanya
+      menggerakkan pasaran, sisa bagi tujuh hanya menggerakkan dina. Inilah sebabnya weton tidak
+      perlu dicari dalam tabel raksasa — cukup satu tanggal acuan yang pasti dan selisih harinya.
+    </p>
+
     <h3>Tabel Neptu Dina (Hari)</h3>
     <table class="fakta">
       <tbody>
-        {HARI.map((h) => (
-          <tr><th>{h.nama}</th><td>{h.jawa} — neptu <span class="mono">{h.neptu}</span></td></tr>
+        {HARI.map((h, i) => (
+          <tr><th>{h.nama}</th><td>{h.jawa} — neptu <span class="mono">{h.neptu}</span>. {CATATAN_HARI[i]}</td></tr>
         ))}
       </tbody>
     </table>
@@ -74,8 +118,8 @@ const faq = [
     <h3>Tabel Neptu Pasaran</h3>
     <table class="fakta">
       <tbody>
-        {PASARAN.map((p) => (
-          <tr><th>{p.nama}</th><td>neptu <span class="mono">{p.neptu}</span></td></tr>
+        {PASARAN.map((p, i) => (
+          <tr><th>{p.nama}</th><td>neptu <span class="mono">{p.neptu}</span>. {CATATAN_PASARAN[i]}</td></tr>
         ))}
       </tbody>
     </table>
@@ -89,6 +133,65 @@ const faq = [
       Jimakir. Tiga tahun di antaranya (Ehe, Dal, Jimakir) berumur 355 hari karena bulan Besar-nya
       berumur 30 hari; selebihnya 354 hari. Satu windu genap berumur 2.835 hari, dan dari irama inilah
       tanggal Jawa dapat dihitung jauh ke depan maupun ke belakang tanpa terputus.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Menentukan Tahun Jawa dan Windu</h2>
+    <p>
+      Setelah dina dan pasaran ditemukan, tahun Jawa ditentukan dengan menghitung maju dari
+      1 Suro 1555 — titik awal sistem Sultan Agung — dalam bongkahan windu. Setiap bongkahan
+      windu berumur 2.835 hari; sisa hari sesudah windu-windu penuh lalu dibagi ke tahun-tahun
+      di dalam satu windu menurut panjangnya masing-masing: 354 hari untuk Alip, Jimawal, Je,
+      Be, dan Wawu, serta 355 hari untuk Ehe, Dal, dan Jimakir. Tahun yang sedang berjalan
+      itulah yang memberi nama windunya. Hari lebihan pada tahun kabisat tidak disisipkan di
+      tengah tahun, melainkan ditambahkan pada bulan terakhir: Besar berumur 30 hari, bukan 29.
+      Dari cara ini diperoleh, misalnya, tahun <strong>1876 Ehe</strong> untuk 17 Agustus 1945 —
+      tahun kedua dalam windunya, berumur 355 hari — dan tahun <strong>1959 Dal</strong> untuk
+      1 Januari 2026, tahun kelima yang juga kabisat. Sisa hari terakhir, setelah tahun dan bulan
+      terpotong, adalah tanggal Jawanya.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Batas Hari: Magrib, Bukan Tengah Malam</h2>
+    <p>
+      Satu aturan yang paling sering menimbulkan selisih adalah batas harinya. Dalam kalender
+      Jawa — sama seperti kalender Hijriah — hari baru dimulai saat matahari terbenam, bukan
+      pada pukul 00.00. Akibat praktisnya ada dua. Pertama, kelahiran pada petang hari secara
+      adat sudah masuk hari berikutnya: anak yang lahir Selasa pukul 19.00 dicatat banyak
+      keluarga sebagai lahir pada Rabu, lengkap dengan pasaran Rabu itu. Kedua, peringatan yang
+      melekat pada malam hari selalu mendahului tanggalnya: <em>malam 1 Suro</em> dimulai pada
+      senja hari sebelumnya, karena begitu magrib tiba tanggal 1 Suro sebenarnya sudah berjalan.
+      Itulah sebabnya 1 Suro 1959 yang jatuh pada Jumat 27 Juni 2025 diperingati sejak Kamis
+      senja, 26 Juni 2025. Kalkulator ini memakai padanan tanggal sipil resmi, tetapi kolom
+      keterangan pada setiap entri mengingatkan aturan magrib ini agar pembaca dapat menyesuaikan
+      dengan catatan keluarga.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Ketepatan dan Batasan Hitungan</h2>
+    <p>
+      Kalkulator ini menerima tanggal tahun <strong>1800 sampai 2100</strong>. Di dalam rentang
+      itu, padanannya dikalibrasi terhadap kalender resmi Kementerian Agama RI. Di luar situs
+      ini, hasil dapat berbeda satu hari karena sebagian penanggal memakai varian hisab lain —
+      perbedaan itu terletak pada padanan tanggal Jawanya, bukan pada roda wetonnya. Untuk
+      tanggal sebelum reformasi 1633, angka yang ditampilkan adalah perpanjangan aritmetis
+      sistem ini ke belakang (proleptis): berguna untuk membandingkan, tetapi bukan catatan
+      sejarah tentang bagaimana orang pada masa itu sendiri menanggalinya. Satu hal yang tidak
+      pernah berubah di semua rentang adalah putaran 35 hari itu sendiri — saptawara dan
+      pancawara berjalan beriringan tanpa pernah terputus, sehingga selisih hari dari acuan
+      selalu menentukan weton dengan pasti.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker">Perkakas Terkait</p>
+    <h2>Arah Sebaliknya &amp; Siklus Wetonan</h2>
+    <p>
+      Kalkulator ini berjalan dari tanggal Masehi ke tanggal Jawa. Bila yang Anda pegang justru
+      tanggal Jawanya — dari catatan keluarga, prasasti, atau dokumen lama — pakai arah sebaliknya
+      di <a href={u('/konverter-jawa/')}>konverter Jawa ke Masehi</a>: tuliskan tanggal, bulan, dan
+      tahun Jawanya, dan padanan Masehi beserta wetonnya akan terbuka. Adapun bila yang dicari
+      adalah <em>kapan weton ini datang lagi</em>, halaman
+      <a href={u('/siklus-weton/')}>siklus weton 35 hari</a> menyusun sebelas wetonan berikutnya
+      lengkap dengan pengingat kalender yang dapat diunduh. Seluruh alat tersusun di
+      <a href={u('/perkakas/')}>halaman perkakas</a>.
     </p>
   </section>
 
@@ -107,17 +210,26 @@ const faq = [
 
   <script>
     import { entriHTML } from '../lib/entri.js';
+    import { wetonOf } from '../lib/jawa.js';
+    import { unduhKartuWeton } from '../lib/kartu.js';
     const form = document.getElementById('form-kalkulator');
     const input = document.getElementById('tgl-kalkulator');
     const hasil = document.getElementById('hasil-kalkulator');
+    const wadahKartu = document.getElementById('wadah-kartu');
+    let terakhir = null;
 
     function hitung(iso) {
       if (!iso) return;
       const [y, m, d] = iso.split('-').map(Number);
+      terakhir = wetonOf(y, m, d);
       hasil.innerHTML = entriHTML(y, m, d, { watak: true });
       hasil.hidden = false;
+      wadahKartu.hidden = false;
       hasil.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    document.getElementById('unduh-kartu').addEventListener('click', () => {
+      if (terakhir) unduhKartuWeton(terakhir);
+    });
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       hitung(input.value);

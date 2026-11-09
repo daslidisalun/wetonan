@@ -1,0 +1,184 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { ARTIKEL } from '../../lib/blog.js';
+
+const daftarArtikel = Array.isArray(ARTIKEL) ? ARTIKEL : Object.values(ARTIKEL ?? {});
+const artikel = daftarArtikel.find((a) => a.slug === 'windu-siklus-delapan-tahun') ?? {
+  slug: 'windu-siklus-delapan-tahun',
+  judul: 'Windu: Siklus Delapan Tahun dalam Kalender Jawa',
+  tanggal: '2026-11-08',
+  tanggalTampil: '8 November 2026',
+  ringkasan:
+    'Windu adalah putaran delapan tahun Jawa bernama — Alip sampai Jimakir — yang panjangnya berselang-seling 354 dan 355 hari: cara tahun diberi nama, mengapa 1 Suro selalu maju, dan peran sewindu dalam kehidupan budaya.',
+};
+---
+<Almanak title={`${artikel.judul} | Wetonan`} description={artikel.ringkasan}>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Blog Almanak</p>
+    <h1>{artikel.judul}</h1>
+    <p class="kecil">{artikel.tanggalTampil} · Blog Almanak Wetonan</p>
+    <p class="huruf-awal">
+      Setiap tanggal Jawa yang ditampilkan almanak ini selalu membawa satu kata tambahan di belakang
+      angka tahunnya: 1959 <em>Dal</em>, 1960 <em>Be</em>, 1876 <em>Ehe</em>. Kata itu adalah nama tahun
+      menurut siklus windu — putaran delapan tahun bernama yang menjadi kerangka besar kalender Jawa.
+      Tanpa memahami windu, tanggal Jawa hanya deretan angka; dengan windu, setiap tahun memperoleh
+      nama, panjang yang pasti, dan tempatnya dalam putaran yang telah berulang ratusan kali sejak
+      kalender ini disusun. Artikel ini menjelaskan susunan delapan tahun itu, alasan panjangnya
+      berselang-seling, cara memberi nama pada suatu tahun, dan mengapa berkat windu pulalah tanggal 1
+      Suro tidak pernah menetap pada satu musim.
+    </p>
+
+    <h2 style="margin-top:2rem">Apa Itu Windu?</h2>
+    <p>
+      Windu adalah satuan waktu berisi delapan tahun Jawa yang berjalan berurutan dengan nama-namanya
+      sendiri: Alip, Ehe, Jimawal, Je, Dal, Be, Wawu, dan Jimakir. Setelah tahun kedelapan, Jimakir,
+      putaran kembali ke Alip dan dimulai windu berikutnya. Setiap tahun Jawa — berapa pun angka
+      tahunnya — selalu adalah salah satu dari kedelapan nama ini, ditentukan semata-mata oleh urutannya
+      dalam putaran. Kedelapan nama itu bukan sekadar label: masing-masing membawa panjang tahun yang
+      telah ditetapkan, sebagian 354 hari dan sebagian 355 hari, dalam susunan yang tidak pernah berubah
+      dari satu windu ke windu berikutnya.
+    </p>
+    <table class="fakta" style="margin-top:1.2rem">
+      <tbody>
+        <tr><th style="width:26%">1 · Alip</th><td class="angka">354 hari — tahun biasa</td></tr>
+        <tr><th style="width:26%">2 · Ehe</th><td class="angka">355 hari — tahun kabisat (wuntu)</td></tr>
+        <tr><th style="width:26%">3 · Jimawal</th><td class="angka">354 hari — tahun biasa</td></tr>
+        <tr><th style="width:26%">4 · Je</th><td class="angka">354 hari — tahun biasa</td></tr>
+        <tr><th style="width:26%">5 · Dal</th><td class="angka">355 hari — tahun kabisat (wuntu)</td></tr>
+        <tr><th style="width:26%">6 · Be</th><td class="angka">354 hari — tahun biasa</td></tr>
+        <tr><th style="width:26%">7 · Wawu</th><td class="angka">354 hari — tahun biasa</td></tr>
+        <tr><th style="width:26%">8 · Jimakir</th><td class="angka">355 hari — tahun kabisat (wuntu)</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Jumlahkan kedelapannya — 354 + 355 + 354 + 354 + 355 + 354 + 354 + 355 — dan hasilnya tepat 2.835
+      hari untuk satu windu penuh. Angka inilah kunci seluruh susunan: ia bukan hasil kebetulan,
+      melainkan hasil penyetelan berabad-abad agar hitungan tahun yang bulat dapat mengejar gerak bulan
+      yang tidak bulat, sebagaimana dijelaskan pada bagian berikut.
+    </p>
+
+    <h2 style="margin-top:2rem">Mengapa Panjangnya Berselang-seling?</h2>
+    <p>
+      Kalender Jawa adalah kalender bulan: satu tahun adalah dua belas kali peredaran bulan mengelilingi
+      bumi. Dua belas bulan sinodis berjumlah kira-kira 354,37 hari — bukan bilangan bulat, dan di
+      situlah persoalannya. Penanggal tidak dapat membuat tahun yang berisi sepertiga hari, maka
+      penyelesaiannya adalah membagi kekurangan dan kelebihan itu ke dalam tahun-tahun utuh: sebagian
+      besar tahun dibuat 354 hari, dan sesekali disisipkan tahun 355 hari agar hitungan tidak tertinggal
+      dari bulan yang sebenarnya. Windu adalah jadwal penyisipan itu. Tiga tahun kabisat dalam setiap
+      delapan tahun — Ehe, Dal, dan Jimakir — menaikkan rata-rata panjang tahun menjadi 2.835 dibagi 8,
+      yaitu 354,375 hari per tahun. Angka rata-rata ini sangat dekat dengan 354,37 hari yang dituntut
+      gerak bulan, sehingga kalender Jawa dapat berjalan berabad-abad dengan selisih yang sangat kecil
+      terhadap fase bulan di langit.
+    </p>
+    <p>
+      Hari tambahan pada tahun kabisat tidak ditaruh sembarang tempat. Ia disisipkan pada bulan terakhir,
+      bulan Besar — padanan Zulhijah — yang pada tahun biasa berisi 29 hari dan pada tahun Ehe, Dal, dan
+      Jimakir menjadi 30 hari. Seluruh bulan lain tetap pada panjangnya yang berselang-seling 30 dan 29
+      hari sepanjang tahun. Bagi pengguna kalender, aturan ini terasa sederhana: hanya satu bulan yang
+      berubah, hanya pada tiga dari delapan tahun, dan tahun-tahun itu namanya sudah diketahui jauh-jauh
+      hari. Kesederhanaan inilah yang membuat susunan windu bertahan: ia cukup tepat untuk mengikuti
+      bulan, dan cukup sederhana untuk dihafal.
+    </p>
+
+    <h2 style="margin-top:2rem">Memberi Nama pada Tahun</h2>
+    <p>
+      Karena putarannya tetap, memberi nama pada suatu tahun cukup dilakukan dengan menghitung dari satu
+      tahun yang telah diketahui. Ambil contoh yang dipakai almanak ini: tahun 1959 AJ adalah tahun Dal,
+      tahun kelima dalam windu. Maka tahun berikutnya, 1960 AJ, adalah tahun keenam — Be; tahun 1961 AJ
+      adalah Wawu; tahun 1962 AJ adalah Jimakir, tahun penutup windu; dan tahun 1963 AJ membuka windu
+      baru sebagai Alip. Hitungan yang sama berjalan mundur dengan mudah: tahun sebelum Dal adalah Je,
+      sebelumnya lagi Jimawal, dan seterusnya. Satu titik acuan yang benar mengunci nama untuk seluruh
+      tahun, ke masa depan maupun ke masa lalu.
+    </p>
+    <p>
+      Cara ini pula yang dipakai untuk memeriksa catatan lama. Hari Proklamasi Kemerdekaan, 17 Agustus
+      1945 — Jumat Legi, weton yang menjadi jangkar pasaran almanak ini — menurut hitungan windu jatuh
+      pada tahun 1876 AJ yang bernama Ehe, tahun kabisat kedua dalam putarannya. Ketika sebuah serat,
+      prasasti keluarga, atau catatan desa menyebut suatu peristiwa terjadi "pada tahun Dal" atau "pada
+      tahun Be", sebutan itu bukan hiasan: ia adalah separuh dari tanggalnya, dan dengan angka tahun
+      serta nama windunya, peristiwa tersebut dapat diletakkan kembali pada tempatnya dalam penanggalan
+      dengan ketelitian satu tahun. Para penulis babad dan penanggal keraton memang selalu membubuhkan
+      nama tahun windu pada catatan mereka, justru agar catatan itu tetap dapat dibaca oleh generasi
+      yang datang berabad-abad kemudian.
+    </p>
+
+    <h2 style="margin-top:2rem">Tahun yang Berjalan Mengelilingi Musim</h2>
+    <p>
+      Rata-rata 354,375 hari berarti tahun Jawa lebih pendek sekitar sebelas hari dari tahun Masehi yang
+      berumur 365 hari. Selisih yang tampak kecil itu bekerja tanpa henti: setiap tahun, 1 Suro datang
+      sekitar sebelas hari lebih awal daripada tahun sebelumnya. Dalam tiga tahun, pergeserannya sudah
+      lebih dari sebulan; dalam waktu sekitar 33 tahun, 1 Suro telah berjalan mengelilingi seluruh
+      musim dan kembali ke kedudukan yang kurang lebih sama terhadap tahun Masehi. Pembaca yang cukup
+      umur dapat memeriksanya dari ingatan sendiri: masa ketika 1 Suro dan bulan Ramadan jatuh pada
+      akhir tahun Masehi, bergeser ke pertengahan tahun, dan terus bergerak ke awal tahun.
+    </p>
+    <p>
+      Akibatnya, kalender Jawa tidak menambatkan bulan-bulannya pada musim tertentu. Suro tidak selalu
+      bulan hujan dan tidak selalu bulan kemarau; Poso — bulan puasa — dalam rentang satu generasi
+      dijalani umat pada setiap musim yang ada. Bagi masyarakat agraris lama, ini berarti penanggalan
+      bulan tidak dapat dipakai sendirian sebagai penanda musim tanam; penanda musim dibaca dari
+      pranata mangsa dan tanda-tanda alam, sementara kalender bulan mengatur tahun, hari raya, dan
+      petungan. Pembagian tugas itu penting untuk memahami tempat windu yang sesungguhnya: windu adalah
+      penjaga ketelitian terhadap bulan, bukan terhadap matahari.
+    </p>
+
+    <h2 style="margin-top:2rem">Kurup: Koreksi dalam Jangka Sangat Panjang</h2>
+    <p>
+      Rata-rata 354,375 hari per tahun masih menyisakan selisih yang sangat kecil terhadap gerak bulan
+      yang sebenarnya — cukup kecil untuk diabaikan dalam satu windu, tetapi dalam jangka berabad-abad
+      selisih itu terkumpul. Tradisi penanggalan Jawa mengenal lapisan koreksi untuk jangka tersebut
+      yang disebut <em>kurup</em>: penyesuaian yang dihitung dalam putaran 120 tahun, yaitu lima belas
+      windu, untuk menjaga agar hitungan tetap sejalan dengan peredaran bulan dalam jangka sangat
+      panjang. Almanak ini menyebutnya sekadar untuk menunjukkan bahwa para penyusun kalender lama
+      menyadari keterbatasan jadwal delapan tahun mereka dan menyiapkan tingkat hitungan di atasnya;
+      dalam pemakaian sehari-hari, kurup tidak mengubah apa pun yang perlu diketahui pembaca — nama
+      tahun, panjang tahun, dan tanggal-tanggal berjalan sebagaimana diuraikan di atas.
+    </p>
+
+    <h2 style="margin-top:2rem">Windu dalam Kehidupan Budaya</h2>
+    <p>
+      Kata windu hidup jauh melampaui tabel kalender. Dalam pemakaian sehari-hari, <em>sewindu</em>
+      telah menjadi kata umum bahasa Indonesia untuk kurun delapan tahun — dipakai untuk masa jabatan,
+      masa pembangunan, dan masa perjalanan sebuah lembaga. Dalam kehidupan perorangan, kelipatan
+      sewindu diperlakukan tradisi sebagai tonggak umur: mencapai usia sewindu, dua windu, dan
+      seterusnya kerap diperingati keluarga dengan selamatan, sebagai cara menandai bahwa seseorang
+      telah menyelesaikan satu putaran penuh waktu yang sama besarnya dengan putaran yang menyelesaikan
+      susunan tahun. Di sini windu bekerja sebagai pengukur kehidupan, bukan sekadar pengukur kalender.
+    </p>
+    <p>
+      Nama-nama tahunnya sendiri membawa bacaan tradisi masing-masing. Menurut tradisi yang hidup dalam
+      penulisan babad dan primbon, tahun Dal — tahun kelima, salah satu tahun kabisat — kerap digambarkan
+      sebagai tahun yang berat dan sarat peristiwa besar, tahun yang dalam bacaan para penulis lama
+      menuntut kehati-hatian dan keteguhan dari siapa pun yang memikul tanggung jawab. Almanak ini
+      menyajikan gambaran itu sebagaimana kedudukannya: sebagai cara tradisi memberi watak pada waktu,
+      bahan perenungan tentang bagaimana sebuah budaya membaca zamannya — bukan sebagai kepastian bahwa
+      tahun bernama tertentu akan membawa kejadian tertentu bagi seseorang.
+    </p>
+
+    <h2 style="margin-top:2rem">Windu di Situs Ini</h2>
+    <p>
+      Karena nama windu adalah separuh dari identitas setiap tahun, almanak ini menampilkannya di mana
+      pun tanggal Jawa ditampilkan. Setiap hasil perhitungan pada Kalkulator Weton mencantumkan tahun
+      beserta nama windunya dan keterangannya — tahun biasa 354 hari atau tahun kabisat 355 hari — dan
+      setiap keterangan bulan pada Kalender Jawa menutup namanya dengan nama windu tahun yang sedang
+      berjalan. Dengan begitu, pembaca yang menelusuri bulan demi bulan akan melihat sendiri momen
+      pergantian nama tahun pada 1 Suro, dan dapat mengikuti hitungan maju-mundur yang dicontohkan di
+      atas dari satu titik acuan yang telah terverifikasi: 1 Januari 2026 adalah Kamis Pon, 12 Rejeb
+      1959, tahun Dal, dalam wuku Kuruwelut.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Perkakas &amp; Bacaan Terkait</h2>
+    <ul>
+      <li><a href={u('/kalender-jawa/')}>Kalender Jawa</a> — lihat nama windu pada keterangan setiap bulan dan saksikan pergantian tahun pada 1 Suro.</li>
+      <li><a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> — setiap tanggal menampilkan tahun Jawa, nama windunya, dan panjang tahunnya.</li>
+      <li><a href={u('/blog/sejarah-kalender-jawa-sultan-agung/')}>Sejarah Kalender Jawa Sultan Agung</a> — bagaimana kalender ini disusun pada 1633 dan diselaraskan dengan penanggalan Hijriah.</li>
+      <li><a href={u('/blog/malam-satu-suro/')}>Malam 1 Suro: Tradisi, Laku, dan Maknanya</a> — pergantian tahun windu sebagaimana dirayakan dalam tradisi.</li>
+    </ul>
+    <p class="kecil">
+      Bacaan watak tahun menurut tradisi dalam artikel ini disajikan sebagai bahan perenungan budaya
+      sebagaimana diwariskan para penulis primbon dan babad, bukan sebagai ramalan tentang kejadian yang
+      akan menimpa seseorang.
+    </p>
+  </section>
+</Almanak>

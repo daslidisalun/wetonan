@@ -1,0 +1,84 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { ARTIKEL } from '../../lib/blog.js';
+
+const daftar = [...ARTIKEL].sort((a, b) => b.tanggal.localeCompare(a.tanggal));
+---
+<Almanak
+  title="Blog Almanak — Wetonan"
+  description="Blog Almanak Wetonan: esai-esai tentang kalender Jawa sebagai budaya — sejarah reformasi Sultan Agung, cara menghitung neptu, petungan jodoh, malam 1 Suro, pawukon, dan windu — ditulis sebagai warisan tradisi, bukan ramalan."
+>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Blog Almanak</p>
+    <h1>Blog Almanak</h1>
+    <p class="huruf-awal">
+      Perkakas memberi angka; blog ini memberi cerita di balik angka itu. Blog Almanak adalah rubrik
+      esai Wetonan: tulisan-tulisan panjang tentang kalender Jawa yang dibaca sebagai kebudayaan —
+      sejarahnya, cara menghitungnya, dan tradisi yang hidup di sekelilingnya. Di sinilah pertanyaan
+      yang tidak dapat dijawab oleh sebuah kalkulator kami uraikan pelan-pelan: mengapa tahun Jawa
+      angkanya meneruskan hitungan Saka padahal kerangkanya mengikuti Hijriah; dari mana datangnya
+      nilai neptu yang kecil-kecil itu; mengapa hasil petungan jodoh selalu jatuh pada satu dari
+      delapan golongan; dan mengapa malam tahun baru Jawa justru dimulai sejak senja hari sebelumnya.
+      Setiap esai berdiri sendiri dan dapat dibaca tanpa urutan, tetapi bersama-sama mereka membentuk
+      satu pengantar utuh untuk memahami penanggalan yang masih dipakai jutaan orang sampai hari ini.
+    </p>
+    <p>
+      Isi rubrik ini bergerak pada tiga wilayah. Wilayah pertama adalah sejarah: kisah reformasi
+      kalender Sultan Agung tahun 1633 dan akibat-akibatnya yang masih kita warisi — nama-nama bulan
+      seperti Suro, Mulud, dan Poso, tahun baru pada 1 Suro, serta pergeseran tanggal Jawa terhadap
+      musim. Wilayah kedua adalah metode: cara kerja hitungan yang dipakai seluruh perkakas di situs
+      ini, diuraikan sampai ke contoh terhitungnya — tabel neptu, cara menemukan pasaran dari tanggal
+      acuan, aritmetika delapan golongan jodoh, putaran pawukon 210 hari, dan daur windu delapan tahun.
+      Kami menuliskan metode itu secara terbuka karena menurut kami petungan yang tidak dapat diperiksa
+      ulang pembacanya bukanlah petungan yang layak dipercaya. Wilayah ketiga adalah tradisi yang hidup:
+      laku malam 1 Suro, musyawarah lamaran tempat petungan jodoh dibicarakan, dan cara keluarga dari
+      generasi ke generasi menyikapi hasil hitungan — termasuk ketika hasilnya tidak seperti yang
+      diharapkan.
+    </p>
+    <p>
+      Hubungan blog ini dengan perkakas Wetonan bersifat dua arah. Kalkulator Weton, Weton Jodoh, dan
+      Kalender Jawa menjawab pertanyaan "tanggal ini wetonnya apa" atau "pasangan ini golongannya apa"
+      dalam sekejap; esai-esai di sini menjelaskan dari mana jawaban itu datang, pakem apa yang dipakai,
+      dan di titik mana saja pembaca patut memeriksa ulang dengan tangannya sendiri. Sebaliknya, hampir
+      setiap contoh terhitung dalam esai-esai ini dapat Anda uji langsung pada perkakas yang berkaitan —
+      angka-angka yang kami pakai sebagai contoh adalah angka yang sama dengan yang dihasilkan perkakas
+      itu, karena keduanya bekerja dari pustaka hitung dan titik kalibrasi yang satu.
+    </p>
+    <p>
+      Sikap redaksi kami sama dengan sikap almanak ini secara keseluruhan: yang kami sajikan adalah
+      tradisi, bukan ramalan. Makna-makna petungan selalu kami tuliskan sebagaimana mestinya — "menurut
+      primbon", "menurut tradisi" — karena memang dari sanalah asal dan kedudukannya. Hitungannya
+      sendiri bersifat persis dan dapat diverifikasi; Jumat Legi tetap berneptu 11 bagi siapa pun yang
+      menghitung. Tetapi apa arti angka 11 bagi hidup seseorang bukanlah hal yang dapat diputuskan oleh
+      sebuah tabel, dan almanak ini tidak berpura-pura dapat memutuskan hal itu. Keputusan hidup tetap
+      milik pembaca; tugas kami hanya membuka halaman-halamannya selengkap dan sejujur mungkin.
+    </p>
+    <p>
+      Cara memakai rubrik ini sederhana. Daftar di bawah memuat seluruh esai yang telah terbit, disusun
+      dari yang terbaru. Tanggal di ujung setiap baris adalah tanggal terbitnya. Bukalah esai yang
+      menjawab rasa ingin tahu Anda — tidak ada prasyarat dan tidak ada urutan wajib. Di kaki setiap
+      esai Anda akan menemukan rubrik "Perkakas &amp; Bacaan Terkait": tautan menuju perkakas yang
+      berhubungan dengan isi esai, agar Anda dapat langsung mencoba hitungannya, serta tautan menuju
+      esai-esai pendampingnya bagi yang ingin membaca lebih jauh. Selamat membaca, dan selamat
+      memeriksa.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:1.6rem">
+    <p class="kicker">Daftar Isi Rubrik</p>
+    <h2 style="font-size:1.5rem">Seluruh Tulisan</h2>
+    <ul class="daftar-isi">
+      {daftar.map((a) => (
+        <li style="margin-bottom:1.6rem">
+          <a href={u(`/blog/${a.slug}/`)}>
+            <span class="nama">{a.judul}</span>
+            <span class="titik"></span>
+            <span class="nopol">{a.tanggalTampil}</span>
+          </a>
+          <p class="kecil" style="margin:3px 2px 0">{a.ringkasan}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Almanak>

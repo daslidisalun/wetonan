@@ -42,5 +42,101 @@ import Almanak from '../layouts/Almanak.astro';
       tanpa mengubahnya menjadi klaim kepastian. Keputusan hidup pembaca adalah milik pembaca; tugas
       almanak ini hanya membuka halamannya.
     </p>
+
+    <h2 style="margin-top:2rem">Mengapa Almanak, Mengapa Sekarang</h2>
+    <p>
+      Weton bukan peninggalan yang sudah berhenti dipakai. Di banyak keluarga Jawa, kelahiran anak masih
+      dicatat lengkap dengan hari dan pasarannya; orang tua membuka kembali catatan itu ketika anaknya
+      hendak menikah, ketika keluarga hendak menggelar slametan, atau ketika menentukan hari untuk memulai
+      usaha dan pindah rumah. Tanggal dalam akta dan tanggal dalam ingatan keluarga berjalan berdampingan:
+      yang satu dipakai untuk urusan negara, yang lain untuk urusan makna. Ketika catatan kertas itu hilang
+      atau generasi yang hafal neptu mulai tiada, pengetahuan praktisnya ikut hilang — padahal kebutuhan
+      untuk menanyakannya tidak ikut hilang.
+    </p>
+    <p>
+      Di titik itulah almanak digital berguna. Ia bukan pengganti sesepuh dan bukan pengganti kitab
+      keluarga; ia adalah lembaran acuan yang selalu terbuka, yang dapat dibuka dari telepon di dapur
+      menjelang acara keluarga, dan yang menunjukkan cara hitungnya secara terang sehingga hasilnya bisa
+      diperiksa, bukan sekadar dipercaya. Misi kami sederhana: menjaga agar pengetahuan kalender dan
+      petungan yang masih hidup ini tetap dapat diakses dengan rapi, dalam bahasa yang jelas, tanpa
+      dibungkus janji yang tidak bisa dipertanggungjawabkan.
+    </p>
+
+    <h2 style="margin-top:2rem">Sumber-Sumber Kami</h2>
+    <p>
+      Bahan situs ini berasal dari tiga jenis sumber yang kedudukannya berbeda, dan kami membedakannya
+      dengan sadar. Pertama, untuk kalibrasi tanggal, kami memakai kalender resmi yang diterbitkan
+      Kementerian Agama RI — acuan publik yang dipakai negara untuk menetapkan hari besar dan awal bulan
+      Hijriah — sebagai jangkar padanan tanggal Masehi, Jawa, dan Hijriah. Kedua, untuk tabel neptu hari
+      dan pasaran serta pembagian golongan petungan, kami mengikuti pakem primbon yang beredar luas dalam
+      berbagai kitab cetak dan almanak tahunan; tabel-tabel itu pada dasarnya seragam antarberbagai
+      penerbit, dan keseragaman itulah yang kami pegang, bukan redaksi satu kitab tertentu. Ketiga, untuk
+      pawukon dan uraian wuku, kami mengacu pada rujukan pawukon yang beredar umum, yang susunan 30 wukunya
+      telah baku selama berabad-abad dan juga hidup dalam tradisi Bali. Kami menyebut sumber menurut
+      jenisnya karena tidak ada satu buku tunggal yang menjadi induk situs ini — dan mengklaim sebaliknya
+      justru akan menyesatkan.
+    </p>
+    <p>
+      Satu catatan tentang pawukon itu sendiri: berbeda dari kalender Jawa yang berjalan mengikuti bulan,
+      pawukon adalah putaran 210 hari yang tidak terikat bulan maupun tahun — 30 wuku yang masing-masing
+      berlangsung tujuh hari, berputar terus tanpa awal tahun. Karena putarannya murni hitungan hari, padanan
+      wuku suatu tanggal dapat diperiksa dengan cara yang sama seperti padanan pasaran: menghitung hari dari
+      titik acuan yang diketahui, lalu membaginya menurut putaran 210 hari itu.
+    </p>
+
+    <h2 style="margin-top:2rem">Prinsip Editorial</h2>
+    <p>
+      Empat prinsip mengatur semua tulisan di situs ini. <strong>Pertama, atribusi.</strong> Setiap uraian
+      tafsir dinyatakan sebagai bacaan tradisi — dengan frasa seperti "menurut primbon" atau "menurut
+      tradisi" — karena memang itulah statusnya; kalimat situs ini tidak pernah menyatakan watak atau
+      nasib seseorang sebagai fakta. <strong>Kedua, tanpa klaim ramalan.</strong> Kami tidak menyajikan
+      prediksi, tidak menjanjikan kecocokan, dan tidak memakai bahasa kepastian untuk hal yang pada
+      hakikatnya adalah warisan makna. <strong>Ketiga, berimbang.</strong> Golongan yang dibaca berat —
+      seperti Pegat atau Padu pada petungan jodoh — disajikan lengkap dengan konteks pemakaian tradisionalnya,
+      yakni sebagai bahan kehati-hatian yang dahulu dijawab dengan laku dan musyawarah, bukan sebagai alasan
+      untuk membatalkan keputusan hidup. <strong>Keempat, parafrase orisinal.</strong> Uraian di situs ini
+      ditulis ulang dengan kata-kata redaksi sendiri dari tema-tema tradisi yang beredar luas; kami tidak
+      menyalin teks kitab atau primbon mana pun.
+    </p>
+    <p>
+      Prinsip kelima menyangkut koreksi: ia kami sambut, bukan kami hindari. Bila pembaca menemukan padanan
+      tanggal yang berbeda dari acuan yang dipegangnya, laporan itu kami periksa dengan menghitung ulang dari
+      titik jangkar dan membandingkannya dengan kalender resmi. Bila kesalahan ada di pihak kami, halamannya
+      kami perbaiki; bila perbedaannya berasal dari perbedaan metode hisab, kami jawab dengan menunjukkan
+      perhitungannya, sebagaimana diuraikan di halaman <a href={u('/kontak/')}>Kontak</a>.
+    </p>
+
+    <h2 style="margin-top:2rem">Cara Kerja Perhitungan</h2>
+    <p>
+      Semua kalkulator di situs ini memakai satu pustaka hitung yang sama — kode yang identik dipakai untuk
+      membangun halaman-halaman statis dan untuk menghitung langsung di peramban pembaca, sehingga hasil di
+      layar dan hasil di indeks weton tidak mungkin berbeda satu sama lain. Karena perhitungannya berjalan
+      di peramban, tanggal yang dimasukkan tidak pernah dikirim ke server; penjelasan teknisnya ada di
+      halaman <a href={u('/privasi/')}>Kebijakan Privasi</a>.
+    </p>
+    <p>
+      Ketepatan pustaka itu kami uji terhadap tiga titik jangkar yang dapat diperiksa siapa pun secara publik:
+    </p>
+    <table class="fakta"><tbody>
+      <tr><th>17 Agustus 1945</th><td>Jumat Legi — hari Proklamasi, wetonnya tercatat luas dalam ingatan publik</td></tr>
+      <tr><th>27 Juni 2025</th><td>1 Suro 1959, Jumat Kliwon — awal tahun Jawa menurut kalender resmi</td></tr>
+      <tr><th>1 Januari 2026</th><td>Kamis Pon, 12 Rejeb 1959 tahun Dal — padanan menurut kalender Kementerian Agama</td></tr>
+    </tbody></table>
+    <p>
+      Bila salah satu jangkar ini bergeser satu hari saja, seluruh padanan sesudahnya akan ikut bergeser —
+      karena itu ketiganya kami jadikan ujian tetap setiap kali pustaka hitung diubah.
+    </p>
+
+    <h2 style="margin-top:2rem">Rencana &amp; Batasan</h2>
+    <p>
+      Wetonan adalah almanak acuan, dan batasannya kami tetapkan dengan sengaja. Situs ini tidak membuka
+      konsultasi pribadi dalam bentuk apa pun, tidak menyediakan jasa berbayar, dan tidak menentukan hari
+      baik untuk keperluan pribadi seseorang — perkakasnya terbuka dan gratis untuk dipakai sendiri oleh
+      siapa pun. Kalkulator menerima tanggal dalam rentang tahun 1800 sampai 2100; di luar rentang itu,
+      ketidakpastian kalibrasi historis dan perbedaan metode hisab menjadi terlalu besar untuk disajikan
+      sebagai padanan yang dapat dipertanggungjawabkan. Ke depan, pekerjaan kami adalah pekerjaan almanak
+      pada umumnya: memeriksa ulang padanan, memperjelas uraian, dan menambah lembaran acuan yang masih
+      kurang — bukan mengubah situs ini menjadi layanan ramalan.
+    </p>
   </section>
 </Almanak>

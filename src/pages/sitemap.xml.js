@@ -1,4 +1,5 @@
 import { SEMUA_WETON } from '../lib/jawa.js';
+import { ARTIKEL } from '../lib/blog.js';
 
 // Alamat dasar dari astro.config.mjs (site + base) — demo ini terbit di
 // https://daslidisalun.github.io/wetonan/ sehingga semua URL membawa subpath.
@@ -7,16 +8,27 @@ const awalan = site + import.meta.env.BASE_URL.replace(/\/$/, '');
 const statis = [
   '/',
   '/kalkulator-weton/',
+  '/konverter-jawa/',
   '/weton-jodoh/',
+  '/siklus-weton/',
+  '/hari-baik/',
+  '/weton-keluarga/',
   '/kalender-jawa/',
+  '/kalender-tahunan/',
+  '/perkakas/',
   '/weton/',
   '/wuku/',
+  '/blog/',
   '/tentang/',
   '/kontak/',
   '/privasi/',
   '/disclaimer/',
 ];
-const semua = [...statis, ...SEMUA_WETON.map((w) => `/weton/${w.slug}/`)];
+const semua = [
+  ...statis,
+  ...ARTIKEL.map((a) => `/blog/${a.slug}/`),
+  ...SEMUA_WETON.map((w) => `/weton/${w.slug}/`),
+];
 
 export function GET() {
   const body =

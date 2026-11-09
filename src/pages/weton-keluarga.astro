@@ -1,0 +1,506 @@
+---
+import Almanak from '../layouts/Almanak.astro';
+import { u } from '../lib/base.js';
+
+const faq = [
+  ['Apakah data keluarga saya tersimpan?', 'Tidak. Halaman ini adalah halaman statis dan seluruh hitungan dikerjakan di peramban Anda sendiri, di perangkat Anda sendiri. Nama dan tanggal lahir yang Anda ketik tidak dikirim ke server, tidak disimpan dalam basis data, tidak ditulis ke kuki, dan tidak diteruskan ke pihak mana pun. Begitu tab ditutup atau halaman dimuat ulang, isian itu hilang. Bila Anda ingin menyimpannya untuk keluarga, cara paling aman justru cara lama yang juga kami anjurkan di halaman ini: salin hasil tabelnya dengan tangan ke buku catatan keluarga, atau tangkap layar dan simpan berkasnya di tempat yang Anda kendalikan sendiri.'],
+  ['Anak saya lahir petang hari, wetonnya ikut hari apa?', 'Menurut adat Jawa, hari berganti saat matahari terbenam — bakda magrib — bukan pada tengah malam. Anak yang lahir pada petang hari, misalnya Selasa pukul 19.00, oleh banyak keluarga sudah dicatat sebagai lahir pada hari Jawa berikutnya, yaitu Rabu, lengkap dengan pasaran Rabu itu. Perkakas ini mengikuti batas tengah malam kalender Masehi, sama seperti catatan sipil dan akta kelahiran. Bila kelahiran anggota keluarga Anda persis berada di sekitar senja, hasil menurut kedua batas itu dapat berbeda satu hari. Sebutkan keadaan itu apa adanya dalam catatan keluarga, dan tetapkan weton mengikuti keyakinan serta kebiasaan keluarga Anda — yang penting, keputusan itu dicatat agar tidak diperdebatkan ulang di kemudian hari.'],
+  ['Bisakah untuk keluarga besar di atas 8 orang?', 'Bisa, hanya saja dikerjakan dalam dua kali hitung. Batas delapan anggota pada halaman ini adalah batas tampilan agar tabel tetap terbaca dalam sekali pandang, bukan batas hitungannya. Untuk keluarga besar, hitung delapan anggota pertama, catat atau tangkap layar tabelnya, lalu muat ulang halaman dan hitung anggota sisanya. Kedua tabel itu kemudian dapat digabungkan dalam satu daftar di buku keluarga. Banyak keluarga besar memang membagi catatannya menurut rumah tangga inti masing-masing — satu tabel untuk keluarga ayah, satu untuk keluarga ibu — sehingga cara dua kali ini justru meniru cara arsip keluarga lama disusun.'],
+  ['Bagaimana jika tanggal lahir seorang anggota keluarga tidak diketahui pasti?', 'Keadaan ini sangat umum, terutama untuk kakek-nenek dan generasi di atasnya, yang kelahirannya kerap hanya diingat menurut weton dan musimnya, bukan tanggal Masehinya. Bila wetonnya masih diingat — misalnya hanya disebut “lahirnya Jumat Legi” — catatlah weton itu apa adanya; dalam banyak petungan keluarga, wetonlah yang sebenarnya dipakai, bukan tanggalnya. Bila yang diingat hanya perkiraan tahunnya, tanggal Masehi dapat dicari mundur dari weton dan perkiraan usia itu, tetapi hasilnya harus ditulis sebagai perkiraan, bukan kepastian. Yang sebaiknya dihindari adalah mengarang tanggal yang tampak pasti hanya agar tabel terlihat lengkap.'],
+  ['Apakah wetonan berikutnya harus dirayakan dengan acara besar?', 'Tidak harus, dan dalam praktiknya memang jarang yang besar. Wetonan pada kebanyakan keluarga adalah peringatan kecil dan pribadi: sepiring tumpeng sederhana atau bubur merah putih, doa bersama seusai magrib, atau sekadar mengingatkan dan mendoakan yang bersangkutan pada hari itu. Nilai wetonan bukan pada besarnya acara, melainkan pada iramanya — setiap 35 hari ada satu hari yang mengingatkan keluarga untuk berhenti sejenak dan memperhatikan anggotanya satu per satu. Bila hari itu kebetulan berpapasan dengan hari libur, sebagian keluarga menggeser kebersamaannya ke akhir pekan terdekat sambil tetap menyebut hari weton yang sebenarnya.'],
+];
+---
+<Almanak
+  title="Weton Keluarga — Hitung Weton Satu Keluarga Sekaligus | Wetonan"
+  description="Hitung weton seluruh keluarga dalam satu tabel: nama, weton, neptu, tanggal Jawa, wuku, dan wetonan berikutnya untuk ayah, ibu, dan anak sekaligus gratis."
+>
+  <style>
+    .baris-anggota {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: end;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--garis);
+    }
+    .baris-anggota label {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--tinta-lunak);
+      display: block;
+      margin-bottom: 5px;
+    }
+    .baris-anggota input {
+      font-family: var(--mono);
+      font-size: 1rem;
+      padding: 10px 12px;
+      background: #fffdf6;
+      border: 1.5px solid var(--garis-tebal);
+      color: var(--tinta);
+    }
+    .baris-anggota .medan-anggota {
+      flex: 1 1 190px;
+      min-width: 0;
+    }
+    .baris-anggota .medan-anggota input {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 0;
+    }
+    .baris-anggota .hapus-anggota {
+      flex: none;
+    }
+    .baris-anggota .hapus-anggota:disabled,
+    #tambah-anggota:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .aksi-keluarga {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 18px;
+    }
+    table.keluarga {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.98rem;
+      min-width: 760px;
+      margin: 0 0 18px;
+    }
+    table.keluarga caption {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 10px 0 14px;
+      text-align: left;
+    }
+    table.keluarga th,
+    table.keluarga td {
+      text-align: left;
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--garis);
+      vertical-align: top;
+    }
+    table.keluarga thead th {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--tinta-lunak);
+      border-bottom: 2px solid var(--garis-tebal);
+      white-space: nowrap;
+    }
+    table.keluarga tbody tr:last-child td {
+      border-bottom: 1.5px solid var(--garis-tebal);
+    }
+    table.keluarga td.nama-anggota-tabel {
+      font-weight: 600;
+    }
+  </style>
+
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Bab I — Weton</p>
+    <h1>Weton Keluarga</h1>
+    <p>
+      Dulu, hampir setiap rumah tangga Jawa yang memelihara almanak mempunyai satu halaman yang paling
+      sering dibuka: halaman catatan weton seluruh keluarga. Di sana ayah, ibu, anak-anak, dan kadang
+      kakek-nenek ditulis berurutan dengan hari kelahirannya masing-masing. Halaman ini meneruskan
+      kebiasaan itu dalam bentuk digital — masukkan nama dan tanggal lahir setiap anggota keluarga,
+      lalu terima kembali satu tabel keluarga yang utuh: weton, neptu, tanggal Jawa, wuku, dan hari
+      wetonan berikutnya untuk masing-masing orang.
+    </p>
+  </section>
+
+  <section class="bungkus" style="margin-top:1.4rem">
+    <div class="panel-almanak">
+      <h2 style="font-size:1.5rem">Anggota Keluarga</h2>
+      <p class="subjudul">Isi sekurang-kurangnya satu tanggal lahir; nama boleh dikosongkan.</p>
+      <form id="form-keluarga">
+        <div id="daftar-anggota"></div>
+        <div class="aksi-keluarga">
+          <button id="tambah-anggota" class="tombol sekunder" type="button">+ Tambah Anggota</button>
+          <button class="tombol" type="submit">Hitung Weton Keluarga</button>
+        </div>
+        <p id="keluarga-catatan" class="kecil" role="status" aria-live="polite" style="margin-top:12px"></p>
+      </form>
+      <div id="hasil-keluarga" class="entri" hidden>
+        <h3 class="tengah" style="font-size:1.5rem">Tabel Weton Keluarga</h3>
+        <p class="entri-sub">Satu baris untuk setiap anggota keluarga</p>
+        <div class="bungkus-tabel">
+          <table class="keluarga">
+            <thead>
+              <tr>
+                <th scope="col">Nama</th>
+                <th scope="col">Weton</th>
+                <th scope="col">Neptu</th>
+                <th scope="col">Tanggal Jawa</th>
+                <th scope="col">Wuku</th>
+                <th scope="col">Wetonan Berikutnya</th>
+              </tr>
+            </thead>
+            <tbody id="keluarga-tbody"></tbody>
+          </table>
+        </div>
+        <p class="kecil">
+          Ketuk nama weton pada tabel untuk membuka entri lengkap weton itu. Kolom terakhir dihitung
+          dari hari ini menurut jam perangkat Anda.
+        </p>
+      </div>
+      <p class="kecil" style="margin-top:18px">
+        <strong>Privasi:</strong> seluruh perhitungan di halaman ini dikerjakan setempat di peramban
+        Anda — nama dan tanggal lahir yang Anda ketik tidak dikirim ke server mana pun, tidak disimpan,
+        dan hilang begitu halaman ditutup. Situs ini adalah situs statis; tidak ada formulir yang
+        menyampaikan isian Anda ke luar perangkat Anda.
+      </p>
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:3rem">
+    <p class="kicker">Tradisi Mencatat</p>
+    <h2>Almanak Rumah Tangga dan Weton yang Ditulis Tangan</h2>
+    <p class="huruf-awal">
+      Sebelum kalender menjadi aplikasi di telepon, almanak adalah benda rumah tangga. Ia digantung di
+      dinding dapur atau diselipkan di antara kitab dan buku tulis di lemari, dan lembar-lembarnya
+      bertambah coretan dari tahun ke tahun: hari baik untuk memulai panen, tanggal slametan desa, hari
+      pasar untuk menjual hasil kebun, dan — hampir selalu ada — daftar weton anggota keluarga. Daftar
+      itu biasanya ditulis oleh kepala keluarga atau oleh anggota tertua yang masih rajin mencatat,
+      dengan pensil atau pulpen di halaman kosong di bagian belakang almanak, kadang di kertas terpisah
+      yang dilipat dan disimpan bersama surat-surat penting keluarga. Bentuknya sederhana: nama, lalu
+      hari dan pasarannya, kadang ditambah neptu dan tanggal Jawanya. Namun justru kesederhanaan itulah
+      yang membuatnya bertahan; satu halaman kecil itu dapat dibaca siapa pun dalam keluarga, tanpa
+      perlu membuka primbon yang tebal.
+    </p>
+    <p>
+      Mengapa keluarga repot-repot mencatat weton semua anggotanya? Alasan pertama sangat praktis:
+      penjadwalan slametan. Dalam tradisi Jawa, banyak peringatan keluarga dilekatkan pada weton orang
+      yang diperingati. Kelahiran bayi disambut menurut hari kelahirannya, peringatan seseorang yang
+      telah wafat dihitung dari hari dan pasaran wafatnya, dan berbagai slametan rumah tangga — pindah
+      rumah, memulai usaha, melepas anak merantau — lazimnya dipilihkan hari yang dihitung dari weton
+      orang yang punya hajat. Tanpa catatan, setiap keperluan itu berarti bertanya ulang dan menghitung
+      ulang dari awal, sering kali dengan hasil yang berbeda-beda karena ingatan orang tidak selalu
+      sama. Dengan catatan, keluarga tinggal membuka halaman yang sama dan membaca angka yang sama.
+      Catatan weton, dengan kata lain, adalah cara keluarga menjaga agar hitungannya tidak berubah-ubah
+      menurut siapa yang sedang mengingat.
+    </p>
+    <p>
+      Alasan kedua adalah wetonan itu sendiri. Weton seseorang berulang setiap 35 hari — gabungan roda
+      tujuh hari dan roda lima pasaran — sehingga dalam setahun setiap orang melewati hari wetonnya
+      sekitar sepuluh kali. Bagi orang tua dan anak-anak, hari berulang itu sejak dulu diperingati
+      secara kecil-kecilan: wetonan anak ditandai dengan doa dan makanan sederhana agar ia diingat dan
+      didoakan secara berkala, sedangkan wetonan orang tua dan sesepuh menjadi kesempatan anak-anak
+      yang sudah dewasa untuk menengok, menelepon, atau sekadar mengirim kabar. Agar irama 35 hari itu
+      tidak terlewat begitu saja, tanggalnya harus diketahui lebih dulu — dan di situlah daftar keluarga
+      bekerja. Satu tabel untuk seluruh rumah membuat keluarga dapat melihat, dalam sekali pandang,
+      siapa yang wetonannya paling dekat, dan merencanakan kebersamaan berikutnya tanpa ada yang
+      tertinggal.
+    </p>
+    <p>
+      Ada pula alasan yang lebih sunyi: ingatan keluarga tentang dirinya sendiri. Tanggal lahir
+      generasi tua kerap tidak tercatat dalam dokumen resmi selengkap generasi sesudahnya; yang diingat
+      justru wetonnya, karena wetonlah yang disebut dalam percakapan sehari-hari — “lahirnya Jumat
+      Legi”, “wetonnya Selasa Wage”. Daftar weton keluarga menjembatani dua cara mengingat itu. Di satu
+      sisi ia menyimpan tanggal Masehi sebagaimana tertulis di akta dan kartu keluarga, di sisi lain ia
+      menyimpan sebutan Jawa yang hidup dalam tuturan keluarga. Ketika kakek-nenek telah tiada, halaman
+      kecil itu sering menjadi satu-satunya tempat kedua keterangan itu masih berdampingan. Tabel pada
+      halaman ini disusun dengan semangat yang sama: nama ditulis berdampingan dengan weton, tanggal
+      Jawa, dan wukunya, agar hasil hitungnya dapat disalin kembali ke buku keluarga dan diwariskan
+      sebagai catatan, bukan sekadar dibaca sekali lalu hilang.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Bagaimana Tabel Ini Dihitung</h2>
+    <p>
+      Setiap baris pada tabel keluarga dihitung dengan cara yang persis sama seperti pada halaman
+      <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> — tidak ada hitungan khusus keluarga dan
+      tidak ada angka yang dibulatkan. Mula-mula tanggal lahir diubah menjadi bilangan hari berurutan,
+      lalu selisihnya terhadap tanggal acuan yang pasarannya sudah pasti dihitung: 17 Agustus 1945
+      adalah Jumat Legi. Sisa pembagian selisih itu dengan lima menentukan pasaran, dan sisa
+      pembagiannya dengan tujuh menentukan hari atau dina. Neptu hari dan neptu pasaran kemudian
+      diambil dari tabel pakem yang baku — antara lain Jumat 6 dan Legi 5, Kamis 8 dan Pon 7 — lalu
+      dijumlahkan menjadi neptu weton. Dari bilangan hari yang sama diturunkan pula padanan tanggal
+      Jawanya dengan menghitung maju dari 1 Suro 1555 dalam bongkahan windu delapan tahun, serta
+      wukunya dari roda pawukon 210 hari yang terdiri atas tiga puluh pekan wuku.
+    </p>
+    <p>
+      Contoh yang dipakai untuk memeriksa seluruh situs ini juga berlaku untuk tabel keluarga.
+      Seseorang yang lahir pada 17 Agustus 1945 akan tampil pada tabel sebagai <strong>Jumat
+      Legi</strong> dengan neptu <span class="mono">6 + 5 = 11</span>, tanggal Jawa <strong>9 Poso
+      1876 AJ</strong>, dan wuku <strong>Manahil</strong>. Apabila dalam keluarga Anda ada yang lahir
+      pada tanggal bersejarah itu, barisnya dapat dipakai sebagai uji cepat: bila hasilnya bukan Jumat
+      Legi, berarti tanggal yang dimasukkan tidak sama. Pemeriksaan silang semacam ini penting dalam
+      konteks keluarga, karena kesalahan yang paling sering terjadi bukanlah kesalahan hitung,
+      melainkan kesalahan menyalin — tertukarnya bulan kelahiran, atau tahun yang meleset satu angka
+      ketika tanggal dibacakan dari ingatan. Membandingkan baris setiap anggota dengan dokumen atau
+      ingatan keluarga lain adalah bagian dari memakai tabel ini dengan baik.
+    </p>
+    <p>
+      Satu batas yang perlu diingat berlaku untuk semua baris sekaligus: perkakas ini memakai batas
+      hari tengah malam kalender Masehi, sedangkan adat Jawa mengganti hari pada saat magrib. Untuk
+      kelahiran siang dan pagi hari kedua batas itu menghasilkan weton yang sama; perbedaan hanya
+      mungkin muncul untuk kelahiran petang. Karena itu, bila dalam satu keluarga ada anggota yang
+      lahir menjelang atau sesudah magrib dan keluarganya menganut batas magrib, weton anggota itu
+      menurut catatan keluarga dapat berbeda satu hari dari baris tabelnya — dan dalam hal ini catatan
+      keluargalah yang sebaiknya didahulukan, dengan keterangan yang ditulis apa adanya.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Apa Arti “Wetonan Berikutnya”</h2>
+    <p>
+      Kolom terakhir tabel menjawab pertanyaan yang paling sering diajukan sesudah weton seseorang
+      diketahui: kapan hari itu datang lagi? Karena weton adalah pertemuan roda tujuh hari dan roda
+      lima pasaran, dan karena 35 adalah kelipatan persekutuan terkecil dari 7 dan 5, weton yang sama
+      selalu kembali tepat setiap 35 hari — tidak pernah 34, tidak pernah 36. Kolom “Wetonan
+      Berikutnya” mencari, mulai dari hari ini, tanggal terdekat yang selisih harinya dari tanggal
+      lahir merupakan kelipatan 35. Bila hari ini sendiri adalah hari weton orang itu, kolom itu
+      menyebutnya “hari ini”; bila tidak, disebut pula berapa hari lagi hari itu tiba, agar keluarga
+      dapat bersiap tanpa harus menghitung sendiri dengan jari.
+    </p>
+    <p>
+      Dalam pemakaian keluarga, kolom ini dibaca sebagai agenda kecil yang berputar. Ada keluarga yang
+      menandai wetonan anak-anaknya bergiliran — pekan ini anak pertama, beberapa pekan lagi anak
+      kedua — dan menjadikannya alasan tetap untuk makan bersama. Ada yang memakainya terutama untuk
+      orang tua: wetonan ayah atau ibu menjadi pengingat berkala untuk menengok dan mendoakan, jauh
+      lebih sering daripada ulang tahun Masehi yang hanya datang setahun sekali. Dan ada pula yang
+      membacanya secara lebih pribadi, sebagai hari untuk berhenti sejenak dan menengok ke belakang,
+      tanpa acara apa pun. Ketiga pemakaian itu sah dalam tradisi, karena wetonan memang sejak awal
+      adalah peringatan berkala yang sederhana — kekuatannya terletak pada keteraturannya, bukan pada
+      kemeriahannya. Tabel keluarga membuat keteraturan itu terlihat untuk semua anggota sekaligus:
+      urutan wetonan berikutnya dalam satu rumah dapat dibaca seperti urutan giliran, dan tidak ada
+      satu pun anggota yang harinya terlewat hanya karena tidak ada yang menghitung.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Dihitung di Perangkat Anda, Bukan di Server</h2>
+    <p>
+      Ada satu perbedaan penting antara almanak kertas dulu dan halaman ini, dan perbedaan itu justru
+      terletak pada hal yang tidak terlihat. Almanak kertas tidak pernah mengirim apa pun ke mana pun;
+      catatan keluarga yang ditulis di halamannya hanya dibaca oleh keluarga itu sendiri. Halaman ini
+      meniru sifat itu secara teknis. Seluruh hitungan — menentukan pasaran, menjumlahkan neptu,
+      menurunkan tanggal Jawa dan wuku, sampai mencari wetonan berikutnya — dikerjakan oleh program
+      kecil yang berjalan di peramban Anda, memakai tanggal yang Anda ketik pada perangkat Anda
+      sendiri. Nama dan tanggal lahir anggota keluarga Anda tidak dikirim ke server, tidak masuk ke
+      basis data, dan tidak disimpan untuk dibuka kembali pada kunjungan berikutnya. Situs ini
+      diterbitkan sebagai berkas statis; tidak ada mesin di baliknya yang menerima isian formulir ini.
+    </p>
+    <p>
+      Konsekuensi praktisnya ada dua, dan keduanya baik untuk diketahui sebelum Anda mengisi. Pertama,
+      hasil tabel hilang bila halaman dimuat ulang — memang demikianlah seharusnya catatan yang tidak
+      disimpan. Bila tabel itu ingin dipertahankan, salinlah ke buku catatan keluarga, atau simpan
+      tangkapan layarnya di tempat Anda sendiri; cara itu meniru persis bagaimana daftar weton lama
+      dirawat dari satu almanak tahunan ke almanak berikutnya. Kedua, karena tidak ada yang disimpan,
+      tidak ada pula yang perlu dihapus: Anda tidak meninggalkan jejak data keluarga di situs ini,
+      hari ini maupun pada kunjungan-kunjungan berikutnya. Bagi kami, kesetiaan pada cara lama ini
+      bukan sekadar pilihan teknis, melainkan bagian dari menyajikan tradisi dengan hormat — weton
+      keluarga adalah urusan keluarga, dan perkakas yang baik cukup menghitungnya dengan tepat lalu
+      menyerahkan hasilnya kembali kepada pemiliknya.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker tengah">Tanya Jawab</p>
+    <h2 class="tengah">Seputar Weton Keluarga</h2>
+    <div class="faq">
+      {faq.map(([t, j]) => (
+        <details>
+          <summary>{t}</summary>
+          <p>{j}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker">Perkakas Terkait</p>
+    <h2>Perkakas Terkait</h2>
+    <ul class="daftar-isi">
+      <li>
+        <a href={u('/kalkulator-weton/')}>
+          <span class="nama">Kalkulator Weton</span>
+          <span class="titik"></span>
+          <span class="ket">hitung satu tanggal secara rinci</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/siklus-weton/')}>
+          <span class="nama">Siklus Weton</span>
+          <span class="titik"></span>
+          <span class="ket">urutan 35 weton dan perputarannya</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/weton-jodoh/')}>
+          <span class="nama">Weton Jodoh</span>
+          <span class="titik"></span>
+          <span class="ket">petungan neptu berdua</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/perkakas/')}>
+          <span class="nama">Semua Perkakas</span>
+          <span class="titik"></span>
+          <span class="ket">daftar lengkap perkakas Wetonan</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+  <script>
+    import { wetonOf, gregorianToJDN, jdnToGregorian, formatTanggalID } from '../lib/jawa.js';
+    import { u } from '../lib/base.js';
+
+    const MAKS = 8;
+    const daftar = document.getElementById('daftar-anggota');
+    const tambah = document.getElementById('tambah-anggota');
+    const catatan = document.getElementById('keluarga-catatan');
+    const form = document.getElementById('form-keluarga');
+    const hasil = document.getElementById('hasil-keluarga');
+    const tbody = document.getElementById('keluarga-tbody');
+
+    function barisList() {
+      return daftar.querySelectorAll('.baris-anggota');
+    }
+
+    function perbarui() {
+      const jumlah = barisList().length;
+      tambah.disabled = jumlah >= MAKS;
+      barisList().forEach((baris) => {
+        const hapus = baris.querySelector('.hapus-anggota');
+        if (hapus) hapus.disabled = jumlah <= 1;
+      });
+      if (jumlah >= MAKS) {
+        catatan.textContent = 'Maksimal 8 anggota.';
+      } else if (catatan.textContent === 'Maksimal 8 anggota.') {
+        catatan.textContent = '';
+      }
+    }
+
+    function buatBaris() {
+      const baris = document.createElement('div');
+      baris.className = 'baris-anggota';
+
+      const medanNama = document.createElement('div');
+      medanNama.className = 'medan-anggota';
+      const labelNama = document.createElement('label');
+      labelNama.textContent = 'Nama';
+      const inputNama = document.createElement('input');
+      inputNama.type = 'text';
+      inputNama.className = 'nama-anggota';
+      inputNama.placeholder = 'Nama (mis. Ibu)';
+      inputNama.autocomplete = 'off';
+      medanNama.append(labelNama, inputNama);
+
+      const medanTgl = document.createElement('div');
+      medanTgl.className = 'medan-anggota';
+      const labelTgl = document.createElement('label');
+      labelTgl.textContent = 'Tanggal lahir';
+      const inputTgl = document.createElement('input');
+      inputTgl.type = 'date';
+      inputTgl.className = 'tgl-anggota';
+      inputTgl.min = '1800-01-01';
+      inputTgl.max = '2100-12-31';
+      medanTgl.append(labelTgl, inputTgl);
+
+      const hapus = document.createElement('button');
+      hapus.type = 'button';
+      hapus.className = 'hapus-anggota tombol sekunder';
+      hapus.textContent = 'Hapus';
+      hapus.addEventListener('click', () => {
+        if (barisList().length <= 1) return;
+        baris.remove();
+        perbarui();
+      });
+
+      baris.append(medanNama, medanTgl, hapus);
+      return baris;
+    }
+
+    tambah.addEventListener('click', () => {
+      if (barisList().length >= MAKS) {
+        perbarui();
+        return;
+      }
+      daftar.appendChild(buatBaris());
+      perbarui();
+    });
+
+    // Render awal: 3 baris.
+    for (let i = 0; i < 3; i++) daftar.appendChild(buatBaris());
+    perbarui();
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const anggota = [];
+      barisList().forEach((baris) => {
+        const iso = baris.querySelector('.tgl-anggota').value;
+        if (!iso) return;
+        const nama = baris.querySelector('.nama-anggota').value.trim();
+        const [y, m, d] = iso.split('-').map(Number);
+        if (!y || !m || !d) return;
+        anggota.push({ nama, y, m, d });
+      });
+
+      if (anggota.length === 0) {
+        catatan.textContent = 'Isi sekurang-kurangnya satu tanggal lahir.';
+        hasil.hidden = true;
+        return;
+      }
+      if (barisList().length >= MAKS) {
+        catatan.textContent = 'Maksimal 8 anggota.';
+      } else {
+        catatan.textContent = '';
+      }
+
+      const sekarang = new Date();
+      const jdnHariIni = gregorianToJDN(
+        sekarang.getFullYear(),
+        sekarang.getMonth() + 1,
+        sekarang.getDate(),
+      );
+
+      tbody.innerHTML = '';
+      anggota.forEach((a, i) => {
+        const w = wetonOf(a.y, a.m, a.d);
+        const sisa = ((jdnHariIni - w.jdn) % 35 + 35) % 35;
+        const diff = sisa === 0 ? 0 : 35 - sisa;
+        const g = jdnToGregorian(jdnHariIni + diff);
+        const teksBerikutnya =
+          formatTanggalID(g.y, g.m, g.d) +
+          (diff === 0 ? ' (hari ini)' : ` (dalam ${diff} hari)`);
+
+        const tr = document.createElement('tr');
+        tr.className = 'baris-keluarga';
+
+        const tdNama = document.createElement('td');
+        tdNama.className = 'nama-anggota-tabel';
+        tdNama.textContent = a.nama || `Anggota ${i + 1}`;
+
+        const tdWeton = document.createElement('td');
+        const tautan = document.createElement('a');
+        tautan.href = u(`/weton/${w.slug}/`);
+        tautan.textContent = w.nama;
+        tdWeton.appendChild(tautan);
+
+        const tdNeptu = document.createElement('td');
+        tdNeptu.className = 'mono';
+        tdNeptu.textContent = String(w.neptu);
+
+        const tdJawa = document.createElement('td');
+        tdJawa.textContent = `${w.jawa.tanggal} ${w.jawa.bulan.nama} ${w.jawa.tahun} AJ`;
+
+        const tdWuku = document.createElement('td');
+        tdWuku.textContent = w.wuku.nama;
+
+        const tdBerikutnya = document.createElement('td');
+        tdBerikutnya.textContent = teksBerikutnya;
+
+        tr.append(tdNama, tdWeton, tdNeptu, tdJawa, tdWuku, tdBerikutnya);
+        tbody.appendChild(tr);
+      });
+
+      hasil.hidden = false;
+      hasil.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</Almanak>

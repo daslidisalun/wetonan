@@ -4,6 +4,32 @@ import Almanak from '../../layouts/Almanak.astro';
 import { SEMUA_WETON, HARI } from '../../lib/jawa.js';
 
 const romawi = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+
+// Peta neptu: kelompokkan seluruh 35 weton menurut jumlah neptunya (7–18).
+const petaNeptu = [];
+for (let total = 7; total <= 18; total++) {
+  const cocok = SEMUA_WETON.filter((w) => w.neptu === total);
+  petaNeptu.push({ total, jumlah: cocok.length, nama: cocok.map((w) => w.nama).join(', ') });
+}
+
+// Rentang neptu tiap bab dina: nilai terkecil dan terbesar dalam satu bab.
+const rentangBab = HARI.map((h) => {
+  const isi = SEMUA_WETON.filter((w) => w.hari.id === h.id);
+  const nilai = isi.map((w) => w.neptu);
+  const min = Math.min(...nilai);
+  const max = Math.max(...nilai);
+  return {
+    nama: h.nama,
+    jawa: h.jawa,
+    neptuDina: h.neptu,
+    min,
+    max,
+    minNama: isi.find((w) => w.neptu === min).nama,
+    maxNama: isi.find((w) => w.neptu === max).nama,
+  };
+});
+const babSelasa = rentangBab.find((b) => b.nama === 'Selasa');
+const babSabtu = rentangBab.find((b) => b.nama === 'Sabtu');
 ---
 <Almanak
   title="Indeks 35 Weton — Daftar Lengkap Weton & Neptu | Wetonan"
@@ -16,6 +42,114 @@ const romawi = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
       Inilah seluruh isi "buku" petungan: tiga puluh lima weton, tersusun dalam tujuh bab menurut
       dinanya. Angka di ujung garis titik-titik adalah jumlah neptu — kunci yang membuka hampir semua
       petungan dalam tradisi Jawa. Ketuk nama weton untuk membaca entrinya.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:1rem">
+    <h2 style="margin-top:2.2rem">Apa Itu Weton, Sesungguhnya</h2>
+    <p class="huruf-awal">
+      Kata weton berasal dari kata Jawa <em>wetu</em>, yang berarti lahir atau keluar. Weton adalah
+      sebutan untuk hari kelahiran seseorang sebagaimana dibaca dalam penanggalan Jawa — bukan
+      sekadar hari dalam sepekan, melainkan pasangan utuh antara hari tujuh (<em>saptawara</em>) dan
+      hari pasaran lima (<em>pancawara</em>) pada saat kelahiran itu terjadi. Seseorang yang lahir
+      pada Jumat berpasaran Legi, misalnya, wetonnya adalah Jumat Legi, dan pasangan itulah yang
+      melekat padanya seumur hidup, ke mana pun kalender berjalan. Dina bertujuh — Ngahad, Senen,
+      Selasa, Rebo, Kemis, Jumat, dan Setu — berjalan sejajar dengan pasaran berlima — Legi, Pahing,
+      Pon, Wage, dan Kliwon — dan weton adalah titik temu keduanya pada satu hari yang sama.
+    </p>
+    <p>
+      Kedudukan weton dalam kehidupan Jawa bersifat penanda pribadi. Dalam tradisi, weton menjadi
+      rujukan ketika keluarga menggelar <em>slametan wetonan</em>, yaitu selamatan kecil yang diadakan
+      setiap kali weton seseorang datang kembali, sebagai wujud syukur dan pengingat akan hari
+      lahirnya. Weton juga menjadi bahan dasar <em>petungan</em>: hitungan tradisional yang dipakai
+      para sesepuh untuk membaca kecocokan pasangan, menimbang hari baik untuk hajatan, pindah
+      rumah, atau memulai usaha, serta menyusun berbagai laku kehati-hatian dalam hidup. Seluruh
+      bacaan semacam itu dalam halaman-halaman situs ini selalu kami bingkai sebagaimana adanya —
+      sebagai warisan pengetahuan tradisi primbon, bukan sebagai kepastian tentang nasib seseorang.
+      Yang diwariskan weton adalah cara masyarakat Jawa lama memberi nama, mengingat, dan merayakan
+      hari lahir: setiap orang membawa satu pasangan hari yang khas, dan pasangan itu tidak pernah
+      tertukar dengan milik orang lain pada hari yang sama.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Mengapa Jumlahnya Tiga Puluh Lima</h2>
+    <p>
+      Jumlah tiga puluh lima bukan angka yang dipilih sembarang. Ia lahir dari perkalian sederhana:
+      tujuh dina dikawinkan dengan lima pasaran menghasilkan 7 × 5 = 35 pasangan yang mungkin. Yang
+      membuat seluruh pasangan itu benar-benar muncul adalah sifat kedua putarannya: 7 dan 5 adalah
+      bilangan yang relatif prima — faktor persekutuan terbesarnya adalah 1 — sehingga kedua roda
+      tidak pernah berputar serempak dalam pola yang lebih pendek. Setiap hari, roda dina maju satu
+      langkah dan roda pasaran ikut maju satu langkah; karena langkahnya tidak seirama, pasangan yang
+      terbentuk hari ini baru akan terulang persis setelah 35 hari, dan dalam selang itu seluruh 35
+      kombinasi sempat tampil masing-masing satu kali, tanpa ada yang terlewat atau terulang lebih
+      awal.
+    </p>
+    <p>
+      Roda 35 hari inilah yang dalam kehidupan Jawa dikenal lewat peristiwa <em>selapanan</em>:
+      selamatan yang diadakan ketika bayi genap berusia 35 hari, karena pada hari itu weton
+      kelahirannya datang untuk pertama kalinya sejak ia dilahirkan. Sesudah selapanan, weton yang
+      sama terus berulang dengan irama yang tetap sepanjang hidup — dalam satu tahun Masehi, satu
+      weton muncul sekitar sepuluh sampai sebelas kali. Itulah sebabnya slametan wetonan dapat
+      diadakan berkali-kali dalam setahun, jauh lebih sering daripada ulang tahun tahunan, dan
+      itulah pula sebabnya indeks weton cukup memuat 35 entri: tidak ada weton ke-36, sebab setiap
+      hari dalam sejarah, lampau maupun mendatang, pasti jatuh pada salah satu dari 35 pasangan ini.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Cara Memakai Indeks Ini</h2>
+    <p>
+      Indeks di bawah ini sengaja disusun meniru cara buku primbon cetak mengatur isinya: tujuh bab,
+      satu bab untuk setiap dina, dan di dalam setiap bab lima entri untuk kelima pasaran. Untuk
+      menemukan weton Anda, mulailah dari bab dina kelahiran Anda — bila Anda lahir pada hari Rabu,
+      bukalah Bab IV — lalu telusuri kelima entri di dalamnya sampai bertemu pasaran Anda. Judul bab
+      mencantumkan nama Jawa dina beserta neptu dinanya, karena angka itulah yang menjadi modal awal
+      setiap entri dalam bab tersebut. Pada setiap baris daftar isi, Anda akan membaca susunan yang
+      selalu sama: nama weton, kemudian penjumlahan neptu hari dan neptu pasarannya, lalu garis
+      titik-titik yang di ujungnya terletak jumlah neptu — angka yang paling sering dirujuk dalam
+      petungan. Ketuk nama wetonnya untuk membuka halaman entri, yang menguraikan watak dina, watak
+      pasaran, dan catatan jumlah neptunya menurut tradisi primbon, dirangkai sebagai bacaan budaya.
+    </p>
+    <p>
+      Bila Anda belum tahu weton Anda — hal yang sangat umum, karena yang biasanya diingat keluarga
+      hanyalah tanggal lahir Masehi — jangan menebak dari daftar ini. Gunakan terlebih dahulu
+      <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a>: masukkan tanggal lahir Anda, dan
+      kalkulator akan menampilkan weton, neptu, sekaligus wuku dan tanggal Jawanya. Setelah
+      pasangan dina dan pasaran Anda diketahui pasti, kembalilah ke indeks ini dan buka bab yang
+      sesuai — dengan begitu entri yang Anda baca benar-benar entri kelahiran Anda, bukan weton
+      lain yang kebetulan berdekatan.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Peta Neptu: dari 7 sampai 18</h2>
+    <p>
+      Neptu dina berkisar dari 3 (Selasa) sampai 9 (Sabtu), sedangkan neptu pasaran berkisar dari 4
+      (Wage) sampai 9 (Pahing). Karena jumlah neptu adalah gabungan keduanya, rentang yang mungkin
+      terbentang dari yang terkecil, 3 + 4 = 7, sampai yang terbesar, 9 + 9 = 18 — hanya dua belas
+      nilai untuk menampung 35 weton, sehingga sebagian nilai pasti diisi oleh beberapa weton
+      sekaligus. Tabel berikut, yang kami susun langsung dari ke-35 weton, memperlihatkan sebarannya:
+      nilai-nilai tengah, 12 dan 13, masing-masing dimiliki lima weton dan merupakan jumlah yang
+      paling lazim ditemui, sedangkan kedua ujungnya sangat langka — neptu 7 hanya dimiliki Selasa
+      Wage dan neptu 18 hanya dimiliki Sabtu Pahing, masing-masing satu-satunya.
+    </p>
+    <table class="fakta" style="margin-top:1.2rem">
+      <thead>
+        <tr><th>Jumlah neptu</th><th>Banyak weton</th><th>Wetonnya</th></tr>
+      </thead>
+      <tbody>
+        {petaNeptu.map((p) => (
+          <tr>
+            <th style="width:18%">Neptu {p.total}</th>
+            <td style="width:16%">{p.jumlah}</td>
+            <td>{p.nama}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      Sebaran ini penting diingat ketika membaca petungan. Karena satu jumlah neptu umumnya dimiliki
+      bersama oleh tiga sampai lima weton yang berbeda, jumlah itu sendirian tidak pernah cukup
+      untuk mengenali sebuah weton: neptu 12, misalnya, dapat berarti Minggu Pon, Senin Kliwon,
+      Selasa Pahing, Rabu Legi, atau Kamis Wage — lima kelahiran yang dalam bacaan primbon dibedakan
+      oleh watak dina dan pasarannya masing-masing. Itulah sebabnya tradisi selalu membaca pasangan
+      secara utuh dan tidak berhenti pada angkanya. Jumlah neptu adalah kunci hitungan, tetapi
+      pasangan dina dan pasaranlah yang memberi bacaan itu isi dan warnanya.
     </p>
   </section>
 
@@ -43,6 +177,50 @@ const romawi = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
       Susunan mengikuti putaran hari: setiap bab memuat lima weton dari dina yang sama dengan kelima
       pasaran. Dari bab ke bab, neptu dina berubah mengikuti pakem — Selasa terkecil (3) dan Sabtu
       terbesar (9) — sedangkan neptu terbesar keseluruhan, 18, hanya dimiliki Sabtu Pahing.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:1rem">
+    <h2 style="margin-top:2.2rem">Membaca Pola Antar Bab</h2>
+    <p>
+      Membaca ketujuh bab secara berdampingan memperlihatkan pola yang rapi, dan pola itu seluruhnya
+      ditentukan oleh neptu dina. Setiap bab membentang selebar lima nilai — dari neptu dina ditambah
+      4 (pasaran Wage, yang terkecil) sampai neptu dina ditambah 9 (pasaran Pahing, yang terbesar) —
+      sehingga lebar setiap bab selalu sama, yang berbeda hanyalah letaknya pada tangga 7 sampai 18.
+      Bab Selasa, dengan neptu dina terkecil 3, membentang paling rendah, dari {babSelasa.min} pada
+      {babSelasa.minNama} sampai {babSelasa.max} pada {babSelasa.maxNama}, dan hanya bab inilah yang
+      menyentuh nilai dasar 7. Di ujung sebaliknya, Bab Sabtu yang berneptu dina 9 membentang paling
+      tinggi, dari {babSabtu.min} pada {babSabtu.minNama} sampai {babSabtu.max} pada
+      {babSabtu.maxNama}, dan hanya bab inilah yang memegang nilai puncak 18. Bab-bab di antaranya
+      tersusun berurutan mengisi tangga: Minggu 9–14, Senin 8–13, Rabu 11–16, Kamis 12–17, dan Jumat
+      10–15.
+    </p>
+    <table class="fakta" style="margin-top:1.2rem">
+      <thead>
+        <tr><th>Bab dina</th><th>Neptu dina</th><th>Rentang bab</th><th>Ujung bawah — ujung atas</th></tr>
+      </thead>
+      <tbody>
+        {rentangBab.map((b) => (
+          <tr>
+            <th>{b.nama} ({b.jawa})</th>
+            <td>{b.neptuDina}</td>
+            <td>{b.min}–{b.max}</td>
+            <td>{b.minNama} — {b.maxNama}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      Keteraturan kedua yang mudah dibaca adalah peran pasaran yang seragam di semua bab. Berpindah
+      dari satu pasaran ke pasaran lain menaikkan atau menurunkan jumlah neptu dengan besaran yang
+      persis sama di bab mana pun: mengganti Wage dengan Legi selalu menambah 1, dengan Pon menambah
+      3, dengan Kliwon menambah 4, dan dengan Pahing menambah 5, sebab yang berubah hanyalah neptu
+      pasarannya. Akibatnya, tangga di dalam setiap bab selalu berurutan dengan selera yang sama —
+      Wage paling bawah, disusul Legi, Pon, Kliwon, dan Pahing paling atas — hanya titik awalnya
+      yang digeser oleh neptu dina. Memahami dua gerak sederhana ini, geseran antar bab oleh dina dan
+      tangga di dalam bab oleh pasaran, membuat seluruh peta 35 weton dapat dibaca tanpa menghafal:
+      cukup ketahui neptu dina dan neptu pasaran, dan kedudukan weton mana pun pada tangga 7 sampai
+      18 dapat ditentukan dengan tepat.
     </p>
   </section>
 </Almanak>

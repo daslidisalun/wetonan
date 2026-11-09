@@ -1,0 +1,227 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { ARTIKEL } from '../../lib/blog.js';
+
+const daftarArtikel = Array.isArray(ARTIKEL) ? ARTIKEL : Object.values(ARTIKEL ?? {});
+const artikel = daftarArtikel.find((a) => a.slug === 'malam-satu-suro') ?? {
+  slug: 'malam-satu-suro',
+  judul: 'Malam 1 Suro: Tradisi, Laku, dan Maknanya',
+  tanggal: '2026-11-06',
+  tanggalTampil: '6 November 2026',
+  ringkasan:
+    'Malam 1 Suro adalah malam pergantian tahun Jawa: mengapa malamnya datang sebelum tanggalnya, laku tirakat dan kirab pusaka yang mengisinya, serta makna bulan Suro menurut tradisi.',
+};
+---
+<Almanak title={`${artikel.judul} | Wetonan`} description={artikel.ringkasan}>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Blog Almanak</p>
+    <h1>{artikel.judul}</h1>
+    <p class="kecil">{artikel.tanggalTampil} · Blog Almanak Wetonan</p>
+    <p class="huruf-awal">
+      Dari seluruh malam dalam penanggalan Jawa, tidak ada yang namanya disebut sesering malam 1 Suro.
+      Ia diperingati di keraton dan di kampung, dibicarakan di warung kopi dan di grup percakapan
+      keluarga, dan bagi banyak orang Jawa ia menandai awal tahun dengan cara yang khas: bukan dengan
+      hitung mundur dan kembang api, melainkan dengan diam, terjaga, dan menengok ke dalam. Artikel ini
+      mengurai apa sebenarnya malam 1 Suro itu, mengapa ia selalu datang mendahului tanggalnya, laku apa
+      saja yang mengisinya, dan bagaimana bulan Suro dipandang dalam tradisi — sebagai warisan budaya
+      yang masih hidup, bukan sebagai ramalan tentang nasib siapa pun.
+    </p>
+
+    <h2 style="margin-top:2rem">Apa Itu 1 Suro?</h2>
+    <p>
+      Suro adalah bulan pertama dalam kalender Jawa, dan tanggal 1 Suro adalah hari pertama tahun baru
+      Jawa. Kedudukannya sejajar dengan 1 Muharram dalam kalender Hijriah: sejak Sultan Agung menyusun
+      kalender Jawa pada tahun 1633 dan menyelaraskannya dengan penanggalan Hijriah, bulan-bulan Jawa
+      berjalan mengikuti putaran bulan dengan nama-namanya sendiri — Suro, Sapar, Mulud, dan seterusnya —
+      sementara hitungan tahunnya meneruskan angka tahun Hijriah pada masa itu dan kemudian berjalan
+      dengan hitungannya sendiri dalam satuan Anno Javanico, disingkat AJ. Karena itu, setiap 1 Suro
+      selalu bertepatan dengan 1 Muharram, dan tahun baru Jawa pada dasarnya adalah tahun baru bulan
+      yang dibagi bersama masyarakat Muslim di banyak tempat, tetapi dirayakan dengan tata cara yang
+      tumbuh dari tanah Jawa sendiri.
+    </p>
+    <p>
+      Nama "Suro" sendiri menyimpan jejak pertemuan dua khazanah itu. Kata <em>Suro</em> menurut
+      penjelasan yang umum diterima berasal dari <em>Asyura</em>, sebutan untuk hari kesepuluh bulan
+      Muharram yang dimuliakan dalam tradisi Islam. Bahwa nama untuk hari kesepuluh itu kemudian melekat
+      pada keseluruhan bulan pertama menunjukkan betapa eratnya bulan ini dirasakan sebagai bulan yang
+      sakral: kesakralan Asyura seolah meluas mengisi seluruh Suro, dan bulan pembuka tahun Jawa pun
+      dipahami sebagai bulan untuk memperlambat langkah, bukan untuk berpesta.
+    </p>
+    <p>
+      Maka malam 1 Suro bukan sekadar "malam tahun baru" versi Jawa. Ia adalah ambang: malam ketika
+      satu tahun ditutup dan tahun berikutnya dibuka, dan dalam pandangan tradisi ambang semacam itu
+      layak dilalui dengan sikap yang berbeda dari hari-hari biasa — lebih hati-hati, lebih banyak
+      mengingat, dan lebih sedikit bersuara.
+    </p>
+
+    <h2 style="margin-top:2rem">Mengapa Malamnya Datang Lebih Dulu?</h2>
+    <p>
+      Pertanyaan yang paling sering diajukan pembaca almanak adalah ini: bila 1 Suro jatuh pada hari
+      Jumat, mengapa peringatannya justru dimulai pada Kamis malam? Jawabannya terletak pada batas hari
+      dalam penanggalan Jawa. Berbeda dengan kalender Masehi yang mengganti tanggal pada tengah malam,
+      hari dalam kalender Jawa — mengikuti kalender Hijriah — berganti pada saat matahari terbenam,
+      yaitu waktu magrib. Begitu matahari tenggelam, tanggal baru sudah berlaku, dan malam yang
+      mengikutinya adalah bagian pertama dari hari yang baru itu. Dengan kata lain, dalam sistem ini
+      urutannya adalah malam dulu, baru siangnya; bukan siang dulu, baru malamnya.
+    </p>
+    <p>
+      Contoh konkretnya dapat diperiksa pada tahun 1959 AJ. Tanggal 1 Suro 1959 AJ jatuh pada hari
+      Jumat, 27 Juni 2025. Karena pergantian hari terjadi pada magrib, malam 1 Suro-nya telah dimulai
+      sejak matahari terbenam pada hari Kamis, 26 Juni 2025. Itulah sebabnya pengumuman-pengumuman resmi
+      dan liputan media selalu menyebut "malam 1 Suro pada Kamis malam" untuk tahun yang tanggalnya
+      sendiri tertulis hari Jumat — keduanya benar, masing-masing menurut batas harinya. Bagi keluarga
+      yang hendak memperingati, yang dijadikan patokan berkumpul adalah senja pada hari Masehi
+      sebelumnya.
+    </p>
+    <p>
+      Cara membaca yang sama berlaku untuk seluruh tanggal Jawa, bukan hanya 1 Suro. Setiap tanggal
+      dalam <a href={u('/kalender-jawa/')}>Kalender Jawa</a> di situs ini menempati hari Masehi menurut
+      batas tengah malamnya, sedangkan dalam praktik tradisi tanggal itu sesungguhnya sudah berjalan
+      sejak magrib sebelumnya. Memahami satu hal ini menjelaskan banyak kebiasaan sekaligus: mengapa
+      malam Jumat Kliwon diperingati pada Kamis malam, mengapa tirakat selalu dimulai selepas senja, dan
+      mengapa orang tua dahulu menghitung hari lahir anak yang lahir di malam hari dengan lebih teliti.
+    </p>
+
+    <h2 style="margin-top:2rem">Suasana yang Sengaja Dibuat Sepi</h2>
+    <p>
+      Ciri paling menonjol dari malam 1 Suro adalah kesunyiannya — dan kesunyian itu disengaja. Bila
+      tahun baru Masehi dirayakan dengan keramaian yang memuncak tepat pada pergantian tanggal, malam 1
+      Suro dalam tradisi justru ditandai dengan menahan diri: tidak bepergian jauh tanpa perlu, tidak
+      membuat kegaduhan, dan mengisi malam dengan perenungan. Dalam bahasa tradisi, sikap ini disebut
+      <em>prihatin</em>: menjalani laku menahan kesenangan sejenak agar batin lebih jernih membaca
+      perjalanan yang telah lewat dan yang akan datang.
+    </p>
+    <p>
+      Di lingkungan keraton, kesenyapan itu dilembagakan dalam upacara-upacara yang memang dirancang
+      tanpa suara. Di tengah masyarakat, bentuknya lebih sederhana dan beragam: sebagian orang berdiam
+      di rumah bersama keluarga, sebagian berkumpul di langgar atau balai dusun untuk berdoa bersama,
+      sebagian menghabiskan malam dengan membaca, berzikir, atau sekadar terjaga sambil berbincang
+      pelan. Tidak ada satu bentuk yang diwajibkan; yang menyatukan semuanya adalah nada dasarnya —
+      tahun dibuka dengan menunduk, bukan dengan menengadah ke langit kembang api.
+    </p>
+
+    <h2 style="margin-top:2rem">Laku pada Malam 1 Suro</h2>
+
+    <h3 style="margin-top:1.6rem">Tirakat dan lek-lekan</h3>
+    <p>
+      Laku yang paling umum adalah <em>tirakat</em>: menjalani kesederhanaan yang disengaja — misalnya
+      berpuasa, mengurangi tidur, atau menahan diri dari kesenangan tertentu — sebagai latihan batin.
+      Pasangannya adalah <em>lek-lekan</em>, melek atau terjaga semalaman. Dalam pandangan tradisi,
+      terjaga pada malam pergantian tahun adalah cara menyambut tahun baru dengan kesadaran penuh:
+      orang tidak membiarkan tahun berganti selagi ia terlelap, melainkan menyaksikannya dengan mata
+      terbuka dan hati yang ditata. Di banyak desa, lek-lekan dilakukan berkelompok agar malam yang
+      panjang terasa ringan, diselingi doa bersama dan hidangan sederhana.
+    </p>
+
+    <h3 style="margin-top:1.6rem">Tapa bisu mubeng benteng</h3>
+    <p>
+      Laku yang paling dikenal dari Yogyakarta adalah <em>tapa bisu mubeng benteng</em>: berjalan kaki
+      mengelilingi benteng keraton dalam keheningan penuh, tanpa berbicara sepatah kata pun, yang
+      dilakukan para abdi dalem dan diikuti masyarakat pada malam 1 Suro. Rute mengelilingi dinding
+      benteng ditempuh perlahan dalam barisan yang senyap; satu-satunya suara adalah langkah kaki dan
+      bunyi kota yang jauh. Makna yang dilekatkan tradisi pada laku ini bersifat perenungan: benteng
+      yang dikelilingi dibaca sebagai lambang diri yang dijaga, dan keheningan adalah cara menjaga
+      ucapan — gerbang yang paling sering membuka persoalan — pada malam yang dianggap menentukan nada
+      setahun ke depan.
+    </p>
+
+    <h3 style="margin-top:1.6rem">Kirab pusaka dan jamasan</h3>
+    <p>
+      Di Surakarta dan Yogyakarta, malam 1 Suro juga menjadi malam <em>kirab pusaka</em>: benda-benda
+      pusaka keraton — keris, tombak, dan regalia lain yang disimpan sepanjang tahun — diarak keluar
+      dalam prosesi resmi yang khidmat, disaksikan masyarakat yang memadati rute kirab dalam suasana
+      tertib. Kirab ini bukan pameran; dalam pandangan keraton, pusaka dikeluarkan agar "diangin-anginkan"
+      dan didoakan pada pergantian tahun, sekaligus menjadi penanda bahwa tahun resmi keraton telah
+      berganti.
+    </p>
+    <p>
+      Berpasangan dengan kirab adalah <em>jamasan</em>, ritual mencuci dan merawat pusaka dengan tata
+      cara tertentu, yang dilakukan keraton dan juga banyak keluarga yang mewarisi keris atau benda
+      pusaka lain. Di luar keraton, jamasan pada bulan Suro dilakukan dalam skala rumah tangga: pusaka
+      keluarga dibersihkan, diminyaki, dan disimpan kembali dengan doa. Dilihat dari sudut pandang
+      pelestarian, jamasan sesungguhnya adalah jadwal perawatan tahunan benda logam dan kayu berusia
+      tua — tradisi memberi jadwal dan kesakralan pada pekerjaan merawat warisan agar tidak terlupa.
+    </p>
+
+    <h3 style="margin-top:1.6rem">Ziarah dan santunan</h3>
+    <p>
+      Dua laku lain mengisi bulan Suro secara luas. Pertama, <em>ziarah</em> ke makam leluhur: keluarga
+      mendatangi makam orang tua dan para pendahulu untuk membersihkan nisan, menabur bunga, dan
+      mendoakan mereka. Suro dipandang waktu yang pantas untuk mengingat bahwa setiap tahun yang baru
+      berdiri di atas tahun-tahun yang dijalani orang-orang sebelum kita. Kedua,
+      <em>santunan anak yatim</em>: pada bulan Muharram — dan terutama di sekitar hari Asyura — banyak
+      masjid, yayasan, dan keluarga menyantuni anak yatim dan kaum duafa. Kebiasaan ini tumbuh dari
+      semangat Muharram dalam tradisi Islam, dan di tanah Jawa ia menyatu begitu saja ke dalam rangkaian
+      bulan Suro, mengingatkan bahwa perenungan tahun baru dalam tradisi ini tidak pernah lepas dari
+      kewajiban berbagi.
+    </p>
+
+    <h2 style="margin-top:2rem">Warna Daerah: Tidak Satu Rupa</h2>
+    <p>
+      Di luar pola umum itu, tiap daerah memberi warna sendiri, dan almanak yang jujur harus menyebutnya
+      sebagai keragaman, bukan penyimpangan. Di sebagian daerah pesisir selatan Jawa, misalnya, bulan
+      Suro juga diisi upacara <em>larung sesaji</em> — melarung sesaji ke laut sebagai ungkapan syukur
+      dan penghormatan masyarakat pesisir kepada laut yang menghidupi mereka, dengan tata cara yang
+      berbeda-beda antara satu pantai dan pantai lainnya. Di banyak desa, bulan-bulan di sekitar Suro
+      menjadi musim <em>bersih desa</em>: kerja bakti membersihkan lingkungan dan makam desa, ditutup
+      doa bersama dan kenduri, sebagai cara komunitas membuka tahun dengan halaman yang bersih — lahir
+      maupun batin. Keraton, pesisir, dan desa masing-masing membaca bulan yang sama dengan bahasa
+      tempatnya sendiri.
+    </p>
+
+    <h2 style="margin-top:2rem">Bulan Suro Sepanjang Bulan</h2>
+    <p>
+      Pandangan terhadap Suro tidak berhenti pada malam pertamanya. Sepanjang bulan ini, menurut
+      tradisi banyak keluarga memilih menunda hajatan besar — dan yang paling sering disebut adalah
+      pernikahan. Kebiasaan menghindari menggelar perkawinan pada bulan Suro masih dipegang luas,
+      terutama oleh keluarga yang orang tuanya masih menjalankan petungan. Alasan yang dikemukakan dalam
+      tradisi pun berkaitan dengan nada bulan ini: Suro adalah bulan prihatin dan perenungan, bulan
+      keraton menjalani laku sunyi, sehingga menggelar pesta besar yang riuh dinilai kurang selaras
+      dengan iklim bulannya; sebagian lagi mengaitkannya dengan penghormatan kepada kesakralan Muharram.
+      Almanak ini mencatat kebiasaan itu apa adanya sebagai fakta budaya — banyak keluarga
+      menjalankannya, banyak pula yang tidak, dan keduanya hidup berdampingan tanpa perlu saling
+      menghakimi. Yang jelas, bagi perajin petungan, Suro adalah bulan untuk menata niat; hajatan
+      ditunda bukan karena takut, melainkan karena menghormati irama tahun.
+    </p>
+    <p>
+      Nada yang sama terasa pada keputusan-keputusan lain: memulai usaha besar, pindah rumah, atau
+      berangkat merantau jauh menurut kebiasaan lama lebih sering dijadwalkan di luar Suro. Sekali lagi,
+      ini adalah tata krama terhadap waktu yang diwariskan tradisi, dan membacanya sebagai warisan
+      budaya — cara sebuah masyarakat mengatur keberanian dan kehati-hatian secara bersama-sama — jauh
+      lebih tepat daripada membacanya sebagai kepastian tentang untung dan rugi seseorang.
+    </p>
+
+    <h2 style="margin-top:2rem">Tanggal yang Bisa Pembaca Periksa</h2>
+    <p>
+      Agar tidak berhenti sebagai cerita, berikut dua padanan yang dapat pembaca uji sendiri pada
+      kalender resmi mana pun. Satu Suro 1959 AJ jatuh pada Jumat, 27 Juni 2025 — dan malamnya, sekali
+      lagi, telah dimulai sejak matahari terbenam pada 26 Juni 2025. Satu Suro berikutnya, 1 Suro 1960
+      AJ, jatuh pada 17 Juni 2026. Selisih kedua tanggal itu adalah 355 hari, sebab tahun 1959 AJ adalah
+      tahun Dal, salah satu tahun kabisat dalam siklus windu yang berumur 355 hari. Karena tahun Jawa
+      mengikuti putaran bulan dan lebih pendek sekitar sebelas hari dari tahun Masehi, tanggal 1 Suro
+      pun selalu datang lebih awal dari tahun ke tahun dan perlahan berjalan mengelilingi musim —
+      sebuah gerak yang kami uraikan lebih panjang pada artikel tentang windu.
+    </p>
+    <p>
+      Membaca malam 1 Suro dengan bekal tanggal yang dapat diperiksa mengubah kedudukannya: ia bukan
+      lagi "malam keramat" yang kabur, melainkan sebuah malam tertentu dalam penanggalan yang teratur,
+      yang diisi masyarakat dengan laku-laku yang dapat disaksikan, dipahami asal-usulnya, dan
+      dihormati maknanya. Itulah cara almanak ini memandang seluruh tradisi petungan — dibuka
+      halamannya, diperiksa hitungannya, dan dibiarkan berbicara sebagai warisan.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Perkakas &amp; Bacaan Terkait</h2>
+    <ul>
+      <li><a href={u('/kalender-jawa/')}>Kalender Jawa</a> — telusuri padanan tanggal Jawa–Masehi bulan demi bulan, termasuk di mana 1 Suro jatuh pada tahun yang Anda cari.</li>
+      <li><a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> — cari weton dan tanggal Jawa dari tanggal lahir atau tanggal apa pun.</li>
+      <li><a href={u('/blog/windu-siklus-delapan-tahun/')}>Windu: Siklus Delapan Tahun dalam Kalender Jawa</a> — mengapa tahun Suro bergeser sekitar sebelas hari lebih awal setiap tahun.</li>
+      <li><a href={u('/blog/pawukon-siklus-210-hari/')}>Pawukon: Siklus 210 Hari dan Tiga Puluh Wuku</a> — putaran pekan bernama yang berjalan sejajar dengan penanggalan bulan.</li>
+    </ul>
+    <p class="kecil">
+      Uraian tradisi dalam artikel ini disajikan sebagai bahan perenungan budaya. Makna-makna yang
+      dilekatkan pada malam 1 Suro dan bulan Suro adalah bacaan tradisi sebagaimana diwariskan
+      turun-temurun, bukan kepastian tentang perjalanan hidup seseorang.
+    </p>
+  </section>
+</Almanak>

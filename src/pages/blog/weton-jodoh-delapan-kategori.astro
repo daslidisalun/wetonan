@@ -1,0 +1,238 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { artikelBySlug } from '../../lib/blog.js';
+
+const artikel = artikelBySlug('weton-jodoh-delapan-kategori');
+const b = artikelBySlug('cara-menghitung-neptu');
+---
+<Almanak title={`${artikel.judul} | Wetonan`} description={artikel.ringkasan}>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Blog Almanak</p>
+    <h1>{artikel.judul}</h1>
+    <p class="kecil mono">Diterbitkan {artikel.tanggalTampil} · Blog Almanak Wetonan</p>
+
+    <p class="huruf-awal">
+      Di banyak keluarga Jawa, sebelum lamaran dilangsungkan dan tanggal pernikahan dibicarakan, ada
+      satu perbincangan yang lebih dulu dibuka: perbincangan tentang weton kedua calon. Orang tua dan
+      sesepuh dari kedua pihak duduk bersama, primbon dibuka, neptu kedua calon dijumlahkan, dan
+      hasilnya dibaca dalam delapan golongan yang telah diwariskan turun-temurun — Pegat, Ratu, Jodoh,
+      Topo, Tinari, Padu, Sujanan, dan Pesthi. Tulisan ini menjelaskan hitungan di balik kedelapan
+      golongan itu, menguraikan makna serta nasihat tradisional masing-masing golongan satu per satu,
+      dan menunjukkan bagaimana keluarga zaman dulu menyikapi hasilnya — termasuk ketika hasilnya bukan
+      yang diharapkan.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Konteksnya: Petungan dalam Musyawarah Lamaran</h2>
+    <p>
+      Petungan jodoh tidak pernah menjadi urusan dua orang saja. Dalam tata cara lama, ia dibicarakan
+      pada tahap awal penjajakan perkawinan — sering kali sebelum lamaran resmi diajukan — oleh orang
+      tua, paman, atau sesepuh yang dituakan dari kedua keluarga. Yang diperiksa bukan hanya jumlah
+      neptu semata: hari baik untuk lamaran dan akad, musim dan kesibukan keluarga, serta keadaan kedua
+      calon ikut ditimbang dalam percakapan yang sama. Namun petunganlah yang biasanya dibuka lebih
+      dulu, karena menurut tradisi ia memberi gambaran medan — persoalan apa yang kelak perlu dijaga
+      oleh pasangan ini. Kedudukan itu penting untuk dipahami sejak awal tulisan ini: petungan adalah
+      bahan pertimbangan yang membuka percakapan, dan sebagaimana akan terlihat nanti, tradisi sendiri
+      menyediakan banyak jalan untuk menyikapi hasil yang dibaca berat.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Hitungannya: Jumlahkan, Bagi Delapan, Baca Sisanya</h2>
+    <p>
+      Cara menghitungnya tetap sama dari primbon ke primbon. Mula-mula tentukan neptu weton
+      masing-masing calon — neptu dinanya ditambah neptu pasarannya, sebuah bilangan antara 7 dan 18
+      untuk setiap orang. Jumlahkan neptu keduanya: hasilnya berada antara 14, gabungan dua weton
+      berneptu 7, dan 36, gabungan dua weton berneptu 18. Jumlah itu kemudian dibagi delapan, dan yang
+      dibaca bukanlah hasil baginya, melainkan sisanya. Sisa 1 adalah Pegat, sisa 2 Ratu, sisa 3 Jodoh,
+      sisa 4 Topo, sisa 5 Tinari, sisa 6 Padu, sisa 7 Sujanan, dan apabila jumlahnya habis terbagi —
+      sisa 0 — golongannya adalah Pesthi. Karena jumlah yang mungkin hanya terdiri dari 23 bilangan
+      (14 sampai 36), persebarannya tidak genap: tujuh golongan masing-masing menampung tiga jumlah,
+      sedangkan Tinari hanya menampung dua, yaitu 21 dan 29, sebab jumlah berikutnya dalam barisnya, 37,
+      sudah melampaui jumlah terbesar yang dapat dibentuk oleh dua weton.
+    </p>
+    <table class="fakta">
+      <tbody>
+        <tr><th>Sisa 1 — Pegat</th><td class="angka">jumlah neptu 17, 25, 33</td></tr>
+        <tr><th>Sisa 2 — Ratu</th><td class="angka">jumlah neptu 18, 26, 34</td></tr>
+        <tr><th>Sisa 3 — Jodoh</th><td class="angka">jumlah neptu 19, 27, 35</td></tr>
+        <tr><th>Sisa 4 — Topo</th><td class="angka">jumlah neptu 20, 28, 36</td></tr>
+        <tr><th>Sisa 5 — Tinari</th><td class="angka">jumlah neptu 21, 29</td></tr>
+        <tr><th>Sisa 6 — Padu</th><td class="angka">jumlah neptu 14, 22, 30</td></tr>
+        <tr><th>Sisa 7 — Sujanan</th><td class="angka">jumlah neptu 15, 23, 31</td></tr>
+        <tr><th>Sisa 0 — Pesthi</th><td class="angka">jumlah neptu 16, 24, 32</td></tr>
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:2.2rem">Kedelapan Golongan, Satu per Satu</h2>
+
+    <h3 style="margin-top:1.6rem">1. Pegat — sisa 1 · jumlah 17, 25, 33</h3>
+    <p>
+      Pegat dalam bahasa Jawa berarti putus atau terpisah. Menurut primbon, pasangan Pegat dibaca perlu
+      mewaspadai hal-hal yang dapat memisahkan: tempat tinggal yang berjauhan karena pekerjaan,
+      kesalahpahaman yang dibiarkan mengendap, atau campur tangan pihak luar dalam urusan rumah tangga.
+      Dari kedelapan golongan, Pegat adalah yang paling sering disalahartikan sebagai larangan menikah —
+      padahal bacaan tradisinya adalah peringatan, bukan vonis. Nasihat yang melekat padanya bersifat
+      praktis: jagalah komunikasi tetap terbuka, selesaikan perselisihan pada hari itu juga, dan jangan
+      memberi ruang bagi orang ketiga untuk menengahi hal yang sebenarnya dapat dibicarakan berdua.
+      Para sesepuh kerap menambahkan bahwa pasangan yang sejak awal mengetahui titik rawannya justru
+      berkesempatan menjaganya dengan lebih sadar daripada pasangan yang merasa tidak mempunyai titik
+      rawan sama sekali.
+    </p>
+
+    <h3 style="margin-top:1.6rem">2. Ratu — sisa 2 · jumlah 18, 26, 34</h3>
+    <p>
+      Ratu berarti raja atau permaisuri: pasangan yang dimuliakan. Menurut tradisi, pasangan Ratu
+      digambarkan dihormati oleh lingkungannya — pendapatnya didengar, kehadirannya diperhitungkan, dan
+      rezekinya dilukiskan lapang. Bacaan ini pada dasarnya berbicara tentang kedudukan sosial:
+      keserasian kedua orang dipandang memancar keluar menjadi wibawa bersama di hadapan keluarga besar
+      dan masyarakat. Nasihat tradisinya berjalan seiring dengan gambaran itu. Kemuliaan adalah modal
+      yang harus dirawat, bukan dinikmati sambil lengah: pasangan Ratu dinasihati menjaga nama baik,
+      tetap rendah hati kepada tetangga dan kerabat, dan tidak memakai kedudukan untuk menekan orang
+      lain — sebab dalam pandangan primbon, wibawa yang disalahgunakan adalah wibawa yang sedang menuju
+      hilang.
+    </p>
+
+    <h3 style="margin-top:1.6rem">3. Jodoh — sisa 3 · jumlah 19, 27, 35</h3>
+    <p>
+      Jodoh adalah golongan yang namanya paling terang: menurut petungan, kedua orang ini memang
+      berjodoh. Tradisi melukiskannya sebagai pasangan yang serasi lahir dan batin — saling menerima
+      kekurangan masing-masing, tidak mudah terusik godaan dari luar, dan digambarkan rukun hingga tua.
+      Perlu dicatat cara primbon membingkainya: keserasian Jodoh adalah kecocokan dasar, bukan hubungan
+      yang selesai tanpa dirawat. Ia lebih mirip tanah yang subur; tanamannya tetap harus disiram.
+      Nasihat yang menyertainya karena itu bernada syukur dan penjagaan — jangan menganggap remeh
+      pasangan hanya karena awalnya terasa mudah, dan rawatlah kebiasaan-kebiasaan baik sejak masa awal
+      perkawinan, sebab dari situlah kerukunan yang panjang biasanya tumbuh.
+    </p>
+
+    <h3 style="margin-top:1.6rem">4. Topo — sisa 4 · jumlah 20, 28, 36</h3>
+    <p>
+      Topo berasal dari kata tapa: laku prihatin, menahan diri, dan berlatih menanggung kesulitan.
+      Menurut primbon, pasangan Topo digambarkan menjalani masa awal perkawinan yang berat — rezeki yang
+      sempit, tempat tinggal yang belum tetap, atau ujian yang datang dari keadaan keluarga — sebelum
+      keadaannya berbalik mapan pada paruh perjalanan berikutnya. Pola bacaannya meniru jalan tapa itu
+      sendiri: kesulitan di depan adalah tempaan, bukan akhir cerita. Karena itu nasihat tradisinya
+      bersifat menenangkan sekaligus menyiapkan. Keluarga yang menerima hasil Topo pada umumnya tidak
+      membatalkan rencana; mereka menyiapkan kedua calon untuk hidup hemat pada tahun-tahun pertama,
+      saling menguatkan, dan tidak membanding-bandingkan keadaan dengan pasangan lain yang berangkat
+      dari titik yang berbeda.
+    </p>
+
+    <h3 style="margin-top:1.6rem">5. Tinari — sisa 5 · jumlah 21 dan 29</h3>
+    <p>
+      Tinari berarti terbuka — pintu yang terbuka, jalan yang lapang. Menurut tradisi, pasangan Tinari
+      digambarkan mudah menemukan jalan keluar dari persoalan: rezekinya mengalir, kadang dari arah
+      yang tidak disangka-sangka, dan urusan rumah tangganya cenderung ringan untuk diselesaikan. Golongan
+      ini adalah satu-satunya yang hanya menampung dua jumlah neptu, 21 dan 29, lantaran barisan
+      bilangannya terpotong oleh batas terbesar jumlah dua weton. Nasihat yang melekat padanya adalah
+      nasihat bagi orang yang dimudahkan: bersyukur, tidak boros pada masa lapang, dan tidak menutup
+      pintu bagi orang lain yang membutuhkan. Dalam bacaan primbon, kemudahan adalah titipan — cara
+      mensyukurinyalah yang menentukan apakah pintu itu tetap terbuka.
+    </p>
+
+    <h3 style="margin-top:1.6rem">6. Padu — sisa 6 · jumlah 14, 22, 30</h3>
+    <p>
+      Padu berarti bertengkar atau berselisih paham. Menurut primbon, pasangan Padu adalah dua pribadi
+      yang sama-sama kuat pendiriannya, sehingga perdebatan kecil mudah membesar apabila tidak ada yang
+      bersedia mengalah lebih dulu. Golongan ini menampung jumlah neptu terkecil yang mungkin terbentuk,
+      yaitu 14 — gabungan dua weton berneptu 7 — sampai dengan 30. Bacaan Padu tidak pernah dimaksudkan
+      sebagai larangan; ia dibaca sebagai peta medan yang menunjukkan di titik mana pasangan ini akan
+      paling sering bergesekan. Nasihat tradisinya sangat konkret: sepakati cara menyelesaikan selisih
+      sejak sebelum menikah. Misalnya, persoalan tidak dibawa keluar rumah, tidak dibiarkan melewati
+      malam, dan ada kesepakatan giliran siapa yang mengalah lebih dulu. Pasangan yang mengetahui
+      dirinya Padu, kata para sesepuh, justru dapat bersiap lebih baik daripada pasangan yang tidak
+      mengetahui apa-apa tentang dirinya.
+    </p>
+
+    <h3 style="margin-top:1.6rem">7. Sujanan — sisa 7 · jumlah 15, 23, 31</h3>
+    <p>
+      Sujanan berasal dari kata sujan, yang berarti curiga. Menurut primbon, ujian utama pasangan
+      Sujanan adalah kepercayaan: rasa cemburu dan prasangka — yang kerap tumbuh dari kesalahpahaman
+      atau omongan pihak ketiga — dibaca sebagai hal yang paling perlu dijaga dalam rumah tangga mereka.
+      Golongan ini bukan gambaran tentang orang yang tidak setia; ia adalah peringatan tentang betapa
+      mudahnya prasangka tumbuh apabila komunikasi tertutup. Nasihat tradisinya menyasar akar persoalan
+      itu secara langsung: keterbukaan mengenai keuangan, pergaulan, dan waktu; kebiasaan memberi kabar
+      sebelum ditanya; dan kesepakatan untuk menanyakan langsung kepada pasangan — bukan kepada orang
+      lain — bila ada hal yang mengganjal di hati. Dengan keterbukaan yang dijaga sejak awal, ruang bagi
+      curiga menyempit dengan sendirinya.
+    </p>
+
+    <h3 style="margin-top:1.6rem">8. Pesthi — sisa 0 · jumlah 16, 24, 32</h3>
+    <p>
+      Pesthi berarti selaras, rukun, dan damai. Menurut tradisi, pasangan Pesthi digambarkan hidupnya
+      tentram: pertengkaran besar jarang terjadi, kedua pihak pandai mengalah secara bergantian, dan
+      rumah tangganya menjadi tempat yang menenangkan untuk pulang. Dalam banyak primbon, Pesthi
+      digolongkan di antara hasil yang paling baik, dengan alasan yang menarik — kerukunan dianggap
+      fondasi tempat keberuntungan lain berpijak; rezeki, kesehatan, dan keturunan yang baik dibaca
+      mengikuti kedamaian rumah, bukan sebaliknya. Nasihatnya bukan agar pasangan berpangku tangan:
+      kedamaian adalah hasil pekerjaan sehari-hari yang kecil-kecil — menyapa dengan baik, mendengar
+      sampai selesai, menyelesaikan ganjalan sebelum membesar — dan pekerjaan semacam itu tidak pernah
+      benar-benar selesai.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Contoh Terhitung: Jumat Legi + Kamis Pon</h2>
+    <p>
+      Ambil dua weton yang menjadi tanggal acuan almanak ini. Jumat Legi, weton hari Proklamasi 17
+      Agustus 1945, berneptu 6 + 5 = 11. Kamis Pon, weton tanggal 1 Januari 2026, berneptu 8 + 7 = 15.
+      Jumlahkan keduanya: 11 + 15 = 26. Bagi delapan: 26 sama dengan 8 × 3 + 2, jadi sisanya 2. Maka
+      menurut petungan, pasangan dengan kedua weton itu jatuh pada golongan Ratu — pasangan yang menurut
+      tradisi dimuliakan dan dihormati lingkungannya. Perhatikan bahwa yang menentukan golongan hanyalah
+      sisa pembagiannya: jumlah 18 dan 34 akan menghasilkan golongan yang sama persis, karena keduanya
+      juga bersisa 2 apabila dibagi delapan. Anda dapat memeriksa contoh ini, atau menghitung pasangan
+      Anda sendiri, pada perkakas Weton Jodoh yang tautannya tersedia di kaki tulisan ini.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Bukan Veto: Cara Hasil Dibaca pada Zaman Dulu</h2>
+    <p>
+      Kesaksian keluarga dan kebiasaan yang masih hidup menunjukkan bahwa hasil petungan hampir tidak
+      pernah berfungsi sebagai veto. Apabila hasilnya dibaca berat — Pegat, Padu, atau Sujanan — jalan
+      yang lazim diambil bukanlah membatalkan perkawinan, melainkan menjawabnya dengan laku: mengadakan
+      slametan untuk memohon keselamatan, memilih hari akad dan resepsi dengan perhitungan tersendiri,
+      serta meminta nasihat khusus dari sesepuh mengenai titik rawan yang ditunjukkan oleh golongan itu.
+      Dengan perkataan lain, petungan memulai percakapan tentang bagaimana perkawinan akan dijalani;
+      keputusan akhirnya tetap berada di tangan kedua keluarga dan kedua calon pengantin. Membaca
+      petungan sebagai vonis yang tidak dapat diganggu gugat adalah cara baca yang justru tidak dikenal
+      oleh tradisi yang melahirkannya sendiri.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Batas yang Jujur</h2>
+    <p>
+      Dua hal perlu dikatakan dengan terus terang untuk menutup uraian ini. Pertama, versi petungan ini
+      tidak tunggal: sebagian daerah membagi jumlah neptu dengan angka lain — tujuh atau sembilan —
+      dengan susunan golongan yang berbeda, dan ada pula primbon yang membaca golongan yang sama dengan
+      penekanan yang tidak persis sama. Perbedaan itu adalah hal yang wajar dalam tradisi yang hidup
+      dari lisan ke lisan dan dari kitab salinan ke kitab salinan; pakem yang dipakai di halaman ini
+      adalah pembagian delapan, yang paling umum ditemukan dalam primbon cetak. Kedua, hitungannya
+      sendiri bersifat persis dan dapat diperiksa oleh siapa pun — jumlah dan sisanya adalah aritmetika
+      biasa — sedangkan makna kedelapan golongan adalah warisan budaya: cara masyarakat Jawa zaman dulu
+      memberi bahasa kepada harapan dan kekhawatiran sebuah perkawinan. Almanak ini menyajikan keduanya
+      apa adanya, dan menyerahkan keputusan hidup kepada pembaca.
+    </p>
+
+    <h2 style="margin-top:2.6rem">Perkakas &amp; Bacaan Terkait</h2>
+    <ul class="daftar-isi">
+      <li>
+        <a href={u('/weton-jodoh/')}>
+          <span class="nama">Weton Jodoh</span>
+          <span class="ket">hitung golongan dari dua tanggal lahir</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/kalkulator-weton/')}>
+          <span class="nama">Kalkulator Weton</span>
+          <span class="ket">periksa neptu masing-masing weton</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u(`/blog/${b.slug}/`)}>
+          <span class="nama">{b.judul}</span>
+          <span class="ket">bacaan pendamping — dasar hitungan neptu</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+</Almanak>

@@ -1,0 +1,179 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { ARTIKEL } from '../../lib/blog.js';
+
+const daftarArtikel = Array.isArray(ARTIKEL) ? ARTIKEL : Object.values(ARTIKEL ?? {});
+const artikel = daftarArtikel.find((a) => a.slug === 'pawukon-siklus-210-hari') ?? {
+  slug: 'pawukon-siklus-210-hari',
+  judul: 'Pawukon: Siklus 210 Hari dan Tiga Puluh Wuku',
+  tanggal: '2026-11-07',
+  tanggalTampil: '7 November 2026',
+  ringkasan:
+    'Pawukon adalah putaran 210 hari berisi 30 wuku yang masing-masing tujuh hari: cara ia berjalin dengan weton 35 hari, legenda Watugunung, dan kehidupan pawukon di Bali dan Jawa hari ini.',
+};
+---
+<Almanak title={`${artikel.judul} | Wetonan`} description={artikel.ringkasan}>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Blog Almanak</p>
+    <h1>{artikel.judul}</h1>
+    <p class="kecil">{artikel.tanggalTampil} · Blog Almanak Wetonan</p>
+    <p class="huruf-awal">
+      Kalender Jawa yang disusun Sultan Agung berjalan mengikuti bulan, tetapi jauh sebelum kalender
+      itu ada, masyarakat Jawa dan Bali telah lebih dulu menghitung waktu dengan cara yang sama sekali
+      berbeda: bukan dari fase bulan, bukan dari musim, melainkan dari sebuah putaran hari yang berjalan
+      terus tanpa henti. Putaran itu bernama pawukon — 210 hari yang terbagi dalam tiga puluh pekan
+      bernama, disebut wuku, masing-masing tepat tujuh hari. Ia tidak mempunyai tahun baru, tidak
+      mengenal bulan, dan tidak pernah diatur ulang. Artikel ini menjelaskan cara kerjanya, cara ia
+      berjalin dengan weton yang jauh lebih terkenal, kisah asal-usulnya menurut legenda, dan mengapa
+      hingga hari ini pawukon masih menjadi penanggalan yang hidup — terutama di Bali.
+    </p>
+
+    <h2 style="margin-top:2rem">Apa Itu Pawukon?</h2>
+    <p>
+      Pawukon adalah hitungan tiga puluh wuku yang berjalan berurutan dan berputar terus: Sinta, Landep,
+      Wukir, Kurantil, Tolu, dan seterusnya sampai wuku ketiga puluh, Watugunung, lalu kembali lagi ke
+      Sinta. Setiap wuku adalah satu pekan tujuh hari yang selalu dimulai pada hari Minggu dan berakhir
+      pada hari Sabtu, sama seperti pekan Masehi. Tiga puluh pekan kali tujuh hari menghasilkan tepat
+      210 hari — satu putaran penuh pawukon. Karena hitungannya hanya bergantung pada urutan hari yang
+      tidak pernah terputus, pawukon tidak memerlukan aturan kabisat, tidak memerlukan pengamatan bulan,
+      dan tidak terpengaruh pergantian tahun Jawa maupun tahun Masehi. Ia adalah roda waktu yang paling
+      sederhana dan paling tua di antara seluruh sistem yang dipakai di situs ini.
+    </p>
+    <p>
+      Usia pawukon memang melampaui kalender Sultan Agung. Ketika kalender Jawa diselaraskan dengan
+      penanggalan Hijriah pada tahun 1633, pawukon sudah lama berjalan dan tidak diubah oleh penyusunan
+      baru itu; ia dibiarkan mengalir sejajar dengan kalender bulan yang baru, sebagaimana ia juga
+      mengalir sejajar dengan kalender Masehi yang datang belakangan. Warisan yang sama dirawat di dua
+      pulau: di Jawa ia bertahan terutama di dalam primbon dan almanak, sedangkan di Bali ia tetap
+      menjadi kerangka utama hari-hari raya dan upacara. Membaca pawukon berarti membaca lapisan waktu
+      yang lebih tua daripada hampir semua lembaga yang kini menaungi kehidupan Jawa dan Bali.
+    </p>
+    <p>
+      Setiap wuku dalam tradisi mempunyai namanya sendiri, dewa pelindungnya, dan gambaran wataknya —
+      pekan yang dalam bacaan primbon pawukon digambarkan ramai, pekan yang digambarkan sempit jalannya,
+      pekan yang digambarkan lapang. Gambaran-gambaran itu dibaca para penulis pawukon sebagai iklim
+      waktu yang dilalui bersama, bukan sebagai vonis atas nasib perorangan; daftar ringkas ketiga puluh
+      wuku beserta gambaran tradisinya dapat dibaca pada halaman <a href={u('/wuku/')}>Wuku</a> di situs
+      ini.
+    </p>
+
+    <h2 style="margin-top:2rem">Berjalin dengan Weton: Hitungan 35 di dalam 210</h2>
+    <p>
+      Keindahan pawukon tampak ketika ia diletakkan di samping weton. Sebagaimana diketahui, weton
+      adalah pertemuan putaran tujuh hari dengan putaran lima pasaran, sehingga weton yang sama berulang
+      setiap 7 × 5 = 35 hari. Angka 35 dan 210 berhubungan sangat rapi: 210 adalah tepat enam kali 35.
+      Akibatnya dapat diturunkan dengan hitungan sederhana. Weton yang sama selalu muncul kembali 35
+      hari kemudian — dan karena 35 hari tepat sama dengan lima pekan, weton itu selalu jatuh pada wuku
+      yang letaknya tepat lima wuku sesudah wuku kemunculan sebelumnya, pada urutan hari yang sama di
+      dalam pekannya. Jumat Kliwon, misalnya, akan selalu jatuh pada hari Jumat; tetapi wukunya terus
+      melompat lima langkah setiap kali ia datang.
+    </p>
+    <p>
+      Melompat lima wuku sebanyak enam kali membawa kita pada 30 wuku — satu putaran penuh. Itulah
+      sebabnya setiap weton muncul tepat enam kali dalam satu putaran pawukon, dan keenam kemunculan itu
+      selalu berada pada enam wuku yang berbeda-beda. Tidak ada weton yang mengunjungi wuku yang sama
+      dua kali dalam satu putaran. Setelah 210 hari, susunannya pulih persis seperti semula: weton dan
+      wuku yang pada hari pertama putaran bertemu, akan bertemu lagi dengan pasangan yang sama pada hari
+      pertama putaran berikutnya. Para penanggal lama sangat menghargai keteraturan ini, karena dengan
+      satu tanggal acuan saja mereka dapat menyusun tabel pertemuan weton dan wuku untuk waktu yang
+      sangat panjang tanpa takut hitungan bergeser.
+    </p>
+    <p>
+      Sisi lain dari keteraturan yang sama layak dicatat: karena 210 adalah kelipatan tujuh, setiap wuku
+      selalu dimulai pada hari Minggu yang sama dan setiap tanggal dalam pawukon selalu berpasangan
+      dengan hari pekan yang tetap. Yang berubah hanyalah pasaran dan bulannya. Pawukon dengan demikian
+      adalah satu-satunya lapisan penanggalan di situs ini yang tidak pernah "bergeser": bulan Jawa
+      bergeser terhadap musim, tahun Masehi bergeser terhadap bulan Jawa, tetapi roda 210 hari ini
+      berputar persis sama sejak dahulu sampai sekarang.
+    </p>
+
+    <h2 style="margin-top:2rem">Legenda Watugunung</h2>
+    <p>
+      Asal-usul pawukon diceritakan dalam legenda Watugunung, kisah yang dikenal luas dalam tradisi Jawa
+      dan Bali dan kerap dituturkan sebagai cerita asal-usul penanggalan. Menurut legenda itu, nama-nama
+      ketiga puluh wuku adalah nama-nama yang dikenang dari Watugunung beserta keluarganya — nama-nama
+      itu diabadikan menjadi nama pekan agar kisahnya tidak hilang ditelan waktu. Rangkaian wuku pun
+      dibaca seperti perjalanan sebuah keluarga besar: ia dibuka oleh Sinta, wuku pertama, dan ditutup
+      oleh Watugunung sendiri pada wuku ketiga puluh, seolah sang tokoh berjalan paling belakang
+      mengantar seluruh keluarganya menyelesaikan satu putaran.
+    </p>
+    <p>
+      Almanak ini menuturkan legenda itu sebagaimana kedudukannya: sebagai mitos asal-usul, bukan
+      catatan sejarah. Fungsinya dalam tradisi jelas dan tidak perlu dilebih-lebihkan — sebuah
+      masyarakat agraris yang harus menghafal tiga puluh nama pekan dalam urutan yang tidak boleh keliru
+      memerlukan jangkar ingatan, dan kisah keluarga Watugunung menyediakan jangkar itu. Bahwa nama
+      pembuka dan penutupnya masih dihafal anak-anak Bali yang belajar pawukon hingga hari ini
+      menunjukkan betapa berhasilnya cara bercerita itu bekerja selama berabad-abad.
+    </p>
+
+    <h2 style="margin-top:2rem">Pawukon yang Hidup di Bali</h2>
+    <p>
+      Di Bali, pawukon bukan peninggalan yang disimpan di dalam buku, melainkan kalender yang mengatur
+      kehidupan beragama sehari-hari. Hari raya terbesarnya, <strong>Galungan</strong>, jatuh pada hari
+      Rabu Wage dalam wuku Galungan — wuku kesebelas — dan karena ditentukan oleh pawukon, hari raya ini
+      berulang setiap 210 hari. Akibatnya Galungan tidak mempunyai tanggal Masehi yang tetap: dalam satu
+      tahun Masehi ia dapat jatuh dua kali, dan dari tahun ke tahun ia berjalan mengelilingi kalender
+      Masehi. Bagi masyarakat Bali hal ini lumrah; yang dijadikan patokan bukanlah bulan Masehi,
+      melainkan posisi roda pawukon, yang diketahui dari kalender Bali yang tergantung di hampir setiap
+      rumah.
+    </p>
+    <p>
+      Sepuluh hari sesudah Galungan, pada hari Sabtu Kliwon dalam wuku Kuningan, datang hari raya
+      <strong>Kuningan</strong> yang menutup rangkaian Galungan. Bahwa dua hari raya besar berjarak
+      tepat sepuluh hari — bukan sepekan, bukan dua pekan — adalah akibat langsung dari letak wuku dan
+      hari yang dituju masing-masing di dalam roda 210 hari. Di antara dan di sekeliling kedua hari raya
+      itu, pawukon Bali masih dipenuhi hari-hari suci yang lebih kecil, di antaranya hari-hari
+      <em>tumpek</em> yang berulang mengikuti pertemuan hari dan pasaran tertentu, masing-masing
+      dipersembahkan untuk bidang kehidupan yang berbeda. Seluruh rangkaian itu tidak satu pun ditentukan
+      oleh tanggal Masehi atau tanggal bulan; semuanya dibaca dari pawukon.
+    </p>
+    <p>
+      Wujud pawukon yang paling pribadi di Bali adalah <em>otonan</em>: upacara hari kelahiran seseorang
+      menurut pawukon, yaitu pada weton kelahirannya dalam wuku kelahirannya, yang berulang setiap 210
+      hari. Karena setahun Masehi berisi 365 hari, otonan datang jauh lebih sering daripada ulang tahun
+      Masehi — dalam sepuluh tahun, seseorang merayakan otonan sekitar tujuh belas kali, sementara ulang
+      tahun Masehinya hanya sepuluh kali. Perbandingan itu memperlihatkan perbedaan cara memandang
+      waktu: hari lahir tidak ditambatkan pada musim dan tanggal yang sama setiap tahun, melainkan pada
+      kedudukan seseorang di dalam roda hari yang terus berputar.
+    </p>
+
+    <h2 style="margin-top:2rem">Pawukon di Jawa Hari Ini</h2>
+    <p>
+      Di Jawa, pawukon menjalani kehidupan yang lebih sunyi tetapi tidak punah. Ia bertahan di dalam
+      primbon pawukon yang membaca watak dan iklim tiap wuku, dipakai untuk menimbang waktu baik bagi
+      berbagai keperluan bersama — misalnya menentukan hari memulai pekerjaan komunal atau menggelar
+      upacara desa — dan dicetak setiap tahun dalam almanak-almanak Jawa yang masih terbit dan dijual
+      sampai sekarang. Banyak keluarga tidak lagi menghitungnya sendiri, melainkan cukup membuka
+      almanak cetak atau, kini, almanak digital: kedudukan berubah, tetapi kebiasaan membuka halaman
+      pawukon sebelum mengambil keputusan bersama tetap berlanjut. Situs ini menempatkan diri dalam
+      kelanjutan itu — setiap tanggal yang kami sajikan selalu disertai wukunya, agar lapisan waktu yang
+      tua ini tetap terbaca di samping lapisan-lapisan yang lebih muda.
+    </p>
+
+    <h2 style="margin-top:2rem">Cara Situs Ini Menentukan Wuku</h2>
+    <p>
+      Karena pawukon tidak pernah diatur ulang, menentukannya hanya memerlukan satu jangkar yang
+      terverifikasi, lalu hitungan maju-mundur yang tidak terputus. Jangkar yang kami pakai adalah pekan
+      yang dimulai pada hari Minggu, 28 Desember 2025: pekan itu membuka wuku Kuruwelut. Dari jangkar
+      tersebut dapat diperiksa bahwa tanggal 1 Januari 2026 — Kamis Pon, 12 Rejeb 1959, tahun Dal —
+      berada di dalam wuku Kuruwelut, sesuai dengan kalender terbitan yang beredar. Dari titik itu
+      hitungan berjalan dalam langkah tujuh hari tanpa henti: tidak ada awal tahun yang mengaturnya
+      kembali ke Sinta, tidak ada bulan yang memotongnya. Siapa pun yang menghitung dari jangkar lain
+      yang benar akan tiba pada wuku yang sama untuk tanggal yang sama; dalam pawukon, perbedaan hasil
+      hampir selalu berarti jangkarnya yang berbeda, bukan rodanya.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Perkakas &amp; Bacaan Terkait</h2>
+    <ul>
+      <li><a href={u('/wuku/')}>Wuku &amp; Pawukon</a> — daftar lengkap 30 wuku dari Sinta sampai Watugunung beserta gambaran singkatnya menurut tradisi.</li>
+      <li><a href={u('/kalender-jawa/')}>Kalender Jawa</a> — setiap tanggal ditampilkan bersama weton, tanggal Jawa, windu, dan wukunya.</li>
+      <li><a href={u('/weton/rabu-wage/')}>Entri weton Rabu Wage</a> — weton yang pada wuku Galungan menjadi hari raya Galungan di Bali.</li>
+      <li><a href={u('/blog/malam-satu-suro/')}>Malam 1 Suro: Tradisi, Laku, dan Maknanya</a> — lapisan waktu yang lain: pergantian tahun bulan dalam tradisi Jawa.</li>
+    </ul>
+    <p class="kecil">
+      Gambaran watak tiap wuku dalam artikel ini adalah bacaan tradisi pawukon sebagaimana diwariskan
+      turun-temurun — bahan perenungan budaya, bukan ramalan tentang perjalanan hidup seseorang.
+    </p>
+  </section>
+</Almanak>

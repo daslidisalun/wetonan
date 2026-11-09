@@ -1,0 +1,492 @@
+---
+import Almanak from '../layouts/Almanak.astro';
+import { u } from '../lib/base.js';
+import {
+  BULAN_JAWA,
+  PANJANG_BULAN,
+  WINDU,
+  PANJANG_TAHUN_WINDU,
+  wetonFromJawa,
+  tahunJawaInfo,
+  panjangBulanJawa,
+  formatTanggalID,
+} from '../lib/jawa.js';
+
+const contoh = wetonFromJawa(12, 6, 1959); // Kamis Pon, 1 Januari 2026
+const info1959 = tahunJawaInfo(1959);
+const besar1959 = panjangBulanJawa(11, 1959);
+const infoAwal = `Tahun 1959 adalah tahun ${info1959.windu} — tahun wuntu (kabisat), ${info1959.panjang} hari; bulan Besar berumur ${besar1959} hari.`;
+
+const CATATAN_BULAN = [
+  'Bulan pembuka tahun; dari Asyura, diperingati dengan laku prihatin dan tirakat di banyak tempat.',
+  'Bulan kedua; serapan Safar, masa jeda sesudah Suro yang relatif tenang dalam penanggalan.',
+  'Bulan peringatan maulid Nabi; dari kata maulid, dirayakan dengan pengajian dan grebeg di keraton.',
+  'Secara harfiah berarti “setelah Mulud”; pasangan langsung bulan ketiga dalam urutan tahun.',
+  'Serapan Jumada al-Ula; bulan kelima yang menandai masuknya paruh kedua awal tahun.',
+  'Serapan Jumada al-Akhirah; menutup enam bulan pertama sebelum Rejeb tiba.',
+  'Serapan Rajab; termasuk bulan yang dihormati, masa persiapan batin menjelang Ruwah dan Poso.',
+  'Bulan nyadran; ziarah kubur, bersih desa, dan doa untuk leluhur menjelang bulan puasa.',
+  'Bulan puasa Ramadan; Poso berarti puasa itu sendiri, bulan paling khas dalam tahun Jawa.',
+  'Bulan Lebaran; Idulfitri jatuh pada awal bulan ini, diikuti halalbihalal dan sungkeman.',
+  'Disebut juga Sela atau Apit, karena posisinya mengapit di antara Sawal dan Besar.',
+  'Bulan Iduladha dan Grebeg Besar; satu-satunya bulan yang panjangnya berubah mengikuti kabisat.',
+];
+
+const faq = [
+  ['Mengapa tanggal 31 tidak ada dalam kalender Jawa?', 'Karena tidak ada bulan Jawa yang berumur 31 hari. Seluruh bulan berselang-seling 30 dan 29 hari mengikuti peredaran bulan yang sebenarnya — satu putaran bulan tampak dari bumi rata-rata berumur sekitar 29,5 hari, sehingga bulan kalender bulan pun hanya mungkin 29 atau 30 hari. Pilihan tanggal pada konverter ini karena itu berhenti pada angka 30, dan angka 30 itu sendiri pun tidak selalu sah: pada bulan yang berumur 29 hari, tanggal terakhir adalah 29. Bila Anda memasukkan tanggal 30 pada bulan 29 hari, konverter akan menolaknya dan menyebutkan panjang bulan yang benar untuk bulan dan tahun itu.'],
+  ['Apa itu tahun AJ?', 'AJ adalah singkatan Anno Javanico, yaitu penomoran tahun dalam sistem kalender Jawa yang dirumuskan Sultan Agung dari Mataram. Penomorannya meneruskan penomoran tahun Saka yang lama, sehingga tahun reformasi pada 1633 Masehi dicatat sebagai tahun 1555 AJ — dan dari titik itulah hitungan konverter ini berangkat. Tahun 1959 AJ, misalnya, adalah tahun yang sedang berjalan ketika 1 Januari 2026 tiba. Menuliskan “AJ” sesudah angka tahun membedakannya dengan tegas dari tahun Masehi dan tahun Hijriah, yang ketiganya dapat menunjuk masa yang sama dengan angka yang berbeda.'],
+  ['Mengapa bulan Besar kadang berumur 30 hari, kadang 29 hari?', 'Karena hari lebihan tahun kabisat selalu ditambahkan pada bulan terakhir. Dalam satu windu, tiga tahun berumur 355 hari — Ehe, Dal, dan Jimakir — dan kelebihan satu hari itu tidak disisipkan di tengah tahun, melainkan diletakkan pada Besar agar urutan dan panjang bulan-bulan sebelumnya tidak bergeser sama sekali. Akibatnya Besar berumur 30 hari pada tahun wuntu (kabisat) dan 29 hari pada lima tahun lainnya. Inilah satu-satunya pengecualian dalam pola selang-seling 30–29, dan keterangan di bawah formulir konverter selalu menunjukkan umur Besar untuk tahun yang sedang Anda pilih.'],
+  ['Bisakah mengonversi tahun sebelum 1555 AJ?', 'Secara aritmetika bisa diperpanjang ke belakang, tetapi hasilnya bukan catatan sejarah. Sistem Sultan Agung baru berlaku sejak 1 Suro 1555 AJ; tanggal Jawa untuk masa sebelum itu tidak pernah dipakai orang pada zamannya, karena penanggalan yang berlaku ketika itu adalah sistem Saka lama yang berbasis matahari. Konverter ini menerima tahun 1500 sampai 2100 agar perbandingan di sekitar titik awal tetap dapat dilakukan, namun angka untuk tahun sebelum 1555 harus dibaca sebagai perpanjangan hitungan (proleptis) — berguna untuk membandingkan dan belajar, bukan sebagai bukti bagaimana orang pada masa itu sendiri menanggalkan harinya.'],
+  ['Apa beda konverter ini dengan Kalkulator Weton?', 'Arah hitungnya berlawanan. Kalkulator Weton berangkat dari tanggal Masehi — misalnya tanggal lahir — lalu menunjukkan weton dan padanan tanggal Jawanya. Konverter ini berangkat dari sisi sebaliknya: Anda memasukkan tanggal Jawa yang tertulis pada catatan keluarga, prasasti, naskah, atau ingatan sesepuh, lalu memperoleh tanggal Masehi yang sepadan, lengkap dengan weton, neptu, windu, dan wukunya. Keduanya memakai jangkar, tabel bulan, dan tabel windu yang persis sama, sehingga hasil keduanya selalu dapat saling diperiksa: tanggal Masehi dari konverter ini, bila dimasukkan ke Kalkulator Weton, akan mengembalikan tanggal Jawa yang Anda mulai darinya.'],
+];
+---
+<Almanak
+  title="Konverter Jawa ke Masehi — Ubah Tanggal Jawa Menjadi Masehi | Wetonan"
+  description="Konverter Jawa ke Masehi: ubah tanggal, bulan, dan tahun Jawa menjadi tanggal Masehi lengkap dengan weton, neptu, windu, dan wuku — lengkap dan terperiksa."
+>
+  <style>
+    .lapangan input[type='number'] {
+      font-family: var(--mono);
+      font-size: 1rem;
+      padding: 10px 12px;
+      background: #fffdf6;
+      border: 1.5px solid var(--garis-tebal);
+      color: var(--tinta);
+      border-radius: 0;
+      min-width: 210px;
+      max-width: 100%;
+    }
+    /* Layar sempit: lepaskan min-width agar select bulan tidak meluber. */
+    @media (max-width: 560px) {
+      .lapangan select,
+      .lapangan input[type='number'] {
+        min-width: 0;
+        width: 100%;
+      }
+    }
+  </style>
+
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Bab II — Penanggalan</p>
+    <h1>Konverter Jawa ke Masehi</h1>
+    <p>
+      Banyak catatan lama di Jawa ditulis bukan dengan tanggal Masehi, melainkan dengan tanggal Jawa:
+      pada surat tanah, catatan kelahiran di sampul kitab keluarga, prasasti, sampai ingatan sesepuh
+      yang menyebut “lahir pada Rejeb tahun Dal”. Konverter ini membalik arah hitungan almanak kami —
+      masukkan tanggal, bulan, dan tahun Jawa, dan halaman ini akan menunjukkan tanggal Masehi yang
+      sepadan, lengkap dengan weton, neptu, tahun windu, dan wukunya. Seluruh hitungan dapat diperiksa
+      dengan tangan; cara kerjanya kami uraikan terbuka di bawah panel ini.
+    </p>
+  </section>
+
+  <section class="bungkus" style="margin-top:1.4rem">
+    <div class="panel-almanak">
+      <h2 style="font-size:1.5rem">Tanggal Jawa yang Dicari</h2>
+      <p class="subjudul">Tuliskan tanggal Jawa sebagaimana tertulis pada catatan — almanak akan membuka padanan Masehinya.</p>
+      <form class="form-baris" id="form-konverter">
+        <div class="lapangan">
+          <label for="konv-tanggal">Tanggal Jawa</label>
+          <select id="konv-tanggal">
+            {Array.from({ length: 30 }, (_, i) => i + 1).map((t) => (
+              <option value={t} selected={t === 12}>{t}</option>
+            ))}
+          </select>
+        </div>
+        <div class="lapangan">
+          <label for="konv-bulan">Bulan Jawa</label>
+          <select id="konv-bulan">
+            {BULAN_JAWA.map((b, i) => (
+              <option value={i} selected={i === 6}>{i + 1} — {b.nama} ({b.alt})</option>
+            ))}
+          </select>
+        </div>
+        <div class="lapangan">
+          <label for="konv-tahun">Tahun Jawa (AJ)</label>
+          <input type="number" id="konv-tahun" min="1500" max="2100" value="1959" step="1" required />
+        </div>
+        <button class="tombol" type="submit">Ubah ke Masehi</button>
+      </form>
+      <p id="konv-info-tahun" class="kecil tengah" style="margin:16px 0 0">{infoAwal}</p>
+      <div id="konverter-error" hidden role="alert" style="color:#a03a28;margin-top:16px;text-align:center;font-weight:600"></div>
+      <div id="hasil-konverter" class="entri" hidden></div>
+      <p class="kecil" style="margin:18px 0 0">
+        Nilai awal formulir adalah contoh termasyhur halaman ini — <strong>12 Rejeb 1959 AJ</strong> —
+        sehingga contoh itu tinggal satu ketukan saja: tekan “Ubah ke Masehi” dan hasilnya,
+        Kamis Pon, 1 Januari 2026, akan terbuka. Ganti angka-angkanya untuk tanggal Jawa lain
+        yang hendak Anda periksa.
+      </p>
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:3rem">
+    <p class="kicker">Cara Kerja</p>
+    <h2>Cara Kerja Konversi Balik</h2>
+    <p class="huruf-awal">
+      Mengubah tanggal Masehi menjadi tanggal Jawa berarti menghitung berapa hari telah berlalu sejak
+      sebuah titik awal, lalu membagi hari-hari itu ke dalam tahun, bulan, dan tanggal. Konversi balik
+      — yang dikerjakan halaman ini — adalah kebalikannya yang persis: tanggal Jawa diuraikan kembali
+      menjadi jumlah hari sejak titik awal yang sama, dan jumlah hari itu lalu dibaca sebagai tanggal
+      Masehi. Karena kedua arah memakai titik awal, tabel tahun, dan tabel bulan yang sama, keduanya
+      tidak mungkin berselisih: apa yang dihasilkan satu arah akan dikembalikan dengan tepat oleh arah
+      sebaliknya. Sifat bolak-balik inilah yang membuat konverter ini dapat diuji secara menyeluruh,
+      dan yang membedakannya dari sekadar menebak padanan dari tabel cetak yang terpotong.
+    </p>
+    <p>
+      Titik awalnya adalah <strong>1 Suro 1555 AJ</strong>, hari pertama sistem penanggalan yang
+      dirumuskan Sultan Agung dari Mataram pada 1633. Pada tahun itulah penanggalan lama yang berbasis
+      peredaran matahari diganti dengan penanggalan bulan yang selaras dengan kalender Hijriah, sambil
+      mempertahankan penomoran tahun Saka, nama-nama pasaran, siklus windu, dan pawukon yang khas Jawa.
+      Setiap tanggal Jawa sesudah titik itu — dan, secara perpanjangan hitungan, tanggal sebelum itu
+      pula — dapat dinyatakan sebagai satu angka tunggal: berapa hari sesudah 1 Suro 1555 hari itu
+      jatuh. Konversi pada dasarnya adalah soal menghitung angka tunggal tersebut dengan benar, sebab
+      begitu angka harinya diketahui, tanggal Masehinya mengikuti dengan sendirinya lewat hitungan hari
+      Gregorian yang baku, dan wetonnya mengikuti dari putaran lima dan tujuh hari yang tidak pernah
+      terputus.
+    </p>
+    <p>
+      Agar hitungannya tidak perlu berjalan tahun demi tahun, tahun-tahun dilompati dalam bongkahan
+      terbesarnya terlebih dahulu: <strong>windu</strong>. Satu windu adalah delapan tahun Jawa —
+      Alip, Ehe, Jimawal, Je, Dal, Be, Wawu, Jimakir — dan panjangnya selalu sama, yaitu
+      <span class="mono">2.835 hari</span>. Angka itu bukan perkiraan: lima tahun dalam windu berumur
+      354 hari dan tiga tahun kabisatnya berumur 355 hari, sehingga
+      5 × 354 + 3 × 355 = 1.770 + 1.065 = 2.835 hari tepat. Konverter pertama-tama menghitung berapa
+      windu penuh yang terkandung dalam selisih tahun dari 1555 sampai tahun yang dicari, mengalikannya
+      dengan 2.835, lalu menambahkan panjang tahun-tahun sisa di dalam windu terakhir satu demi satu
+      menurut urutannya. Panjang tiap tahun dalam windu tetap dan diketahui di muka: Alip 354 hari,
+      Ehe 355 hari, Jimawal 354 hari, Je 354 hari, Dal 355 hari, Be 354 hari, Wawu 354 hari, dan
+      Jimakir 355 hari. Tahun-tahun kabisat selalu berada pada kedudukan yang sama — tahun kedua,
+      kelima, dan kedelapan — sehingga tidak ada tahun yang perlu ditebak kabisat atau bukan; cukup
+      dilihat kedudukannya dalam windunya, seperti tahun 1959 yang berkedudukan kelima dan karena itu
+      adalah tahun Dal yang kabisat.
+    </p>
+    <p>
+      Sesudah awal tahun yang dicari ditemukan, hitungan bergerak ke bulan. Dua belas bulan Jawa
+      berselang-seling panjangnya mengikuti peredaran bulan: bulan ganjil dalam urutan — Suro,
+      Mulud, Jumadilawal, Rejeb, Poso, Dulkangidah — berumur 30 hari, dan bulan genap — Sapar,
+      Bakda Mulud, Jumadilakir, Ruwah, Sawal — berumur 29 hari. Satu-satunya pengecualian adalah bulan
+      terakhir, <strong>Besar</strong>: pada tahun biasa ia mengikuti pola bulan genap dan berumur
+      29 hari, tetapi pada tahun kabisat hari lebihan tahun itu ditambahkan kepadanya sehingga ia
+      berumur 30 hari. Peletakan hari lebihan di ujung tahun ini disengaja dan penting: bulan-bulan
+      sebelumnya tidak pernah bergeser, sehingga awal setiap bulan selain Besar selalu berada pada
+      jarak yang sama dari awal tahun, pada tahun kabisat maupun bukan. Konverter menambahkan panjang
+      bulan-bulan sebelum bulan yang dicari, lalu menambahkan tanggalnya dikurangi satu — dikurangi
+      satu karena tanggal 1 adalah hari pertama itu sendiri, bukan satu hari sesudahnya. Jumlah akhir
+      itulah angka hari yang kemudian dibaca sebagai tanggal Masehi, weton, dan wuku.
+    </p>
+    <p>
+      Tiga jangkar terbitan menjaga agar seluruh rantai hitungan ini tidak meleset. Jangkar pertama:
+      <strong>9 Poso 1876 AJ adalah Jumat Legi, 17 Agustus 1945</strong>, hari Proklamasi yang
+      wetonnya dicatat luas dalam sumber sejarah. Jangkar kedua:
+      <strong>1 Suro 1959 AJ adalah Jumat Kliwon, 27 Juni 2025</strong>, sesuai kalender resmi
+      Kementerian Agama RI. Jangkar ketiga adalah contoh yang diuraikan tuntas di bawah ini:
+      <strong>12 Rejeb 1959 AJ adalah Kamis Pon, 1 Januari 2026</strong>, dengan neptu 15 dan wuku
+      Kuruwelut. Bila salah satu saja dari rantai itu keliru — titik awal bergeser sehari, satu windu
+      salah dihitung, atau hari kabisat diletakkan pada bulan yang keliru — ketiga jangkar ini tidak
+      akan terpenuhi bersamaan. Ketiganya terpenuhi, dan konverter di halaman ini diuji bolak-balik
+      terhadap ribuan tanggal di antara tahun 1900 dan 2100 untuk memastikan tidak ada tanggal yang
+      hilang atau berulang dalam perjalanan pulang-perginya.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Contoh Terhitung: 12 Rejeb 1959</h2>
+    <p>
+      Berikut contoh yang sama dengan nilai awal formulir di atas, dihitung langkah demi langkah
+      dengan tangan, agar setiap angka dapat diperiksa tanpa mempercayai halaman ini begitu saja.
+      Tanggal yang dicari adalah <strong>12 Rejeb 1959 AJ</strong>. Rejeb adalah bulan ketujuh
+      (indeks keenam bila dihitung dari nol), dan tahun 1959 adalah tahun Dal.
+    </p>
+    <ol>
+      <li>
+        <strong>Hitung selisih tahun dari titik awal.</strong> 1959 − 1555 =
+        <span class="mono">404 tahun</span>. Inilah jarak dari 1 Suro 1555 sampai 1 Suro 1959,
+        dinyatakan dalam tahun Jawa penuh.
+      </li>
+      <li>
+        <strong>Pecah selisih itu menjadi windu dan sisa tahun.</strong> 404 tahun =
+        <span class="mono">50 windu</span> (400 tahun) ditambah <span class="mono">4 tahun</span>.
+        Lima puluh windu berumur 50 × 2.835 = <span class="mono">141.750 hari</span>.
+      </li>
+      <li>
+        <strong>Tambahkan empat tahun sisa menurut panjangnya.</strong> Empat tahun pertama dalam
+        windu adalah Alip 354 hari, Ehe 355 hari, Jimawal 354 hari, dan Je 354 hari, yang berjumlah
+        354 + 355 + 354 + 354 = <span class="mono">1.417 hari</span>. Dengan demikian 1 Suro 1959
+        jatuh pada jarak 141.750 + 1.417 = <span class="mono">143.167 hari</span> sesudah
+        1 Suro 1555. Perhatikan bahwa tahun 1959 sendiri belum ditambahkan di sini — yang dihitung
+        adalah awalnya; tahun kelima dalam windu, Dal, adalah tahun yang sedang berjalan, bukan
+        tahun yang sudah lewat.
+      </li>
+      <li>
+        <strong>Jalankan bulan-bulan sebelum Rejeb.</strong> Dari Suro sampai Jumadilakir terdapat
+        enam bulan: Suro 30, Sapar 29, Mulud 30, Bakda Mulud 29, Jumadilawal 30, dan Jumadilakir 29,
+        yang berjumlah 30 + 29 + 30 + 29 + 30 + 29 = <span class="mono">177 hari</span>. Jadi
+        1 Rejeb 1959 jatuh 177 hari sesudah 1 Suro 1959.
+      </li>
+      <li>
+        <strong>Tambahkan tanggalnya.</strong> Tanggal 12 berarti sebelas hari sesudah tanggal 1,
+        jadi tambahkan <span class="mono">11 hari</span>. Jumlah akhirnya adalah
+        143.167 + 177 + 11 = <span class="mono">143.355 hari</span> sesudah 1 Suro 1555.
+      </li>
+      <li>
+        <strong>Baca hasilnya.</strong> Hari ke-143.355 sesudah titik awal itu, bila dibaca dalam
+        kalender Gregorian, adalah <strong>1 Januari 2026</strong>. Putaran harinya memberi dina
+        Kamis dan putaran pasarannya memberi Pon, sehingga wetonnya <strong>Kamis Pon</strong>,
+        dengan neptu Kamis 8 + Pon 7 = <span class="mono">15</span>, dan pekan pawukonnya adalah
+        wuku <strong>Kuruwelut</strong>. Tahunnya Dal — tahun kabisat — sebagaimana mestinya untuk
+        tahun kelima dalam windu.
+      </li>
+    </ol>
+    <table class="fakta">
+      <tbody>
+        <tr><th>Hasil contoh</th><td><strong>{contoh.nama}</strong> — {formatTanggalID(contoh.gregorian.y, contoh.gregorian.m, contoh.gregorian.d)}</td></tr>
+        <tr><th>Tanggal Jawa</th><td>{contoh.jawa.tanggal} {contoh.jawa.bulan.nama} {contoh.jawa.tahun} AJ</td></tr>
+        <tr><th>Neptu</th><td class="angka">{contoh.hari.nama} {contoh.neptuHari} + {contoh.pasaran.nama} {contoh.neptuPasaran} = {contoh.neptu}</td></tr>
+        <tr><th>Tahun &amp; windu</th><td>{contoh.jawa.tahun} — tahun {contoh.jawa.windu} (tahun wuntu/kabisat, 355 hari)</td></tr>
+        <tr><th>Wuku</th><td>{contoh.wuku.nama}</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Silakan periksa contoh ini pada formulir di atas — nilai awalnya memang disetel pada tanggal
+      ini — dan periksa pula arah sebaliknya pada
+      <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a>: memasukkan 1 Januari 2026 di sana akan
+      mengembalikan 12 Rejeb 1959. Dua perkakas yang berangkat dari arah berlawanan dan bertemu pada
+      angka yang sama adalah cara paling sederhana untuk meyakinkan diri bahwa hitungannya utuh.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Dua Belas Bulan Jawa dan Panjangnya</h2>
+    <p>
+      Tabel berikut adalah bahan baku konversi dari sisi bulan. Bacalah dengan dua catatan. Pertama,
+      urutannya tetap dan tidak pernah bertukar tempat: konversi selalu berjalan dari Suro ke Besar.
+      Kedua, hanya baris terakhir yang berubah-ubah. Bila catatan lama Anda menyebut tanggal 30 Besar,
+      tanggal itu sendiri sudah memberi petunjuk tentang tahunnya — ia hanya mungkin ada pada tahun
+      Ehe, Dal, atau Jimakir. Sebaliknya, tanggal 29 Besar ada pada setiap tahun, kabisat maupun bukan.
+    </p>
+    <table class="fakta">
+      <tbody>
+        {BULAN_JAWA.map((b, i) => (
+          <tr>
+            <th>{i + 1}. {b.nama}</th>
+            <td>{PANJANG_BULAN[i]} hari{i === 11 ? ' — 30 hari pada tahun wuntu (kabisat)' : ''} — bersamaan bulan {b.alt}. {CATATAN_BULAN[i]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="kecil">
+      Catatan tentang Besar: pada tahun biasa (Alip, Jimawal, Je, Be, Wawu) Besar berumur 29 hari,
+      sehingga tahun itu genap 354 hari. Pada tahun wuntu (Ehe, Dal, Jimakir) Besar berumur 30 hari
+      dan tahun itu genap 355 hari. Keterangan tahun di bawah formulir konverter menyebutkan umur
+      Besar untuk tahun yang sedang dipilih, agar penolakan tanggal yang mustahil tidak mengejutkan.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Windu dalam Sekali Pandang</h2>
+    <p>
+      Karena kedudukan tahun dalam windu menentukan kabisat atau bukan — dan dengan itu menentukan
+      sah atau tidaknya tanggal 30 Besar serta jarak 1 Suro tahun berikutnya — tabel windu layak
+      ditampilkan utuh di halaman ini pula. Nama tahun yang Anda cari selalu tercantum pada hasil
+      konversi, berdampingan dengan angka tahun AJ-nya, persis sebagaimana sesepuh dahulu menyebut
+      tahun: bukan sekadar “1959”, melainkan “1959 Dal”.
+    </p>
+    <table class="fakta">
+      <tbody>
+        {WINDU.map((nama, i) => (
+          <tr>
+            <th>Tahun ke-{i + 1}: {nama}</th>
+            <td class="angka">{PANJANG_TAHUN_WINDU[i]} hari{PANJANG_TAHUN_WINDU[i] === 355 ? ' — tahun wuntu (kabisat); Besar berumur 30 hari' : ' — tahun biasa; Besar berumur 29 hari'}</td>
+          </tr>
+        ))}
+        <tr><th>Jumlah satu windu</th><td class="angka"><strong>2.835 hari</strong></td></tr>
+      </tbody>
+    </table>
+    <p>
+      Dari tabel ini pula terlihat mengapa tanggal Jawa bergeser terhadap tanggal Masehi. Tahun Jawa
+      rata-rata berumur 354 atau 355 hari, sekitar sebelas hari lebih pendek daripada tahun Gregorian.
+      Akibatnya 1 Suro selalu datang lebih awal dari tahun ke tahun: 1 Suro 1959 jatuh pada
+      27 Juni 2025, sedangkan 1 Suro 1960 — sesudah tahun Dal yang 355 hari itu berlalu — jatuh pada
+      17 Juni 2026. Konverter menangani pergeseran ini dengan sendirinya, karena ia tidak pernah
+      membaca “tanggal yang sama tahun lalu”, melainkan selalu menghitung hari dari titik awal.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Membaca Hasil Konversi</h2>
+    <p>
+      Hasil konversi disajikan sebagai entri almanak, dengan susunan yang sama seperti entri pada
+      perkakas lain di situs ini. Judulnya adalah weton hari itu — pertemuan dina dan pasaran — dan
+      baris di bawahnya adalah tanggal Masehinya dalam bentuk lengkap. Tabel faktanya kemudian
+      merinci kelima lapisan identitas hari itu: tanggal Masehinya, tanggal Jawanya sebagaimana Anda
+      masukkan (ditulis kembali dari hasil hitungan, bukan sekadar mengulang isian, agar kesalahan
+      ketik pada tahun atau bulan segera terlihat), perhitungan neptunya unsur demi unsur, tahun
+      beserta windunya, dan wukunya beserta kedudukan hari itu dalam pekan wuku tersebut. Dua tautan
+      menutup entri: tautan menuju halaman weton lengkapnya, yang memuat uraian tradisi weton itu,
+      dan tautan menuju Kalkulator Weton yang sudah terisi tanggal Masehi hasil konversi, agar arah
+      sebaliknya dapat diperiksa dalam satu ketukan. Bila keperluan Anda adalah tanggal lahir —
+      misalnya catatan Jawa dari seorang kakek yang weton dan tanggal Masehinya hendak dicocokkan
+      untuk dokumen keluarga — kedua tautan itulah jalan pemeriksaannya.
+    </p>
+    <p>
+      Perlu ditegaskan apa yang tidak dikerjakan konverter ini. Ia mengubah tanggal; ia tidak menilai
+      hari. Weton, neptu, dan wuku yang ditampilkan adalah keterangan penanggalan — bagian dari sistem
+      budaya yang diwariskan primbon — dan uraian watak yang mungkin Anda temukan lewat tautan weton
+      adalah bacaan tradisi, disajikan sebagai warisan budaya. Tanggal yang baik untuk keperluan
+      tertentu, dalam pemakaian adat, ditentukan keluarga dan sesepuh dengan pertimbangan yang jauh
+      lebih luas daripada sekadar padanan tanggal, dan keputusan hidup tidak sepatutnya digantungkan
+      pada hasil sebuah konversi kalender.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Batas Hari Magrib dan Perbedaan Hisab</h2>
+    <p>
+      Satu hal harus selalu diingat ketika memakai hasil konversi ini untuk keperluan malam hari:
+      dalam kalender Jawa — sama seperti kalender Hijriah — hari baru dimulai saat matahari terbenam,
+      saat magrib, bukan pada tengah malam. Padanan yang ditampilkan konverter ini adalah padanan
+      tanggal sipilnya: 1 Suro 1959 AJ bertepatan dengan Jumat, 27 Juni 2025. Namun karena hari Jawa
+      itu sudah dimulai sejak magrib sebelumnya, <em>malam 1 Suro</em> sesungguhnya telah dimulai
+      pada senja Kamis, 26 Juni 2025. Hal yang sama berlaku untuk setiap tanggal: peringatan,
+      slametan, atau laku yang melekat pada “malam” suatu tanggal Jawa selalu mendahului tanggal
+      Masehinya pada petang hari sebelumnya. Catatan keluarga yang ditulis pada malam hari dapat
+      karena itu tercatat satu hari lebih maju daripada catatan sipil untuk kejadian yang sama,
+      terutama untuk kelahiran dan kematian yang terjadi di antara magrib dan tengah malam. Bila
+      selisih semacam itu Anda temukan, besar kemungkinan bukan hitungannya yang keliru, melainkan
+      batas harinya yang berbeda.
+    </p>
+    <p>
+      Selisih satu hari juga dapat muncul dari sebab kedua: perbedaan hisab. Kalender Jawa adalah
+      kalender bulan, dan penentuan awal bulannya dalam sejarahnya tidak seragam di semua tempat dan
+      semua masa — ada yang berpegang pada hitungan tetap (hisab urfi) seperti yang dipakai sistem
+      Sultan Agung dan halaman ini, ada yang menyesuaikan dengan rukyat atau hisab hakiki untuk bulan
+      tertentu, dan ada penanggal daerah yang mempertahankan kebiasaan setempat. Konverter ini memakai
+      satu sistem yang konsisten dari ujung ke ujung — sistem Sultan Agung yang dikalibrasi terhadap
+      kalender resmi Kementerian Agama RI — sehingga seluruh tanggal di situs ini saling cocok satu
+      sama lain. Bila sumber lain memberi hasil berbeda satu hari untuk tanggal yang sama, periksalah
+      terlebih dahulu sistem mana yang dipakai sumber itu dan apakah catatan Anda berasal dari malam
+      hari; dalam pengalaman kami, hampir semua selisih yang dilaporkan pembaca terjawab oleh salah
+      satu dari dua hal tersebut, bukan oleh kesalahan pada roda wetonnya, yang berjalan tanpa pernah
+      terputus di semua sistem.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker tengah">Tanya Jawab</p>
+    <h2 class="tengah">Seputar Konverter Ini</h2>
+    <div class="faq">
+      {faq.map(([t, j]) => (
+        <details>
+          <summary>{t}</summary>
+          <p>{j}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker">Perkakas Terkait</p>
+    <h2>Perkakas Terkait</h2>
+    <p>
+      Konverter ini adalah satu dari beberapa perkakas penanggalan yang saling memeriksa di situs ini.
+      Pakailah perkakas di bawah ini untuk arah hitungan sebaliknya, untuk melihat padanan tanggal
+      dalam konteks satu bulan penuh, untuk memahami siklus yang melatarinya, atau untuk membuka
+      daftar seluruh perkakas yang tersedia.
+    </p>
+    <ul>
+      <li><a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> — arah sebaliknya: dari tanggal Masehi menuju weton, neptu, dan tanggal Jawa; tempat memeriksa hasil konverter ini.</li>
+      <li><a href={u('/kalender-jawa/')}>Kalender Jawa</a> — padanan tanggal Jawa–Masehi bulan demi bulan, untuk melihat hasil konversi di antara hari-hari tetangganya.</li>
+      <li><a href={u('/siklus-weton/')}>Siklus Weton</a> — putaran 35 hari pertemuan saptawara dan pasaran, serta bagaimana weton yang sama berulang dan diperingati sebagai selapanan.</li>
+      <li><a href={u('/perkakas/')}>Perkakas</a> — daftar seluruh perkakas almanak di Wetonan, dari petungan jodoh sampai penelusuran wuku dan hari baik.</li>
+    </ul>
+    <p class="kecil">
+      Seluruh perkakas di Wetonan memakai jangkar dan tabel yang sama, sehingga hasil satu perkakas
+      selalu dapat diperiksa pada perkakas lainnya. Isi situs ini disajikan sebagai warisan budaya —
+      bukan ramalan dan bukan nasihat untuk mengambil keputusan hidup.
+    </p>
+  </section>
+
+  <script>
+    import { wetonFromJawa, panjangBulanJawa, tahunJawaInfo, formatTanggalID, BULAN_JAWA } from '../lib/jawa.js';
+    import { u } from '../lib/base.js';
+
+    const form = document.getElementById('form-konverter');
+    const selTanggal = document.getElementById('konv-tanggal');
+    const selBulan = document.getElementById('konv-bulan');
+    const inpTahun = document.getElementById('konv-tahun');
+    const infoTahun = document.getElementById('konv-info-tahun');
+    const kotakError = document.getElementById('konverter-error');
+    const hasil = document.getElementById('hasil-konverter');
+
+    const pad2 = (n) => String(n).padStart(2, '0');
+
+    function bacaMasukan() {
+      return {
+        tanggal: Number(selTanggal.value),
+        bulanIdx: Number(selBulan.value),
+        tahun: Number(inpTahun.value),
+      };
+    }
+
+    function perbaruiInfoTahun() {
+      const { tahun } = bacaMasukan();
+      if (!Number.isFinite(tahun) || tahun === 0) {
+        infoTahun.textContent = '';
+        return;
+      }
+      const info = tahunJawaInfo(tahun);
+      const besar = panjangBulanJawa(11, tahun);
+      const sebutan = info.kabisat ? 'tahun wuntu (kabisat)' : 'tahun biasa';
+      infoTahun.textContent =
+        `Tahun ${tahun} adalah tahun ${info.windu} — ${sebutan}, ${info.panjang} hari; ` +
+        `bulan Besar berumur ${besar} hari.`;
+    }
+
+    function sembunyikanError() {
+      kotakError.hidden = true;
+      kotakError.textContent = '';
+    }
+
+    function padaPerubahan() {
+      perbaruiInfoTahun();
+      const { tanggal, bulanIdx, tahun } = bacaMasukan();
+      if (Number.isFinite(tahun) && tanggal <= panjangBulanJawa(bulanIdx, tahun)) {
+        sembunyikanError();
+      }
+    }
+
+    selTanggal.addEventListener('input', padaPerubahan);
+    selTanggal.addEventListener('change', padaPerubahan);
+    selBulan.addEventListener('input', padaPerubahan);
+    selBulan.addEventListener('change', padaPerubahan);
+    inpTahun.addEventListener('input', padaPerubahan);
+    inpTahun.addEventListener('change', padaPerubahan);
+    perbaruiInfoTahun();
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const { tanggal, bulanIdx, tahun } = bacaMasukan();
+      if (!Number.isFinite(tahun)) return;
+      const panjang = panjangBulanJawa(bulanIdx, tahun);
+      if (tanggal > panjang) {
+        const namaBulan = BULAN_JAWA[bulanIdx].nama;
+        kotakError.textContent =
+          `Tanggal ${tanggal} tidak ada pada bulan ${namaBulan} ${tahun} AJ — ` +
+          `bulan ${namaBulan} pada tahun ${tahun} hanya berumur ${panjang} hari. ` +
+          `Pilih tanggal 1 sampai ${panjang}.`;
+        kotakError.hidden = false;
+        hasil.hidden = true;
+        return;
+      }
+      sembunyikanError();
+      const w = wetonFromJawa(tanggal, bulanIdx, tahun);
+      const g = w.gregorian;
+      const iso = `${g.y}-${pad2(g.m)}-${pad2(g.d)}`;
+      const tglMasehi = formatTanggalID(g.y, g.m, g.d);
+      const tglJawa = `${w.jawa.tanggal} ${w.jawa.bulan.nama} ${w.jawa.tahun} AJ`;
+      hasil.innerHTML =
+        `<h3 class="entri-judul">${w.nama}</h3>` +
+        `<p class="entri-sub">${tglMasehi}</p>` +
+        `<table class="fakta"><tbody>` +
+        `<tr><th>Tanggal Masehi</th><td>${tglMasehi}</td></tr>` +
+        `<tr><th>Tanggal Jawa</th><td>${tglJawa}</td></tr>` +
+        `<tr><th>Neptu</th><td class="angka">${w.hari.nama} ${w.neptuHari} + ${w.pasaran.nama} ${w.neptuPasaran} = ${w.neptu}</td></tr>` +
+        `<tr><th>Tahun &amp; windu</th><td>${w.jawa.tahun} — tahun ${w.jawa.windu}${w.jawa.kabisat ? ' (tahun wuntu/kabisat, 355 hari)' : ' (354 hari)'}</td></tr>` +
+        `<tr><th>Wuku</th><td>${w.wuku.nama} — hari ke-${w.wuku.hariKe} dalam pekan wuku</td></tr>` +
+        `<tr><th>Tautan</th><td><a href="${u(`/weton/${w.slug}/`)}">Detail weton ${w.nama} →</a><br /><a href="${u(`/kalkulator-weton/?tgl=${iso}`)}">Periksa di Kalkulator Weton →</a></td></tr>` +
+        `</tbody></table>` +
+        `<p class="kecil"><em>Ingat batas magrib: hari Jawa ini dimulai sejak matahari terbenam pada petang hari sebelumnya dalam tanggal Masehi.</em></p>`;
+      hasil.hidden = false;
+      hasil.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  </script>
+</Almanak>

@@ -1,0 +1,302 @@
+---
+import Almanak from '../layouts/Almanak.astro';
+import { u } from '../lib/base.js';
+import { kalenderHTML } from '../lib/entri.js';
+import { wetonOf } from '../lib/jawa.js';
+
+const tahunIni = new Date().getFullYear();
+const awalIni = wetonOf(tahunIni, 1, 1);
+const teksJudulTahun = `Kalender tahun ${tahunIni} — 1 Januari ${tahunIni} adalah ${awalIni.nama}, bertepatan ${awalIni.jawa.tanggal} ${awalIni.jawa.bulan.nama} ${awalIni.jawa.tahun}, tahun ${awalIni.jawa.windu}`;
+const htmlTahunIni = Array.from({ length: 12 }, (_, i) =>
+  `<div class="bulan-tahun"><div class="bungkus-tabel">${kalenderHTML(tahunIni, i + 1, { tautan: false })}</div></div>`
+).join('');
+
+const faq = [
+  ['Mengapa 1 Suro berpindah-pindah tanggal Masehi?', 'Karena tahun Jawa mengikuti peredaran bulan dan hanya berumur 354 atau 355 hari, sedangkan tahun Masehi berumur 365 atau 366 hari. Selisih sekitar sebelas hari itu membuat setiap tanggal Jawa — termasuk 1 Suro — datang lebih awal pada tahun Masehi berikutnya. Buktinya berurutan: 1 Suro 1959 jatuh pada 27 Juni 2025, 1 Suro 1960 pada 17 Juni 2026, dan 1 Suro 1961 pada 6 Juni 2027. Dalam waktu sekitar 33 tahun, 1 Suro berjalan mengelilingi seluruh musim dan kembali kurang lebih ke tanggal semula. Jadi perpindahan itu bukan kekeliruan cetak, melainkan gerak alami penanggalan bulan.'],
+  ['Tahun Jawa apa saja yang terentang dalam satu tahun Masehi?', 'Biasanya dua, dan pada tahun tertentu dapat menyentuh tiga. Tahun 2026, misalnya, terentang pada dua tahun Jawa: sisa tahun 1959 Dal sampai 16 Juni, lalu tahun 1960 Be sejak 1 Suro pada 17 Juni 2026. Sentuhan tiga terjadi bila satu tahun Jawa yang utuh muat seluruhnya di dalam satu tahun Masehi — mungkin karena tahun Jawa yang terpanjang pun (355 hari) masih lebih pendek dari tahun Masehi yang terpendek (365 hari). Contohnya tahun 2008: ia dibuka pada 22 Besar 1940 Ehe, memuat tahun 1941 Jimawal secara utuh sejak 10 Januari, dan ditutup sudah memasuki 1 Suro 1942 Je pada 29 Desember. Kejadian seperti itu muncul kira-kira sekali dalam 32–33 tahun: 1943, 1976, 2008, lalu berikutnya 2041.'],
+  ['Berapa kali weton yang sama muncul dalam satu tahun?', 'Sepuluh atau sebelas kali. Weton berulang setiap 35 hari — hasil gabungan putaran pasaran lima hari dan pekan tujuh hari — sehingga dalam 365 hari sebuah weton muncul sepuluh kali penuh, dan kerap sebelas kali bila kemunculan pertamanya jatuh cukup awal di bulan Januari. Contohnya Jumat Pon pada tahun 2027 muncul sebelas kali: 1 Januari, 5 Februari, 12 Maret, 16 April, 21 Mei, 25 Juni, 30 Juli, 3 September, 8 Oktober, 12 November, dan 17 Desember. Tanggal-tanggal inilah yang dalam tradisi keluarga kerap ditandai sebagai hari weton berulang sepanjang tahun.'],
+  ['Bisakah kalender ini menampilkan tahun kelahiran orang tua atau kakek-nenek?', 'Bisa, selama tahunnya berada dalam rentang 1900–2100. Isi tahun kelahiran yang dicari pada panel di atas, dan kedua belas bulannya akan tersusun ulang lengkap dengan pasaran dan tanggal Jawa setiap harinya. Cara ini cocok untuk memeriksa kembali catatan keluarga lama — misalnya akta atau buku primbon yang hanya menyebut weton tanpa tanggal Masehi, atau sebaliknya. Bila yang dicari hanya satu tanggal tertentu, Kalkulator Weton lebih cepat; kalender tahunan ini lebih berguna bila Anda ingin melihat kedudukan tanggal itu di tengah bulan dan tahunnya.'],
+  ['Apakah tanggal pada hasil cetakan sama dengan kalender resmi?', 'Padanan tanggalnya mengikuti tanggal sipil resmi, sama seperti kalender Kementerian Agama RI, sehingga hasil cetak halaman ini dapat disandingkan dengan almanak resmi tahun berjalan. Satu hal yang tetap perlu diingat: hari Jawa dimulai saat matahari terbenam, bukan tengah malam. Karena itu peringatan yang melekat pada malam hari — malam 1 Suro adalah contoh paling dikenal — selalu dimulai pada senja tanggal Masehi sebelumnya, walaupun tanggal Jawanya sendiri tertulis pada hari berikutnya. Sebagian almanak cetak lama memakai varian hitungan lain dan dapat berbeda satu hari; perbedaan itu terletak pada padanan tanggal Jawanya, bukan pada putaran wetonnya.'],
+];
+---
+<Almanak
+  title="Kalender Jawa Tahunan — Satu Tahun Penuh dengan Pasaran & Tanggal Jawa | Wetonan"
+  description="Kalender Jawa tahunan: dua belas bulan Masehi dalam satu halaman, lengkap pasaran, neptu, dan tanggal Jawa. Pilih tahun 1900–2100 dan cetak untuk digantung."
+>
+  <section class="bungkus-sempit judul-halaman tanpa-cetak">
+    <p class="kicker">Bab III — Penanggalan</p>
+    <h1>Kalender Jawa Tahunan</h1>
+    <p>
+      Satu tahun Masehi penuh, dibuka bulan demi bulan dalam satu halaman: setiap tanggal lengkap
+      dengan pasaran, neptu weton, dan padanan tanggal Jawanya. Pilih tahun antara 1900 dan 2100,
+      telusuri kedua belas bulannya di layar, atau cetak seluruhnya untuk digantung di dinding —
+      persis sebagaimana almanak tahunan diperlakukan dari generasi ke generasi.
+    </p>
+  </section>
+
+  <section class="bungkus tanpa-cetak" style="margin-top:1.4rem">
+    <div class="panel-almanak">
+      <h2 style="font-size:1.5rem">Pilih Tahun</h2>
+      <p class="subjudul">Kedua belas bulan akan disusun ulang untuk tahun yang dipilih.</p>
+      <form class="form-baris" id="form-tahunan">
+        <div class="lapangan">
+          <label for="tahun-tahunan">Tahun Masehi</label>
+          <input type="number" id="tahun-tahunan" min="1900" max="2100" step="1" value={tahunIni} required />
+        </div>
+        <button class="tombol" type="submit">Tampilkan</button>
+        <button class="tombol sekunder" id="cetak-tahunan" type="button">Cetak Kalender</button>
+      </form>
+      <p class="kecil tengah" style="margin-top:14px">
+        Rentang yang diterima: 1900–2100. Tombol cetak menyembunyikan masthead, panel ini, dan
+        kolofon, lalu membagi kedua belas bulan utuh per halaman kertas.
+      </p>
+    </div>
+  </section>
+
+  <div class="bungkus">
+    <p id="judul-tahun">{teksJudulTahun}</p>
+  </div>
+  <div id="wadah-tahunan" class="bungkus" set:html={htmlTahunIni}></div>
+
+  <section class="bungkus-sempit" style="margin-top:3rem">
+    <p class="kicker">Almanak Dinding</p>
+    <h2>Satu Tahun di Satu Dinding</h2>
+    <p class="huruf-awal">
+      Jauh sebelum penanggalan berpindah ke layar telepon, tahun orang Jawa tinggal di dinding.
+      Almanak tahunan — lembaran besar atau buku tipis yang dibeli di pasar, di warung, atau dari
+      penjaja keliling menjelang tahun baru — digantung dengan seutas tali atau paku kecil di ruang
+      tengah, di dapur, atau di samping pintu, lalu dibiarkan di sana selama dua belas bulan penuh.
+      Dari lembaran itulah satu rumah tangga membaca perjalanan tahunnya: kapan hari pasaran desa
+      sendiri, kapan weton masing-masing anggota keluarga berulang, kapan musim tanam diperkirakan
+      mulai, dan kapan hari-hari besar bulan Jawa — Suro, Mulud, Poso, Besar — akan tiba. Almanak
+      dinding bukan hiasan; ia perkakas rumah tangga, setara pentingnya dengan perkakas dapur.
+    </p>
+    <p>
+      Di samping almanak dinding, banyak keluarga menyimpan <strong>primbon tahunan</strong>: buku
+      kecil berisi uraian tahun yang sedang berjalan menurut windunya, bulan demi bulan, lengkap
+      dengan petungan hari untuk berbagai keperluan — memulai membangun rumah, membuka usaha,
+      menggelar hajatan, atau bepergian jauh. Almanak memberi kerangkanya, primbon memberi tafsirnya.
+      Keduanya dipakai berdampingan dan sama-sama diperlakukan hati-hati: lembaran tahun yang sudah
+      lewat jarang dibuang begitu saja. Banyak keluarga melipatnya dan menyimpannya bersama buku
+      primbon atau catatan keluarga, sebab di pinggir-pinggirnya telah telanjur tertulis hal-hal yang
+      tidak tercatat di tempat lain — tanggal kelahiran anak yang ditandai lingkaran, hari
+      meninggalnya orang tua, atau catatan kecil tentang panen dan utang-piutang musim itu.
+    </p>
+    <p>
+      Kebiasaan menandai itulah yang membuat almanak cetak bersifat sangat pribadi. Dua keluarga
+      dapat menggantung almanak edisi yang sama persis, tetapi di akhir tahun tidak ada dua lembar
+      yang isinya sama: yang satu penuh lingkaran merah pada weton anak-anaknya, yang lain penuh
+      coretan pada hari-hari pasar dan tanggal jatuh tempo. Halaman ini meneruskan kebiasaan
+      tersebut dalam bentuk digital. Seluruh tahun tampil sekaligus — bukan bulan demi bulan yang
+      harus dibolak-balik — agar kedudukan setiap tanggal di dalam tahunnya terlihat sekilas:
+      seberapa jauh jarak weton berikutnya, di bulan apa 1 Suro jatuh tahun ini, dan bagaimana
+      tanggal-tanggal Jawa bergeser dari bulan ke bulan. Dan bila Anda ingin mengembalikan
+      kalender ini ke tempat asalnya, tombol cetak di atas akan menyusunnya kembali menjadi
+      lembaran-lembaran kertas yang siap digantung dan ditandai dengan tangan.
+    </p>
+
+    <p class="kicker" style="margin-top:2.4rem">Membaca Tabel</p>
+    <h2>Cara Membaca Setiap Sel</h2>
+    <p>
+      Setiap sel pada kedua belas tabel memuat tiga lapis keterangan, dibaca dari yang terbesar ke
+      yang terkecil. Lapis pertama adalah <strong>angka besar tanggal Masehi</strong> — tanggal
+      resmi yang dipakai catatan sipil, sekolah, dan kantor. Lapis kedua, tepat di bawahnya, adalah
+      <strong>nama pasaran beserta neptu weton hari itu</strong>, ditulis ringkas seperti
+      <span class="mono">Pon · n13</span>: pasarannya Pon, dan angka sesudah huruf n adalah jumlah
+      neptu dina dan pasaran pada hari itu. Dari baris inilah weton suatu tanggal terbaca tanpa
+      membuka halaman lain — untuk tanggal yang pasarannya Pon dan dinanya Jumat, misalnya, wetonnya
+      adalah Jumat Pon. Lapis ketiga, yang terkecil, adalah <strong>tanggal dan bulan Jawa</strong>,
+      seperti <span class="mono">22 Rejeb</span>.
+    </p>
+    <p>
+      Ketiga lapis itu dapat diperiksa pada sel pertama tahun 2027. Tanggal
+      <strong>1 Januari 2027</strong> tertulis dengan angka besar 1; di bawahnya
+      <span class="mono">Pon · n13</span> — pasaran Pon dengan neptu weton 13, hasil penjumlahan
+      neptu Jumat 6 dan neptu Pon 7, sehingga weton hari itu adalah Jumat Pon; dan di baris terbawah
+      <span class="mono">22 Rejeb</span>, artinya tanggal Jawa hari itu adalah 22 Rejeb 1960, tahun
+      Be. Kepala setiap tabel membantu orientasi yang sama pada skala bulan: keterangan
+      <em>“Januari 2027 — bertepatan Rejeb – Ruwah 1960 AJ (Be)”</em> memberitahu bahwa bulan
+      Januari itu terentang pada akhir bulan Rejeb dan awal bulan Ruwah tahun 1960 Anno Javanico.
+      Satu bulan Masehi memang hampir selalu memuat ujung satu bulan Jawa dan pangkal bulan
+      berikutnya, sebab panjang keduanya tidak pernah sama.
+    </p>
+    <p>
+      Dua tanda lain patut dikenali. Tanggal hari berjalan diberi latar <strong>merah bata</strong>
+      secara otomatis, agar posisi “hari ini” di tengah tahun mudah ditemukan sekilas pandang —
+      pada hasil cetak tanda ini tetap tercetak pada tanggal yang sama. Adapun sel-sel di halaman
+      ini, berbeda dengan kalender bulanan, sengaja tidak dibuat sebagai tautan: tujuannya adalah
+      lembaran tahunan yang bersih untuk dibaca dan dicetak, sedangkan penelusuran satu tanggal
+      secara mendalam — lengkap dengan wuku dan uraian wetonnya — disediakan oleh Kalkulator Weton
+      dan Kalender Jawa bulanan yang tautannya ada di kaki halaman ini.
+    </p>
+
+    <p class="kicker" style="margin-top:2.4rem">Gerak Tahun Jawa</p>
+    <h2>Mengapa Tanggal Jawa Bergeser Sebelas Hari Setiap Tahun</h2>
+    <p>
+      Pembaca yang membandingkan kalender tahunan ini dari tahun ke tahun akan segera menangkap
+      satu gerak yang teratur: tanggal-tanggal Jawa selalu datang <strong>lebih awal</strong> pada
+      tahun Masehi berikutnya. Penyebabnya sederhana dan murni soal panjang. Tahun Jawa mengikuti
+      peredaran bulan: dua belas bulan yang berumur berselang-seling 30 dan 29 hari menghasilkan
+      tahun sepanjang <strong>354 hari</strong>, atau <strong>355 hari</strong> pada tahun wuntu
+      (kabisat) — Ehe, Dal, dan Jimakir dalam setiap windu — ketika bulan terakhir, Besar, berumur
+      30 hari. Tahun Masehi mengikuti peredaran matahari dan berumur <strong>365 hari</strong>, atau
+      <strong>366 hari</strong> pada tahun kabisatnya. Selisih kedua sistem itu berkisar antara
+      sepuluh dan dua belas hari, dan dalam hitungan sehari-hari dibulatkan menjadi pergeseran
+      sekitar <strong>sebelas hari lebih awal setiap tahun</strong>.
+    </p>
+    <p>
+      Gerak itu paling mudah dilihat pada tanggal yang paling ditandai orang Jawa: 1 Suro. Tahun
+      baru Jawa 1959 jatuh pada <strong>27 Juni 2025</strong>; 1 Suro 1960 jatuh pada
+      <strong>17 Juni 2026</strong>, sepuluh hari lebih awal; dan 1 Suro 1961 jatuh pada
+      <strong>6 Juni 2027</strong>, sebelas hari lebih awal lagi. Perbedaan sepuluh dan sebelas itu
+      bukan ketidakberesan — ia mengikuti panjang tahun Jawa yang sedang berjalan dan kedudukan
+      29 Februari Masehi di antaranya. Dalam skala yang lebih panjang, pergeseran ini terakumulasi:
+      satu windu Jawa berumur 2.835 hari, sedangkan delapan tahun Masehi berumur 2.922 hari, sehingga
+      setiap windu tanggal Jawa mendahului sekitar 87 hari dari kedudukan semula. Setelah kurang
+      lebih 33 tahun Masehi, 1 Suro — dan bersamanya bulan Poso serta seluruh tanggal Jawa lainnya —
+      telah berjalan mengelilingi semua musim dan kembali kurang lebih ke tanggal Masehi yang sama.
+      Itulah sebabnya kakek-nenek kita dapat mengingat 1 Suro yang jatuh di musim hujan, sedangkan
+      cucu-cucunya mengalaminya di tengah musim kemarau: keduanya benar, hanya terpisah oleh gerak
+      lambat penanggalan bulan.
+    </p>
+    <p>
+      Konsekuensi praktisnya terasa langsung pada halaman ini. Karena tahun Masehi selalu lebih
+      panjang daripada tahun Jawa, satu tahun Masehi tidak pernah memuat hanya satu tahun Jawa: ia
+      selalu terentang pada <strong>dua tahun Jawa</strong> — sisa tahun lama di bulan-bulan awal
+      dan tahun baru sejak 1 Suro di pertengahan tahun — dan pada tahun tertentu bahkan menyentuh
+      tiga, sebagaimana diuraikan pada tanya jawab di bawah. Nomor tahun Jawa pun bertambah lebih
+      cepat daripada nomor tahun Masehi: dalam rentang panjang, setiap 33 tahun Masehi memuat
+      sekitar 34 tahun Jawa. Kalender tahunan memperlihatkan semua itu tanpa perlu dihafalkan,
+      cukup dengan membuka dua tahun yang berurutan dan membandingkan kedudukan 1 Suro-nya.
+    </p>
+
+    <p class="kicker" style="margin-top:2.4rem">Dari Layar ke Dinding</p>
+    <h2>Mencetak dan Menandai Weton Keluarga</h2>
+    <p>
+      Hasil cetak halaman ini dirancang meniru almanak dinding yang disebut di atas. Tombol
+      <strong>Cetak Kalender</strong> pada panel pilihan tahun memanggil dialog cetak peramban
+      dengan lembar gaya khusus: masthead, panel pilihan, dan kolofon disembunyikan, latar kertas
+      diganti putih bersih, dan setiap tabel bulan dijaga agar <strong>tidak terpotong di tengah
+      halaman</strong> — satu bulan utuh dalam satu halaman atau berpindah seluruhnya ke halaman
+      berikutnya. Di layar, kedua belas bulan tersusun berurutan ke bawah; di kertas, susunan yang
+      sama berubah menjadi setumpuk lembaran satu tahun. Gunakan kertas A4 dari pengaturan cetak
+      peramban Anda; untuk menggantungnya sebagai satu rangkaian di dinding, lembaran-lembaran itu
+      dapat disambung berurutan dari Januari di paling atas sampai Desember di paling bawah.
+    </p>
+    <p>
+      Setelah tercetak, pekerjaan yang sesungguhnya baru dimulai: menandainya. Cara yang dianjurkan
+      keluarga-keluarga pemakai almanak dinding dapat ditiru langkah demi langkah. Pertama, buat
+      dulu daftar weton seluruh anggota keluarga — untuk yang tanggal lahirnya hanya diketahui
+      Masehinya, cari wetonnya lewat Kalkulator Weton. Kedua, lingkari tanggal kelahiran
+      masing-masing orang pada bulan kelahirannya. Ketiga, tandai pula <strong>perulangan weton
+      yang sama sepanjang tahun itu</strong>: karena weton berputar setiap 35 hari, dari satu
+      lingkaran pada bulan Januari Anda dapat melompat 35 hari demi 35 hari dan menandai seluruh
+      kemunculannya sampai Desember — sepuluh atau sebelas tanggal untuk setiap orang. Keempat,
+      tandai hari-hari yang berlaku untuk seluruh rumah: 1 Suro, awal dan akhir bulan Poso, hari
+      pasaran desa atau pasar terdekat, serta tanggal-tanggal hajatan yang sudah direncanakan.
+    </p>
+    <p>
+      Dua kiat kecil menjaga lembaran itu awet setahun penuh. Gunakan <strong>pensil</strong> untuk
+      rencana yang masih dapat berubah dan pulpen hanya untuk yang sudah pasti, agar coretan tidak
+      menumpuk dan tahun berikutnya Anda tahu mana catatan yang berlaku tetap. Dan bila tahun
+      berganti, jangan langsung membuang lembaran lama: lipat dan simpan bersama catatan keluarga.
+      Seperti almanak dinding masa lalu, nilai terbesar kalender tahunan ini di akhir tahun justru
+      terletak pada tanda-tanda yang Anda tambahkan sendiri di atasnya — ia berhenti menjadi produk
+      cetak dan mulai menjadi arsip keluarga.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker tengah">Tanya Jawab</p>
+    <h2 class="tengah">Seputar Kalender Tahunan</h2>
+    <div class="faq">
+      {faq.map(([t, j]) => (
+        <details>
+          <summary>{t}</summary>
+          <p>{j}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <h2>Perkakas Terkait</h2>
+    <ul>
+      <li><a href={u('/kalender-jawa/')}>Kalender Jawa</a> — penanggalan bulan demi bulan: berpindah bulan satu per satu dan ketuk tanggal mana pun untuk membuka entri wetonnya.</li>
+      <li><a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> — cari weton, neptu, tanggal Jawa, dan wuku dari satu tanggal lahir atau tanggal apa pun.</li>
+      <li><a href={u('/konverter-jawa/')}>Konverter Jawa</a> — ubah tanggal Jawa ke Masehi dan sebaliknya secara langsung, tanpa menelusuri tabel.</li>
+      <li><a href={u('/perkakas/')}>Perkakas</a> — indeks seluruh perkakas Wetonan dalam satu halaman.</li>
+    </ul>
+    <p class="kecil">
+      Kalender ini disajikan sebagai warisan budaya dan bahan perenungan tradisi. Penanggalan serta
+      petungan di dalamnya adalah bacaan primbon sebagaimana diwariskan turun-temurun — bukan
+      ramalan dan bukan pula dasar kepastian untuk mengambil keputusan hidup.
+    </p>
+  </section>
+
+  <style is:global>
+    .bulan-tahun { margin-bottom: 2.4rem; }
+    #judul-tahun {
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      text-align: center;
+      border-top: 1px solid var(--garis-tebal);
+      border-bottom: 1px solid var(--garis-tebal);
+      padding: 8px 10px;
+      margin: 1.6rem 0 0.4rem;
+    }
+    .lapangan input[type='number'] {
+      font-family: var(--mono);
+      font-size: 1rem;
+      padding: 10px 12px;
+      background: #fffdf6;
+      border: 1.5px solid var(--garis-tebal);
+      border-radius: 0;
+      color: var(--tinta);
+      min-width: 160px;
+      max-width: 100%;
+    }
+    @media print {
+      .masthead, .kolofon, .tanpa-cetak { display: none !important; }
+      body { background: #fff !important; }
+      body::before { display: none !important; }
+      .bungkus { max-width: none; padding: 0 4px; }
+      table.kalender { min-width: 0; font-size: 9.5pt; }
+      .bulan-tahun { break-inside: avoid; page-break-inside: avoid; margin-bottom: 18px; }
+    }
+  </style>
+
+  <script>
+    import { kalenderHTML } from '../lib/entri.js';
+    import { wetonOf } from '../lib/jawa.js';
+
+    const wadah = document.getElementById('wadah-tahunan');
+    const judul = document.getElementById('judul-tahun');
+    const masukan = document.getElementById('tahun-tahunan');
+
+    function teksJudul(tahun) {
+      const w = wetonOf(tahun, 1, 1);
+      return `Kalender tahun ${tahun} — 1 Januari ${tahun} adalah ${w.nama}, bertepatan ${w.jawa.tanggal} ${w.jawa.bulan.nama} ${w.jawa.tahun}, tahun ${w.jawa.windu}`;
+    }
+
+    function tampil(tahun) {
+      let html = '';
+      for (let m = 1; m <= 12; m++) {
+        html += `<div class="bulan-tahun"><div class="bungkus-tabel">${kalenderHTML(tahun, m, { tautan: false })}</div></div>`;
+      }
+      wadah.innerHTML = html;
+      judul.textContent = teksJudul(tahun);
+    }
+
+    document.getElementById('form-tahunan').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const n = Number(masukan.value);
+      if (!Number.isFinite(n)) return;
+      const tahun = Math.min(2100, Math.max(1900, Math.trunc(n)));
+      masukan.value = tahun;
+      tampil(tahun);
+    });
+    document.getElementById('cetak-tahunan').addEventListener('click', () => window.print());
+  </script>
+</Almanak>

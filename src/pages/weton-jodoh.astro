@@ -1,9 +1,45 @@
 ---
 import Almanak from '../layouts/Almanak.astro';
 import { JODOH_DESKRIPSI } from '../lib/konten.js';
+import { u } from '../lib/base.js';
 
 const urutan = ['Pegat', 'Ratu', 'Jodoh', 'Topo', 'Tinari', 'Padu', 'Sujanan', 'Pesthi'];
 const sisaLabel = { Pegat: 1, Ratu: 2, Jodoh: 3, Topo: 4, Tinari: 5, Padu: 6, Sujanan: 7, Pesthi: 0 };
+
+const JODOH_RINCI = {
+  Pegat: {
+    hitung: 'Secara hitungan, Pegat muncul bila jumlah neptu berdua adalah 17, 25, atau 33 — ketiganya bersisa 1 bila dibagi delapan. Contohnya Senin Wage (4 + 4 = 8) ditambah Minggu Wage (5 + 4 = 9) menjadi 17; 17 ÷ 8 = 2 sisa 1, jadi Pegat.',
+    budaya: 'Menanggapi hasil ini, keluarga tempo dulu umumnya tidak membatalkan rencana. Yang lazim dilakukan adalah menggelar slametan mohon keselamatan dan menasihati pasangan agar sejak awal menjaga komunikasi, supaya persoalan kecil tidak dibiarkan mengendap.',
+  },
+  Ratu: {
+    hitung: 'Ratu muncul bila jumlah neptu berdua adalah 18, 26, atau 34 — ketiganya bersisa 2 bila dibagi delapan. Contohnya Jumat Legi (11) ditambah Kamis Pon (15) menjadi 26; 26 ÷ 8 = 3 sisa 2, jadi Ratu. Contoh yang sama diuraikan langkah demi langkah di bawah.',
+    budaya: 'Hasil Ratu biasanya disambut dengan syukur sederhana, bukan pesta besar. Sesepuh kerap mengingatkan bahwa kedudukan yang dihormati lingkungan justru perlu dijaga: pasangan dinasihati tetap rendah hati dan tidak memakai wibawanya untuk menekan orang lain.',
+  },
+  Jodoh: {
+    hitung: 'Jodoh muncul bila jumlah neptu berdua adalah 19, 27, atau 35 — ketiganya bersisa 3 bila dibagi delapan. Contohnya Minggu Wage (5 + 4 = 9) ditambah Minggu Legi (5 + 5 = 10) menjadi 19; 19 ÷ 8 = 2 sisa 3, jadi Jodoh.',
+    budaya: 'Bagi keluarga, hasil Jodoh sering menjadi penguat untuk melanjutkan ke lamaran tanpa keraguan berlebih. Perhatian kemudian beralih ke hal praktis — memilih hari baik untuk akad dan resepsi — karena kecocokan dasarnya sudah dibaca serasi menurut tradisi.',
+  },
+  Topo: {
+    hitung: 'Topo muncul bila jumlah neptu berdua adalah 20, 28, atau 36 — ketiganya bersisa 4 bila dibagi delapan. Contohnya Minggu Legi (5 + 5 = 10) ditambah Jumat Wage (6 + 4 = 10) menjadi 20; 20 ÷ 8 = 2 sisa 4, jadi Topo. Angka 36 adalah jumlah terbesar yang mungkin, dari dua neptu 18.',
+    budaya: 'Membaca Topo, sesepuh biasanya menyiapkan mental kedua calon untuk masa awal yang prihatin: hidup sederhana dulu, menunda pengeluaran besar, dan tidak malu meminta bantuan keluarga. Slametan yang digelar pun bernada mohon kekuatan, bukan mohon kemewahan.',
+  },
+  Tinari: {
+    hitung: 'Tinari muncul bila jumlah neptu berdua adalah 21 atau 29 — keduanya bersisa 5 bila dibagi delapan. Hanya ada dua jumlah untuk golongan ini karena jumlah 37 tidak mungkin tercapai. Contohnya Minggu Legi (5 + 5 = 10) ditambah Jumat Legi (6 + 5 = 11) menjadi 21; 21 ÷ 8 = 2 sisa 5, jadi Tinari.',
+    budaya: 'Hasil Tinari kerap dipakai sesepuh sebagai penyemangat saat keluarga calon masih ragu soal rezeki. Nasihat yang menyertainya khas: bila pintu kemudahan memang terbuka, jangan ditutup oleh boros — pasangan dianjurkan menabung sejak masa persiapan pernikahan.',
+  },
+  Padu: {
+    hitung: 'Padu muncul bila jumlah neptu berdua adalah 14, 22, atau 30 — ketiganya bersisa 6 bila dibagi delapan. Angka 14 adalah jumlah terkecil yang mungkin, dari dua neptu 7. Contohnya Jumat Legi (6 + 5 = 11) ditambah Selasa Kliwon (3 + 8 = 11) menjadi 22; 22 ÷ 8 = 2 sisa 6, jadi Padu.',
+    budaya: 'Untuk Padu, perhatian keluarga biasanya tertuju pada cara pasangan menyelesaikan selisih. Dalam musyawarah keluarga, kedua calon kerap diminta menyepakati aturan sejak sebelum menikah — misalnya menyelesaikan perselisihan berdua saja dan tidak membawanya menginap ke hari berikutnya.',
+  },
+  Sujanan: {
+    hitung: 'Sujanan muncul bila jumlah neptu berdua adalah 15, 23, atau 31 — ketiganya bersisa 7 bila dibagi delapan. Contohnya Selasa Wage (3 + 4 = 7) ditambah Senin Wage (4 + 4 = 8) menjadi 15; 15 ÷ 8 = 1 sisa 7, jadi Sujanan.',
+    budaya: 'Hasil Sujanan biasanya dijawab dengan penekanan pada keterbukaan. Sesepuh menasihati pasangan agar terang-terangan soal pergaulan, keuangan, dan waktu sejak masa tunangan, karena menurut bacaan tradisi justru ruang gelap dan kabar setengah-setengah yang menumbuhkan curiga.',
+  },
+  Pesthi: {
+    hitung: 'Pesthi muncul bila jumlah neptu berdua adalah 16, 24, atau 32 — ketiganya habis terbagi delapan, bersisa 0. Contohnya Senin Wage (4 + 4 = 8) ditambah Selasa Legi (3 + 5 = 8) menjadi 16; 16 ÷ 8 = 2 sisa 0, jadi Pesthi.',
+    budaya: 'Pesthi disambut sebagai bacaan yang menenteramkan, dan keluarga biasanya melanjutkan persiapan dengan tenang. Pesan yang menyertainya adalah menjaga kerukunan itu sendiri: saling mengalah secara bergantian, karena menurut tradisi kedamaian rumah tangga adalah modal bagi hal baik lainnya.',
+  },
+};
 
 const faq = [
   ['Bagaimana tepatnya cara membagi neptu untuk jodoh?', 'Jumlahkan neptu weton kedua orang (masing-masing adalah neptu hari + neptu pasaran dari tanggal lahirnya). Jumlah bersama itu dibagi delapan; sisanya menentukan golongan. Sisa 1 Pegat, 2 Ratu, 3 Jodoh, 4 Topo, 5 Tinari, 6 Padu, 7 Sujanan, dan bila habis terbagi (sisa 0) golongannya Pesthi. Cara ini adalah pakem yang paling luas beredar dalam primbon Jawa.'],
@@ -57,6 +93,8 @@ const faq = [
     {urutan.map((nama) => (
       <h3 style="margin-top:1.6rem">{nama} <span class="kecil" style="font-weight:400">— sisa {sisaLabel[nama]}</span></h3>
       <p>{JODOH_DESKRIPSI[nama]}</p>
+      <p>{JODOH_RINCI[nama].hitung}</p>
+      <p>{JODOH_RINCI[nama].budaya}</p>
     ))}
 
     <h2 style="margin-top:2.4rem">Catatan tentang Cara Membaca</h2>
@@ -67,6 +105,54 @@ const faq = [
       Dengan kata lain, tradisi sendiri memperlakukan petungan sebagai awal percakapan, bukan akhir
       keputusan. Wetonan meneruskan sikap itu: hitunglah, bacalah, lalu putuskanlah berdua dengan
       pertimbangan yang jauh lebih kaya daripada sekadar angka.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Contoh Terhitung Penuh</h2>
+    <p>
+      Agar tidak ada langkah yang tersembunyi, berikut satu contoh yang dihitung sampai selesai.
+      Ambil dua kelahiran: yang pertama <strong>Jumat Legi</strong> dan yang kedua <strong>Kamis Pon</strong>.
+      Neptu dihitung dari tabel yang sama di semua halaman situs ini: hari Jumat bernilai 6 dan pasaran
+      Legi bernilai 5, sedangkan hari Kamis bernilai 8 dan pasaran Pon bernilai 7. Tabel lengkapnya ada
+      di halaman <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a>.
+    </p>
+    <table class="fakta"><tbody>
+      <tr><th>Orang pertama — Jumat Legi</th><td>Jumat 6 + Legi 5 = <strong>11</strong></td></tr>
+      <tr><th>Orang kedua — Kamis Pon</th><td>Kamis 8 + Pon 7 = <strong>15</strong></td></tr>
+      <tr><th>Jumlah berdua</th><td>11 + 15 = <strong>26</strong></td></tr>
+      <tr><th>Dibagi delapan</th><td>26 ÷ 8 = 3 sisa <strong>2</strong></td></tr>
+      <tr><th>Golongan</th><td>Sisa 2 → <strong>Ratu</strong></td></tr>
+    </tbody></table>
+    <p>
+      Perhatikan bahwa yang menentukan golongan bukanlah jumlahnya secara langsung, melainkan sisa
+      pembagiannya. Itulah sebabnya jumlah yang berbeda jauh — 18, 26, dan 34 — dapat menunjuk golongan
+      yang sama, dan mengapa neptu perorangan yang hanya berkisar 7 sampai 18 menghasilkan jumlah berdua
+      yang selalu berada di antara 14 dan 36. Siapa pun dapat memeriksa contoh ini dengan kalkulator di
+      bagian atas halaman: hasilnya akan sama, karena hitungannya memang hanya penjumlahan dan pembagian.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Cara Pasangan Zaman Dulu Memakai Petungan Ini</h2>
+    <p>
+      Dalam pemakaian lamanya, petungan jodoh dikonsultasikan jauh sebelum hari pernikahan ditetapkan —
+      lazimnya ketika keluarga mulai membicarakan lamaran secara serius. Weton kedua calon ditanyakan,
+      neptunya dijumlahkan, dan hasilnya disampaikan bukan kepada kedua calon secara terpisah, melainkan
+      dibahas dalam pertemuan keluarga. Di forum itulah bacaan primbon ditimbang bersama hal-hal yang
+      jauh lebih nyata: kesiapan ekonomi, restu orang tua, dan watak kedua orang yang sesungguhnya sudah
+      dikenal keluarga sehari-hari.
+    </p>
+    <p>
+      Petungan juga tidak bekerja sendirian. Setelah golongannya diketahui, keluarga biasanya melanjutkan
+      ke pemilihan hari baik untuk lamaran dan akad — perhitungan terpisah yang mempertimbangkan weton
+      kedua calon dan hari-hari yang dihindari dalam tradisi. Bila hasil petungan dibaca berat, rangkaian
+      ini memberi ruang untuk menjawabnya secara budaya: menambah slametan, memilih hari dengan lebih
+      saksama, atau menunda tanggal tanpa membatalkan niat. Dengan cara itu, petungan berfungsi sebagai
+      pengingat untuk berhati-hati pada titik yang ditunjuknya, bukan sebagai vonis yang menutup jalan.
+    </p>
+    <p>
+      Batas jujurnya perlu dinyatakan terang-terangan. Aritmetika di halaman ini eksak dan dapat diperiksa
+      siapa pun: neptu, jumlah, dan sisa pembagiannya tidak mengandung tafsir. Makna yang dilekatkan pada
+      tiap golongan adalah bacaan budaya yang diwariskan primbon — cara masyarakat lama berbicara tentang
+      kerukunan, rezeki, dan kewaspadaan dalam rumah tangga. Wetonan menyajikan keduanya apa adanya dan
+      tidak mengklaim bahwa golongan apa pun meramalkan perjalanan hubungan siapa pun.
     </p>
   </section>
 

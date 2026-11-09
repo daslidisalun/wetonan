@@ -10,6 +10,27 @@ import Almanak from '../layouts/Almanak.astro';
     <p class="kicker">Lembaran Redaksi</p>
     <h1>Kebijakan Privasi</h1>
     <p><em>Berlaku sejak pertama diterbitkan; terakhir ditinjau pada masa penerbitan edisi ini.</em></p>
+
+    <h2 style="margin-top:1.8rem">Pengendali &amp; Ruang Lingkup</h2>
+    <p>
+      Kebijakan ini menjelaskan bagaimana Wetonan — almanak daring yang dikelola redaksi kecil secara
+      swadaya — memperlakukan data sehubungan dengan kunjungan Anda ke situs ini. "Kami" dalam halaman ini
+      adalah pengelola Wetonan, yang dapat dihubungi di wetonan@gmail.com. Kebijakan ini mencakup halaman
+      dan kalkulator di situs ini; ia tidak mencakup situs lain yang mungkin Anda kunjungi melalui tautan
+      keluar, yang masing-masing memiliki kebijakannya sendiri. Prinsip dasarnya dapat diringkas dalam satu
+      kalimat: situs ini dirancang untuk bekerja tanpa mengumpulkan data pribadi pengunjung.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Data yang Tidak Kami Kumpulkan</h2>
+    <p>
+      Wetonan tidak menyediakan akun, tidak meminta pendaftaran, tidak memiliki kolom komentar, dan tidak
+      menjalankan formulir yang menyimpan isian ke server. Karena itu kami <strong>tidak mengumpulkan</strong>
+      nama, alamat surat elektronik, nomor telepon, atau tanggal lahir pengunjung melalui situs ini, dan kami
+      tidak menyusun profil pengunjung dalam bentuk apa pun. Satu-satunya cara data pribadi sampai kepada
+      kami adalah bila Anda sendiri memilih menulis surat elektronik kepada kami — hal itu diatur pada bagian
+      Surat Elektronik di bawah.
+    </p>
+
     <h2 style="margin-top:1.8rem">Tanggal yang Anda Masukkan Tidak Meninggalkan Peramban</h2>
     <p>
       Kalkulator Weton, Weton Jodoh, dan Kalender Jawa di situs ini bekerja sepenuhnya di peramban Anda
@@ -17,13 +38,41 @@ import Almanak from '../layouts/Almanak.astro';
       tidak disimpan, dan tidak dicatat</strong> oleh Wetonan dalam bentuk apa pun. Menutup halaman berarti
       menghapusnya.
     </p>
-    <h2 style="margin-top:1.8rem">Data yang Dikumpulkan Server</h2>
+    <p>
+      Secara teknis, cara kerjanya begini: halaman yang Anda buka sudah memuat seluruh kode JavaScript dan
+      tabel hitung yang diperlukan. Ketika Anda mengetikkan tanggal dan menekan tombol hitung, perhitungan
+      dijalankan oleh peramban di perangkat Anda sendiri dari kode yang sudah terunduh itu — tidak ada
+      permintaan jaringan baru yang membawa tanggal Anda ke mana pun. Nilai yang Anda ketik hanya hidup di
+      ingatan halaman yang sedang terbuka; memperbarui halaman atau menutup tab akan membuangnya, dan tidak
+      ada salinannya di server kami maupun di penyimpanan peramban dalam bentuk basis data pengunjung.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Log Server Hosting</h2>
     <p>
       Seperti lazimnya situs web, penyedia hosting dapat mencatat data teknis standar (alamat IP, jenis
       peramban, halaman yang dikunjungi, waktu kunjungan) untuk keperluan keamanan dan statistik agregat.
       Data itu tidak kami gunakan untuk mengidentifikasi pengunjung secara pribadi dan tidak kami jual
       kepada pihak mana pun.
     </p>
+    <p>
+      Wetonan adalah situs statis yang dihosting melalui GitHub Pages: yang disajikan adalah berkas halaman
+      yang sudah jadi, bukan aplikasi server yang menjalankan basis data pengunjung. Catatan log yang
+      terbentuk adalah catatan akses standar di tingkat penyedia hosting, dipakai untuk menjaga keamanan
+      layanan dan memahami pola kunjungan secara agregat — misalnya halaman mana yang paling sering dibaca —
+      bukan untuk menelusuri perilaku pengunjung per orang. Kami tidak menggabungkan log itu dengan data
+      dari sumber lain.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Kuki</h2>
+    <p>
+      Situs ini sendiri <strong>tidak memasang kuki pihak pertama</strong> — tidak untuk pelacakan, tidak
+      untuk mengingat pengunjung, dan tidak untuk keperluan masuk akun, karena memang tidak ada akun.
+      Kunjungan Anda tidak meninggalkan kuki dari Wetonan di peramban Anda.
+    </p>
+    <p>
+      Pengecualiannya adalah kuki pihak ketiga bila iklan ditayangkan, sebagaimana dijelaskan berikut ini.
+    </p>
+
     <h2 style="margin-top:1.8rem">Iklan &amp; Kuki Pihak Ketiga</h2>
     <p>
       Bila situs ini menayangkan iklan dari jaringan periklanan (misalnya Google AdSense), penyedia iklan
@@ -31,15 +80,81 @@ import Almanak from '../layouts/Almanak.astro';
       Anda dapat menolak iklan yang dipersonalisasi melalui pengaturan iklan penyedia terkait dan
       pengaturan kuki peramban Anda. Berkas penjual resmi kami tercantum pada /ads.txt.
     </p>
+    <p>
+      Secara praktis, penolakan itu dapat dilakukan dengan dua cara: mengatur peramban Anda untuk memblokir
+      kuki pihak ketiga, dan — untuk iklan Google — mematikan personalisasi iklan melalui pengaturan iklan
+      Google pada akun Anda. Memblokir kuki tidak menghalangi Anda membaca atau memakai kalkulator di situs
+      ini, karena fungsi-fungsi itu tidak bergantung pada kuki sama sekali.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Layanan Pihak Ketiga yang Dimuat</h2>
+    <p>
+      Halaman situs ini memuat huruf (font) dari Google Fonts. Agar huruf itu tampil, peramban Anda meminta
+      berkas huruf langsung dari server Google — sebagaimana setiap permintaan web, permintaan itu membawa
+      alamat IP dan keterangan peramban Anda ke Google, dan tunduk pada kebijakan privasi Google. Di luar
+      itu, halaman kami tidak memuat pelacak analitik, piksel media sosial, atau skrip pihak ketiga lain
+      untuk mengukur perilaku pengunjung. Bila pengecualian ini berubah di kemudian hari, perubahan itu akan
+      dicantumkan pada halaman ini.
+    </p>
+
     <h2 style="margin-top:1.8rem">Surat Elektronik</h2>
     <p>
       Bila Anda menulis ke wetonan@gmail.com, alamat dan isi surat Anda hanya kami pakai untuk menjawab
       keperluan Anda. Kami tidak menyusun daftar langganan dan tidak mengirim surat massal.
     </p>
-    <h2 style="margin-top:1.8rem">Perubahan</h2>
     <p>
-      Perubahan kebijakan ini akan diterbitkan pada halaman ini juga. Pertanyaan seputar privasi dapat
-      diajukan lewat halaman <a href={u('/kontak/')}>Kontak</a>.
+      Lebih terperincinya: surat yang masuk kami baca dan kami balas sehubungan dengan isinya — koreksi
+      tanggal, pertanyaan metode, atau catatan budaya. Alamat dan isi surat <strong>tidak kami jual, tidak
+      kami sewakan, dan tidak kami bagikan</strong> kepada pihak lain untuk keperluan pemasaran. Surat kami
+      simpan hanya selama masih diperlukan untuk korespondensi itu — misalnya selama rangkaian tanya-jawab
+      koreksi belum selesai — dan riwayat koreksi yang berpengaruh pada halaman situs dicatat sebagai catatan
+      redaksi tentang halamannya, bukan sebagai data tentang pengirimnya.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Hak Anda menurut UU PDP</h2>
+    <p>
+      Undang-Undang Perlindungan Data Pribadi Nomor 27 Tahun 2022 memberi setiap orang hak atas data
+      pribadinya, termasuk hak memperoleh akses, meminta perbaikan, dan meminta penghapusan data yang
+      dipegang pihak lain. Karena Wetonan tidak menyimpan data pengunjung dari situs ini, dalam praktiknya
+      hak itu terutama menyangkut korespondensi surat elektronik: bila Anda pernah menulis kepada kami, Anda
+      dapat meminta kami menunjukkan surat Anda yang masih tersimpan, memperbaikinya, atau menghapusnya.
+      Ajukan permintaan itu dari alamat surat yang sama ke wetonan@gmail.com agar kami dapat memastikan
+      permintaan berasal dari pemiliknya; kami akan memprosesnya dan memberi tahu Anda bila telah selesai.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Anak-Anak</h2>
+    <p>
+      Situs ini adalah bacaan budaya umum dan tidak ditujukan untuk mengumpulkan data anak-anak. Kami tidak
+      secara sadar mengumpulkan data pribadi dari anak di bawah umur dalam bentuk apa pun; kalkulator kami
+      memproses tanggal — termasuk tanggal lahir anak yang dicari wetonnya oleh orang tuanya — semata di
+      peramban pengunjung, tanpa mengirim atau menyimpannya, sebagaimana dijelaskan di atas. Bila Anda
+      meyakini ada surat elektronik dari anak yang seharusnya tidak kami simpan, hubungi kami agar dapat
+      kami hapus.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Keamanan</h2>
+    <p>
+      Situs ini disajikan melalui HTTPS, sehingga lalu lintas antara peramban Anda dan server hosting
+      terenkripsi. Keamanan terpenting di situs ini justru berasal dari rancangannya: karena tidak ada basis
+      data pengunjung, tidak ada akun, dan tidak ada data tanggal yang diterima server, tidak ada gudang data
+      pribadi pengunjung yang dapat bocor dari pihak kami. Yang tetap perlu dijaga pengunjung sendiri adalah
+      keamanan perangkat dan kotak suratnya masing-masing.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Perubahan Kebijakan</h2>
+    <p>
+      Perubahan kebijakan ini akan diterbitkan pada halaman ini juga. Bila perubahannya menyangkut cara baru
+      dalam memperlakukan data — misalnya bila suatu hari kami memuat layanan pihak ketiga tambahan — uraian
+      tentang layanan itu akan ditambahkan ke halaman ini pada saat layanan tersebut mulai dimuat, bukan
+      sesudahnya. Versi yang sedang Anda baca adalah versi yang berlaku.
+    </p>
+
+    <h2 style="margin-top:1.8rem">Kontak Privasi</h2>
+    <p>
+      Pertanyaan seputar privasi, termasuk permintaan akses atau penghapusan korespondensi sebagaimana
+      dijelaskan di atas, dapat diajukan ke wetonan@gmail.com dengan subjek yang menyebut kata "Privasi",
+      atau melalui halaman <a href={u('/kontak/')}>Kontak</a>. Kami membaca setiap surat yang masuk dan
+      membalasnya sesuai antrean redaksi.
     </p>
   </section>
 </Almanak>

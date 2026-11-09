@@ -207,3 +207,54 @@ export function formatTanggalID(y, m, d) {
   const w = wetonFromJDN(gregorianToJDN(y, m, d));
   return `${w.hari.nama}, ${d} ${NAMA_BULAN_MASEHI[m - 1]} ${y}`;
 }
+
+// ---------- Konversi balik: tanggal Jawa -> JDN / Masehi ----------
+// Kebalikan persis jawaFromJDN, memakai tetapan & tabel yang sama:
+// satu windu = 2.835 hari; hari lebihan kabisat selalu di bulan Besar.
+export function tahunJawaInfo(tahun) {
+  const selisih = tahun - 1555;
+  const winduKe = Math.floor(selisih / 8);
+  const winduIdx = selisih - winduKe * 8; // 0..7
+  return {
+    winduKe,
+    winduIdx,
+    windu: WINDU[winduIdx],
+    kabisat: PANJANG_TAHUN_WINDU[winduIdx] === 355,
+    panjang: PANJANG_TAHUN_WINDU[winduIdx],
+  };
+}
+
+export function panjangBulanJawa(bulanIdx, tahun) {
+  const { kabisat } = tahunJawaInfo(tahun);
+  return PANJANG_BULAN[bulanIdx] + (bulanIdx === 11 && kabisat ? 1 : 0);
+}
+
+export function jdnFromJawa(tanggal, bulanIdx, tahun) {
+  const { winduKe, winduIdx, kabisat } = tahunJawaInfo(tahun);
+  let hari = winduKe * HARI_PER_WINDU;
+  for (let i = 0; i < winduIdx; i++) hari += PANJANG_TAHUN_WINDU[i];
+  for (let b = 0; b < bulanIdx; b++) {
+    hari += PANJANG_BULAN[b] + (b === 11 && kabisat ? 1 : 0);
+  }
+  return JDN_1_SURO_1555 + hari + (tanggal - 1);
+}
+
+// Hasil berbentuk sama dengan wetonOf(): weton + jawa + wuku + gregorian.
+export function wetonFromJawa(tanggal, bulanIdx, tahun) {
+  const jdn = jdnFromJawa(tanggal, bulanIdx, tahun);
+  return {
+    ...wetonFromJDN(jdn),
+    jawa: jawaFromJDN(jdn),
+    wuku: wukuFromJDN(jdn),
+    gregorian: jdnToGregorian(jdn),
+  };
+}
+
+// ---------- Hari baik: petungan sisa bagi lima ----------
+// Pakem klasik: neptu hari itu (dina + pasaran) dibagi 5;
+// sisa 1 Sri, 2 Lungguh, 3 Dunia, 4 Lara, 0 Pati.
+export const GOLONGAN_HARI_BAIK = { 1: 'Sri', 2: 'Lungguh', 3: 'Dunia', 4: 'Lara', 0: 'Pati' };
+export function golonganHariBaik(neptu) {
+  const sisa = mod(neptu, 5);
+  return { sisa, nama: GOLONGAN_HARI_BAIK[sisa] };
+}

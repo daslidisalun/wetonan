@@ -1,0 +1,405 @@
+---
+import Almanak from '../layouts/Almanak.astro';
+import { u } from '../lib/base.js';
+
+const faq = [
+  ['Apakah weton berubah seiring usia?', 'Tidak. Weton lahir melekat pada tanggal kelahiran dan tidak pernah berubah sepanjang hidup. Yang berubah adalah tanggal-tanggal ketika weton itu datang kembali: setiap 35 hari weton yang sama muncul lagi pada tanggal Masehi, tanggal Jawa, dan wuku yang berbeda-beda. Karena itu tabel di halaman ini selalu dihitung maju dari hari ini — wetonnya tetap, kalender di sekelilingnya yang bergerak.'],
+  ['Mengapa wetonan tidak sama dengan ulang tahun?', 'Karena keduanya memakai lingkaran yang berbeda. Ulang tahun mengikuti tahun Masehi yang berumur 365 atau 366 hari, sedangkan wetonan mengikuti lingkaran 35 hari gabungan saptawara dan pancawara. Dalam satu tahun Masehi ada sepuluh sampai sebelas kali wetonan, sementara ulang tahun hanya sekali. Ulang tahun Jawa pun berbeda lagi, karena tahun Jawa berumur 354 atau 355 hari — tanggal Jawa kelahiran kembali setahun kemudian, tetapi pada weton yang umumnya tidak sama.'],
+  ['Apakah pengingat berhenti setelah 11 kali?', 'Ya, berkas .ics dari halaman ini memang hanya berisi 11 kejadian yang tercantum di tabel — tidak lebih, tidak kurang. Setelah wetonan ke-11 lewat, sekitar 350 hari sesudah wetonan pertama di tabel, Anda cukup membuka halaman ini lagi, memasukkan tanggal lahir yang sama, dan mengunduh berkas baru. Cara ini sengaja dibuat sederhana agar tidak ada pengingat ganda dan setiap berkas selalu sesuai dengan tabel yang Anda lihat.'],
+  ['Apa bedanya wetonan dan selapanan?', 'Selapanan adalah wetonan yang khusus: peringatan ketika bayi genap berusia 35 hari, yaitu saat weton kelahirannya kembali untuk pertama kalinya. Adapun wetonan adalah sebutan umum untuk setiap kembalinya weton seseorang setiap 35 hari, pada usia berapa pun. Jadi setiap selapanan adalah wetonan pertama seorang anak, tetapi wetonan-wetonan berikutnya tidak lagi disebut selapanan.'],
+  ['Apakah tanggal Jawa dan wuku saya juga berulang setiap 35 hari?', 'Tidak. Yang berulang persis setiap 35 hari hanyalah pasangan dina dan pasaran — beserta jumlah neptunya. Tanggal Jawa bergerak maju 35 hari dari satu wetonan ke wetonan berikutnya, sehingga bulan dan tanggal Jawanya hampir selalu berbeda. Wuku juga tidak berulang: 35 hari sama dengan lima pekan, jadi wuku melompat lima langkah setiap wetonan, dan baru kembali ke wuku yang sama setelah enam kali wetonan, atau 210 hari.'],
+];
+---
+<Almanak
+  title="Siklus Weton — Wetonan Berikutnya & Pengingat .ics | Wetonan"
+  description="Lihat siklus weton 35 hari dari tanggal lahir: tabel 11 wetonan berikutnya, tanggal Jawa dan wuku, pengingat .ics untuk kalender, serta kartu weton PNG."
+>
+  <style>
+    table.siklus {
+      width: 100%;
+      min-width: 620px;
+      border-collapse: collapse;
+      font-size: 1rem;
+      margin: 0 0 18px;
+    }
+    table.siklus th {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--tinta-lunak);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1.5px solid var(--garis-tebal);
+      white-space: nowrap;
+    }
+    table.siklus td {
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--garis);
+      vertical-align: top;
+    }
+    table.siklus tbody tr:last-child td { border-bottom: 1.5px solid var(--garis-tebal); }
+    .baris-tombol-siklus {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+  </style>
+
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Bab I — Weton</p>
+    <h1>Siklus Weton 35 Hari</h1>
+    <p>
+      Setiap weton datang kembali tepat 35 hari sekali — tidak lebih cepat, tidak lebih lambat.
+      Masukkan tanggal lahir Anda, dan halaman ini akan menyusun sebelas wetonan berikutnya lengkap
+      dengan tanggal Jawa dan wukunya, menyiapkan pengingat .ics untuk kalender di telepon Anda,
+      serta kartu weton untuk disimpan atau dibagikan kepada keluarga.
+    </p>
+  </section>
+
+  <section class="bungkus" style="margin-top:1.4rem">
+    <div class="panel-almanak">
+      <h2 style="font-size:1.5rem">Tanggal Lahir Anda</h2>
+      <form class="form-baris" id="form-siklus">
+        <div class="lapangan">
+          <label for="tgl-siklus">Tanggal lahir</label>
+          <input type="date" id="tgl-siklus" min="1800-01-01" max="2100-12-31" required />
+        </div>
+        <button class="tombol" type="submit">Lihat Siklus Wetonan</button>
+      </form>
+      <div class="entri" id="hasil-siklus" hidden>
+        <p id="siklus-ringkasan" class="tengah"></p>
+        <div class="bungkus-tabel">
+          <table class="siklus">
+            <thead>
+              <tr>
+                <th scope="col">Ke</th>
+                <th scope="col">Tanggal Masehi</th>
+                <th scope="col">Tanggal Jawa</th>
+                <th scope="col">Wuku</th>
+                <th scope="col">Keterangan</th>
+              </tr>
+            </thead>
+            <tbody id="siklus-tbody"></tbody>
+          </table>
+        </div>
+        <div class="baris-tombol-siklus">
+          <button id="unduh-ics" class="tombol" type="button">Unduh Pengingat Wetonan (.ics)</button>
+          <button id="unduh-kartu-siklus" class="tombol sekunder" type="button">Unduh Kartu Weton (PNG)</button>
+        </div>
+        <p class="kecil tengah" style="margin-top:14px">
+          Seluruh hitungan dikerjakan di peramban Anda sendiri. Tanggal lahir tidak dikirim
+          ke mana pun dan tidak disimpan oleh halaman ini.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:3rem">
+    <p class="kicker">Tradisi Wetonan</p>
+    <h2>Apa Itu Wetonan dan Selapanan?</h2>
+    <p class="huruf-awal">
+      Dalam kehidupan keluarga Jawa, hari kelahiran tidak hanya diingat sebagai tanggal pada kalender
+      Masehi, melainkan juga sebagai pasangan dina dan pasaran — weton — yang menyertainya. Seorang anak
+      yang lahir pada Jumat Legi, misalnya, akan membawa sebutan itu seumur hidupnya: dicatat di buku
+      keluarga, dihafal oleh simbah, dan kerap ditulis tangan pada almanak dinding di ruang tengah.
+      Karena roda weton berputar dalam lingkaran 35 hari, weton kelahiran itu akan datang kembali
+      secara teratur sepanjang hidup, dan setiap kedatangannya itulah yang disebut <strong>wetonan</strong>.
+    </p>
+    <p>
+      Wetonan yang paling dikenal adalah yang pertama. Ketika seorang bayi genap berusia 35 hari,
+      weton kelahirannya kembali untuk pertama kalinya, dan keluarga memperingatinya sebagai
+      <strong>selapanan</strong> — dari kata <em>selapan</em>, sebutan untuk masa 35 hari dalam bahasa Jawa.
+      Pada hari itu keluarga lazim menggelar slametan kecil: kerabat dekat dan tetangga diundang,
+      doa dipanjatkan untuk keselamatan sang bayi, dan hidangan sederhana dibagikan sebagai tanda syukur.
+      Bagi banyak keluarga, selapanan juga menjadi momen perkenalan resmi sang anak kepada lingkungan
+      sekitarnya — pertama kali ia “dihadirkan” di tengah masyarakat, genap satu putaran weton sejak lahir.
+    </p>
+    <p>
+      Sesudah selapanan, wetonan terus berulang tanpa perlu perayaan besar. Sebagian orang tua dan simbah
+      tetap menandainya dengan slametan kecil di rumah — sekadar membuat bubur, tumpeng mungil, atau
+      membagikan makanan kepada tetangga — terutama bila wetonan anak atau cucu jatuh bertepatan dengan
+      hari berkumpul keluarga. Ada pula yang cukup mengetahuinya saja: melihat lingkaran kecil pada
+      almanak dinding, lalu teringat bahwa hari itu adalah hari weton seseorang yang mereka sayangi.
+      Di sinilah letak sifat wetonan sebagai tradisi: ia bukan kewajiban yang kaku, melainkan irama
+      pengingat yang mengikat ingatan keluarga kepada hari kelahiran anggotanya, berulang terus
+      setiap 35 hari, dari generasi ke generasi.
+    </p>
+    <p>
+      Kebiasaan mencatat weton pada almanak dinding menjelaskan mengapa perkakas seperti halaman ini
+      terasa akrab. Almanak cetak tahunan sejak dulu menyandingkan tanggal Masehi, tanggal Jawa, pasaran,
+      dan wuku dalam satu tabel, dan banyak keluarga melingkari weton anggota keluarganya satu per satu
+      untuk setahun penuh. Tabel di halaman ini melakukan pekerjaan yang sama secara otomatis: mulai dari
+      hari ini, sebelas wetonan berikutnya disusun berurutan, sehingga Anda tidak perlu lagi menghitung
+      maju 35 hari demi 35 hari dengan jari atau mencoret-coret kalender.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Matematika Siklus 35 Hari</h2>
+    <p>
+      Mengapa 35 hari? Jawabannya adalah hasil pertemuan dua roda yang berputar dengan kecepatan berbeda.
+      Roda pertama adalah <strong>saptawara</strong>, pekan tujuh hari yang kita kenal — Minggu sampai Sabtu.
+      Roda kedua adalah <strong>pancawara</strong>, pekan pasaran lima hari — Legi, Pahing, Pon, Wage, Kliwon.
+      Setiap hari, kedua roda itu maju selangkah bersama-sama. Pasangan dina dan pasaran hanya akan kembali
+      ke kedudukan semula apabila jumlah hari yang berlalu dapat dibagi habis oleh tujuh sekaligus oleh lima.
+      Bilangan terkecil yang memenuhi syarat itu adalah kelipatan persekutuan terkecil — KPK — dari 5 dan 7,
+      yaitu <strong>35</strong>. Inilah sebabnya jumlah seluruh weton ada 35, dan setiap weton berulang
+      tepat setiap 35 hari.
+    </p>
+    <p>
+      Cara lain melihatnya: sesudah lima hari, pasaran sudah kembali ke nama yang sama, tetapi dina telah
+      bergeser lima langkah, jadi wetonnya belum sama. Sesudah tujuh hari, dina kembali ke nama yang sama,
+      tetapi pasaran telah bergeser dua langkah. Kedua roda itu terus saling mengejar, dan baru pada hari
+      ke-35 keduanya tiba serentak di titik awal. Ambil contoh yang paling terkenal: 17 Agustus 1945 adalah
+      <strong>Jumat Legi</strong> dengan neptu 6 + 5 = 11. Tiga puluh lima hari kemudian, dan setiap 35 hari
+      sesudahnya, harinya kembali Jumat dan pasarannya kembali Legi — neptunya pun tentu tetap 11, karena
+      neptu melekat pada pasangan dina dan pasaran, bukan pada tanggalnya.
+    </p>
+    <p>
+      Siklus 35 hari ini bertaut pula dengan siklus yang lebih besar, yaitu <strong>pawukon</strong> yang
+      berumur 210 hari atau 30 pekan wuku. Karena 210 adalah enam kali 35, dalam satu putaran pawukon weton
+      yang sama muncul tepat <strong>enam kali</strong>. Hubungan itu tampak pada kolom wuku di tabel halaman
+      ini: setiap wetonan berjarak lima pekan dari wetonan sebelumnya, sehingga wukunya melompat lima nama
+      setiap kali — misalnya dari Wukir ke Warigagung, lalu ke Langkir, Marakeh, Manahil, Kulawu, dan kembali
+      lagi ke Wukir pada wetonan keenam. Adapun tanggal Jawanya tidak ikut berulang, sebab tahun Jawa berumur
+      354 atau 355 hari dan bulan-bulannya tidak tersusun dalam kelipatan 35; tanggal Jawa hanya bergerak
+      maju 35 hari setiap wetonan, melintasi bulan demi bulan apa adanya.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Cara Membaca Tabel Siklus</h2>
+    <p>
+      Tabel hasil di atas dibaca dari atas ke bawah, mengikuti urutan waktu. Baris pertama selalu wetonan
+      terdekat: apabila hari ini kebetulan adalah weton Anda sendiri, baris pertama bertanggal hari ini
+      dengan keterangan <em>Hari ini</em>; apabila tidak, keterangannya menunjukkan berapa hari lagi
+      wetonan itu tiba, misalnya <em>Dalam 11 hari</em>. Baris kedua sampai kesebelas masing-masing berjarak
+      tepat 35 hari dari baris sebelumnya, sesuai keterangannya, sehingga sebelas baris itu merentang
+      kurang lebih 350 hari ke depan — hampir satu tahun penuh irama weton Anda, dalam sekilas pandang.
+    </p>
+    <p>
+      Kolom <em>Tanggal Masehi</em> adalah tanggal yang Anda pakai untuk menandai kalender biasa, lengkap
+      dengan nama harinya — yang tentu selalu sama di semua baris, karena weton yang sama selalu jatuh pada
+      dina yang sama. Kolom <em>Tanggal Jawa</em> menunjukkan padanan Jawanya pada hari itu, ditulis dalam
+      bentuk tanggal, nama bulan Jawa, dan tahun Anno Javanico, misalnya 15 Jumadilawal 1960 AJ; kolom ini
+      berguna bila keluarga Anda mencatat acara menurut penanggalan Jawa. Kolom <em>Wuku</em> menunjukkan
+      pekan wuku yang sedang berjalan pada tanggal tersebut, dan kolom ringkasan di atas tabel merangkum
+      weton lahir Anda — nama weton, neptu, tanggal Jawa kelahiran, dan wukunya — beserta tanggal wetonan
+      berikutnya. Perlu dicatat bahwa halaman ini selalu mulai dari wetonan pada atau sesudah hari ini;
+      wetonan yang sudah lewat tidak ditampilkan, karena roda berikutnya selalu dapat dihitung dari
+      tanggal lahir yang sama kapan pun Anda memerlukannya.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Memakai Berkas Pengingat .ics</h2>
+    <p>
+      Agar tidak perlu membuka halaman ini setiap 35 hari, unduhlah berkas pengingat dengan tombol
+      <em>Unduh Pengingat Wetonan (.ics)</em>. Berkas .ics adalah format kalender baku yang dipakai hampir
+      semua aplikasi kalender; berkas dari halaman ini berisi sebelas kejadian sepanjang hari — satu untuk
+      setiap baris tabel — masing-masing berjudul wetonan Anda dan dilengkapi keterangan neptu, tanggal Jawa,
+      serta wuku pada hari itu. Sekali berkas ini diimpor, aplikasi kalender Andalah yang akan mengingatkan,
+      bukan situs ini, sehingga pengingat tetap bekerja meskipun Anda tidak pernah membuka Wetonan lagi.
+    </p>
+    <p>
+      Untuk mengimpornya ke <strong>Google Calendar</strong>, bukalah Google Calendar pada komputer,
+      masuk ke menu <em>Setelan</em>, pilih <em>Impor &amp; ekspor</em>, lalu klik <em>Pilih file dari
+      komputer Anda</em> dan tunjuk berkas .ics yang baru diunduh. Pilih kalender tujuan, klik <em>Impor</em>,
+      dan kesebelas wetonan akan muncul sebagai acara sepanjang hari pada tanggal-tanggalnya. Di telepon,
+      caranya umumnya lebih singkat: unduh berkasnya, buka berkas itu dari folder unduhan atau notifikasi,
+      dan aplikasi kalender bawaan — Google Calendar, Kalender Samsung, dan sejenisnya — akan menawarkan
+      untuk menambahkan kejadian-kejadiannya ke kalender Anda; ketuk simpan, dan selesai.
+    </p>
+    <p>
+      Sesudah terimpor, Anda dapat memperlakukan setiap wetonan seperti acara kalender biasa: menambahkan
+      notifikasi sehari sebelumnya, memberi warna khusus, atau menulis catatan kecil, misalnya rencana
+      slametan keluarga. Satu hal yang perlu diingat: berkas ini berisi tepat sebelas kejadian dan tidak
+      memperbarui dirinya sendiri. Bila wetonan terakhir di dalamnya sudah dekat, kembalilah ke halaman ini
+      dan unduh berkas baru — hitungannya selalu dimulai dari hari Anda mengunduh, jadi tidak akan ada
+      tanggal yang terlewat atau tercatat ganda selama berkas lama tidak diimpor ulang. Adapun tombol
+      <em>Unduh Kartu Weton (PNG)</em> menghasilkan kartu bergaya almanak cetak berisi weton lahir Anda,
+      cocok disimpan di telepon atau diteruskan kepada keluarga yang ingin mencatat weton Anda.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <p class="kicker tengah">Tanya Jawab</p>
+    <h2 class="tengah">Seputar Siklus Wetonan</h2>
+    <div class="faq">
+      {faq.map(([t, j]) => (
+        <details>
+          <summary>{t}</summary>
+          <p>{j}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:2.6rem">
+    <h2>Perkakas Terkait</h2>
+    <ul class="daftar-isi">
+      <li>
+        <a href={u('/kalkulator-weton/')}>
+          <span class="nama">Kalkulator Weton</span>
+          <span class="ket">hitung weton dan neptu dari tanggal lahir</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/konverter-jawa/')}>
+          <span class="nama">Konverter Jawa</span>
+          <span class="ket">ubah tanggal Masehi ke tanggal Jawa dan sebaliknya</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/weton-keluarga/')}>
+          <span class="nama">Weton Keluarga</span>
+          <span class="ket">susunan weton seluruh anggota keluarga dalam satu tempat</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/perkakas/')}>
+          <span class="nama">Perkakas</span>
+          <span class="ket">semua perkakas almanak Jawa di situs ini</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+    </ul>
+    <p class="kecil" style="margin-top:1.2rem">
+      Halaman ini menyajikan wetonan sebagai warisan budaya dan sarana mengingat hari kelahiran
+      keluarga — bukan ramalan, dan bukan pula penentu keputusan hidup.
+    </p>
+  </section>
+
+  <script>
+    import { wetonOf, gregorianToJDN, jdnToGregorian, formatTanggalID } from '../lib/jawa.js';
+    import { unduhKartuWeton } from '../lib/kartu.js';
+
+    const form = document.getElementById('form-siklus');
+    const input = document.getElementById('tgl-siklus');
+    const hasil = document.getElementById('hasil-siklus');
+    const ringkasan = document.getElementById('siklus-ringkasan');
+    const tbody = document.getElementById('siklus-tbody');
+    const tombolIcs = document.getElementById('unduh-ics');
+    const tombolKartu = document.getElementById('unduh-kartu-siklus');
+
+    let lahirSaatIni = null;
+    let kejadianSaatIni = [];
+
+    const pad2 = (n) => String(n).padStart(2, '0');
+    const tanggalDasar = (y, m, d) => `${y}${pad2(m)}${pad2(d)}`;
+    const lolosICS = (teks) =>
+      String(teks)
+        .replace(/\\/g, '\\\\')
+        .replace(/;/g, '\\;')
+        .replace(/,/g, '\\,')
+        .replace(/\r\n|\r|\n/g, '\\n');
+
+    function jalankan(iso) {
+      if (!iso) return;
+      const [y, m, d] = iso.split('-').map(Number);
+      if (!y || !m || !d) return;
+      const lahir = wetonOf(y, m, d);
+      const hariIni = new Date();
+      const todayJDN = gregorianToJDN(hariIni.getFullYear(), hariIni.getMonth() + 1, hariIni.getDate());
+      const r = (((todayJDN - lahir.jdn) % 35) + 35) % 35;
+      const pertama = r === 0 ? todayJDN : todayJDN + (35 - r);
+      const selisihPertama = pertama - todayJDN;
+
+      const kejadian = [];
+      for (let k = 0; k < 11; k++) {
+        const jdn = pertama + 35 * k;
+        const g = jdnToGregorian(jdn);
+        const w = wetonOf(g.y, g.m, g.d);
+        kejadian.push({ jdn, g, w });
+      }
+      lahirSaatIni = lahir;
+      kejadianSaatIni = kejadian;
+
+      const pertamaW = kejadian[0].w;
+      ringkasan.innerHTML =
+        `Weton lahir Anda: <strong>${lahir.nama}</strong> — neptu ${lahir.neptu} · ` +
+        `${lahir.jawa.tanggal} ${lahir.jawa.bulan.nama} ${lahir.jawa.tahun} AJ · wuku ${lahir.wuku.nama}. ` +
+        `Wetonan berikutnya: ${formatTanggalID(pertamaW.gregorian.y, pertamaW.gregorian.m, pertamaW.gregorian.d)} ` +
+        `(${selisihPertama === 0 ? 'hari ini' : `dalam ${selisihPertama} hari`}).`;
+
+      tbody.innerHTML = kejadian
+        .map(({ g, w }, i) => {
+          const keterangan = i === 0 ? (selisihPertama === 0 ? 'Hari ini' : `Dalam ${selisihPertama} hari`) : '+35 hari';
+          return (
+            `<tr class="baris-siklus">` +
+            `<td class="mono">${i + 1}</td>` +
+            `<td>${formatTanggalID(g.y, g.m, g.d)}</td>` +
+            `<td>${w.jawa.tanggal} ${w.jawa.bulan.nama} ${w.jawa.tahun} AJ</td>` +
+            `<td>${w.wuku.nama}</td>` +
+            `<td>${keterangan}</td>` +
+            `</tr>`
+          );
+        })
+        .join('');
+
+      hasil.hidden = false;
+      hasil.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      jalankan(input.value);
+      const url = new URL(location.href);
+      url.searchParams.set('tgl', input.value);
+      history.replaceState(null, '', url);
+    });
+
+    tombolIcs.addEventListener('click', () => {
+      if (!lahirSaatIni || kejadianSaatIni.length === 0) return;
+      const sekarang = new Date();
+      const dtstamp =
+        `${sekarang.getUTCFullYear()}${pad2(sekarang.getUTCMonth() + 1)}${pad2(sekarang.getUTCDate())}` +
+        `T${pad2(sekarang.getUTCHours())}${pad2(sekarang.getUTCMinutes())}${pad2(sekarang.getUTCSeconds())}Z`;
+      const baris = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Wetonan//Pengingat Wetonan//ID',
+        'CALSCALE:GREGORIAN',
+      ];
+      for (const { jdn, g, w } of kejadianSaatIni) {
+        const deskripsi = `Neptu ${w.neptu} · ${w.jawa.tanggal} ${w.jawa.bulan.nama} ${w.jawa.tahun} AJ · Wuku ${w.wuku.nama}`;
+        baris.push(
+          'BEGIN:VEVENT',
+          `UID:wetonan-${jdn}-${lahirSaatIni.slug}@wetonan.demo`,
+          `DTSTAMP:${dtstamp}`,
+          `DTSTART;VALUE=DATE:${tanggalDasar(g.y, g.m, g.d)}`,
+          `SUMMARY:${lolosICS(`Wetonan: ${w.nama}`)}`,
+          `DESCRIPTION:${lolosICS(deskripsi)}`,
+          'END:VEVENT',
+        );
+      }
+      baris.push('END:VCALENDAR');
+      const isi = baris.join('\r\n') + '\r\n';
+      const blob = new Blob([isi], { type: 'text/calendar;charset=utf-8' });
+      const urlBerkas = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = urlBerkas;
+      a.download = `wetonan-${lahirSaatIni.slug}.ics`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(urlBerkas), 4000);
+    });
+
+    tombolKartu.addEventListener('click', () => {
+      if (!lahirSaatIni) return;
+      unduhKartuWeton(lahirSaatIni);
+    });
+
+    const dariURL = new URLSearchParams(location.search).get('tgl');
+    if (dariURL) {
+      input.value = dariURL;
+      jalankan(dariURL);
+    }
+  </script>
+</Almanak>

@@ -1,8 +1,12 @@
 ---
 import { u } from '../../lib/base.js';
 import Almanak from '../../layouts/Almanak.astro';
-import { SEMUA_WETON } from '../../lib/jawa.js';
+import {
+  SEMUA_WETON, gregorianToJDN, jdnToGregorian, wetonFromJDN,
+  jawaFromJDN, wukuFromJDN, kategoriJodoh, formatTanggalID,
+} from '../../lib/jawa.js';
 import { WATAK_DINA, WATAK_PASARAN, CATATAN_NEPTU, PEMBUKA_WETON } from '../../lib/konten.js';
+import { CATATAN_KOMBINASI } from '../../lib/kombinasi.js';
 
 export function getStaticPaths() {
   return SEMUA_WETON.map((w, i) => ({
@@ -18,6 +22,48 @@ export function getStaticPaths() {
 const { weton: w, sebelum, sesudah } = Astro.props;
 const title = `Weton ${w.nama} — Neptu ${w.neptu}, Watak Menurut Primbon | Wetonan`;
 const description = `Entri weton ${w.nama}: neptu ${w.neptu} (dina ${w.hari.nama} ${w.neptuHari} + pasaran ${w.pasaran.nama} ${w.neptuPasaran}), uraian watak ${w.hari.nama} dan ${w.pasaran.nama} menurut tradisi primbon Jawa, serta catatan wetonan.`;
+
+// ---------- Rincian neptu: distribusi jumlah 7–18 di antara 35 weton ----------
+const distribusi = [];
+for (let t = 7; t <= 18; t++) {
+  const anggota = SEMUA_WETON.filter((x) => x.neptu === t);
+  distribusi.push({ total: t, jumlah: anggota.length, anggota });
+}
+const barisSendiri = distribusi.find((d) => d.total === w.neptu);
+const kawanSejumlah = barisSendiri.anggota.filter((x) => x.slug !== w.slug);
+const lebihKecil = distribusi.filter((d) => d.total < w.neptu).reduce((s, d) => s + d.jumlah, 0);
+const lebihBesar = distribusi.filter((d) => d.total > w.neptu).reduce((s, d) => s + d.jumlah, 0);
+
+// ---------- Kemunculan berikutnya (acuan: Senin, 9 November 2026) ----------
+let jdnCari = gregorianToJDN(2026, 11, 9);
+while (wetonFromJDN(jdnCari).slug !== w.slug) jdnCari++;
+const kemunculan = [];
+for (let k = 0; k < 6; k++) {
+  const j = jdnCari + 35 * k;
+  const g = jdnToGregorian(j);
+  const jw = jawaFromJDN(j);
+  const wk = wukuFromJDN(j);
+  kemunculan.push({
+    masehi: formatTanggalID(g.y, g.m, g.d),
+    jawa: `${jw.tanggal} ${jw.bulan.nama} ${jw.tahun} ${jw.windu}`,
+    wuku: `${wk.nama} — hari ke-${wk.hariKe} dalam pekannya`,
+  });
+}
+
+// ---------- Petungan bila dipasangkan (neptu pasangan 7–18) ----------
+const pasangan = [];
+for (let p = 7; p <= 18; p++) {
+  const total = w.neptu + p;
+  pasangan.push({ p, total, sisa: total % 8, kategori: kategoriJodoh(total) });
+}
+
+// ---------- Keluarga pasaran & keluarga dina ----------
+const keluargaPasaran = SEMUA_WETON
+  .filter((x) => x.pasaran.id === w.pasaran.id && x.slug !== w.slug)
+  .sort((a, b) => a.hariIdx - b.hariIdx);
+const keluargaHari = SEMUA_WETON
+  .filter((x) => x.hari.id === w.hari.id && x.slug !== w.slug)
+  .sort((a, b) => a.pasaranIdx - b.pasaranIdx);
 ---
 <Almanak title={title} description={description}>
   <div class="bungkus-sempit">
@@ -46,8 +92,131 @@ const description = `Entri weton ${w.nama}: neptu ${w.neptu} (dina ${w.hari.nama
     <h2 style="margin-top:2rem">Watak Pasaran {w.pasaran.nama}</h2>
     <p>{WATAK_PASARAN[w.pasaran.id]}</p>
 
+    {CATATAN_KOMBINASI[w.slug] && (
+      <>
+        <h2 style="margin-top:2rem">Perpaduan {w.hari.nama} dan {w.pasaran.nama}</h2>
+        <p>{CATATAN_KOMBINASI[w.slug]}</p>
+      </>
+    )}
+
     <h2 style="margin-top:2rem">Catatan Neptu {w.neptu}</h2>
     <p>{CATATAN_NEPTU[w.neptu]}</p>
+
+    <h2 style="margin-top:2rem">Rincian Neptu {w.neptu}: Posisinya di antara 35 Weton</h2>
+    <p>
+      Neptu weton ini tersusun dari dua angka pakem: dina {w.hari.nama} bernilai {w.neptuHari} dan pasaran
+      {w.pasaran.nama} bernilai {w.neptuPasaran}, sehingga jumlahnya {w.neptuHari} + {w.neptuPasaran} = {w.neptu}.
+      Jumlah itu bukan milik weton ini sendiri. Dari 35 weton, ada <strong>{barisSendiri.jumlah} weton</strong> yang
+      berjumlah neptu {w.neptu}
+      {kawanSejumlah.length > 0 ? (
+        <> — selain {w.nama}, jumlah ini juga dimiliki {kawanSejumlah.map((x, i) => (<>{i > 0 ? (i === kawanSejumlah.length - 1 ? ' dan ' : ', ') : ''}<a href={u(`/weton/${x.slug}/`)}>{x.nama}</a></>))}.</>
+      ) : (
+        <>. Tidak ada weton lain yang berjumlah {w.neptu} — dalam seluruh roda weton, jumlah ini hanya dimiliki {w.nama}.</>
+      )}
+      {' '}Sebanyak {lebihKecil} weton berneptu lebih kecil dan {lebihBesar} weton berneptu lebih besar dari weton ini.
+      Kedudukan itu penting diingat ketika membaca petungan: angka {w.neptu} adalah jumlah yang dibagi dan
+      ditafsirkan tradisi, tetapi wataknya tetap dibaca dari pasangan dinanya dan pasarannya — dua weton
+      berjumlah sama tidak dibaca sebagai weton yang sama.
+    </p>
+    <table class="fakta">
+      <tbody>
+        {distribusi.map((d) => (
+          <tr>
+            <th>{d.total === w.neptu ? <strong>Neptu {d.total} ← weton ini</strong> : `Neptu ${d.total}`}</th>
+            <td>{d.total === w.neptu ? <strong>{d.jumlah} dari 35 weton</strong> : `${d.jumlah} dari 35 weton`}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="kecil">
+      Tabel di atas memperlihatkan bentuk sebaran neptu: jumlah tengah (12 dan 13) paling ramai, masing-masing
+      dimiliki lima weton, sedangkan ujung-ujungnya menyempit — neptu 7 hanya milik Selasa Wage dan neptu 18
+      hanya milik Sabtu Pahing.
+    </p>
+
+    <h2 style="margin-top:2rem">Kemunculan {w.nama} Berikutnya</h2>
+    <p>
+      Roda weton berputar tanpa jeda: setiap weton datang kembali tepat 35 hari setelah kemunculan
+      sebelumnya, sehingga dalam setahun Masehi weton ini muncul sepuluh sampai sebelas kali. Dihitung dari
+      Senin, 9 November 2026, enam kemunculan berikutnya dari {w.nama} adalah sebagai berikut — lengkap
+      dengan tanggal Jawa dan wukunya, sebab satu tanggal selalu membawa ketiga penanda itu sekaligus.
+      Perhatikan bahwa wukunya berpindah lima pekan setiap kali: 210 hari pawukon memuat tepat enam
+      putaran weton, dan {w.nama} menempati enam wuku yang berbeda sebelum kembali ke wuku semula.
+    </p>
+    <table class="fakta">
+      <tbody>
+        <tr><th style="width:30%">Tanggal Masehi</th><td><strong>Tanggal Jawa — Wuku</strong></td></tr>
+        {kemunculan.map((k) => (
+          <tr>
+            <th style="font-weight:400">{k.masehi}</th>
+            <td>{k.jawa} · wuku {k.wuku}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      Tanggal-tanggal inilah yang dalam keluarga Jawa menjadi hari <em>wetonan</em> bagi kelahiran
+      {w.nama}: hari ketika wetonnya pulang kembali, diperingati dengan doa dan slametan kecil.
+      Kemunculan pertama dalam daftar — {kemunculan[0].masehi} — adalah wetonan terdekat sejak tanggal acuan di atas.
+    </p>
+
+    <h2 style="margin-top:2rem">Bila Neptu {w.neptu} Dipasangkan: Petungan Jodoh</h2>
+    <p>
+      Dalam petungan jodoh, neptu {w.neptu} milik weton ini ditambahkan dengan neptu weton pasangan, lalu
+      jumlahnya dibagi delapan dan dibaca sisanya. Karena neptu pasangan dapat berkisar dari 7 sampai 18,
+      seluruh kemungkinan hasil bagi pemilik {w.nama} dapat ditabulasikan dengan pasti — yang berubah
+      hanyalah jumlah akhirnya:
+    </p>
+    <table class="fakta">
+      <tbody>
+        <tr><th>Neptu pasangan</th><td><strong>Jumlah — sisa ÷ 8 — golongan</strong></td></tr>
+        {pasangan.map((p) => (
+          <tr>
+            <th style="font-weight:400">Neptu {p.p}</th>
+            <td class="angka">{w.neptu} + {p.p} = {p.total} — sisa {p.sisa} — {p.kategori}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p>
+      Tabel ini menunjukkan hal yang sering luput: weton yang sama dapat jatuh ke golongan berbeda
+      tergantung pasangannya, sebab yang dibaca tradisi adalah jumlah berdua, bukan angka seseorang.
+      Uraian makna kedelapan golongan dan kalkulatornya ada di halaman
+      <a href={u('/weton-jodoh/')}>Weton Jodoh</a>.
+    </p>
+
+    <h2 style="margin-top:2rem">Keluarga Pasaran {w.pasaran.nama}</h2>
+    <p>
+      Pasaran {w.pasaran.nama} (neptu {w.neptuPasaran}) berpasangan dengan ketujuh dina. Di luar weton ini,
+      enam weton lain membawa pasaran yang sama — dan perbedaan watak mereka menunjukkan seberapa besar
+      peran dina dalam membentuk bacaan sebuah weton:
+    </p>
+    <table class="fakta">
+      <tbody>
+        {keluargaPasaran.map((x) => (
+          <tr>
+            <th style="width:24%"><a href={u(`/weton/${x.slug}/`)}>{x.nama}</a></th>
+            <td>neptu {x.neptu} — {PEMBUKA_WETON[x.slug]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2 style="margin-top:2rem">Keluarga Dina {w.hari.nama}</h2>
+    <p>
+      Sebaliknya, dina {w.hari.nama} ({w.hari.jawa}, neptu {w.neptuHari}) berpasangan dengan kelima pasaran.
+      Empat weton saudara sedina dengan {w.nama} adalah:
+    </p>
+    <table class="fakta">
+      <tbody>
+        {keluargaHari.map((x) => (
+          <tr>
+            <th style="width:24%"><a href={u(`/weton/${x.slug}/`)}>{x.nama}</a></th>
+            <td>neptu {x.neptu} — {PEMBUKA_WETON[x.slug]}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
 
     <h2 style="margin-top:2rem">Wetonan: Merawat Hari Kelahiran</h2>
     <p>
@@ -60,11 +229,11 @@ const description = `Entri weton ${w.nama}: neptu ${w.neptu} (dina ${w.hari.nama
       lingkungannya ikut menjaganya.
     </p>
     <p>
-      Bagi pemilik weton {w.nama}, putaran 35 hari berikutnya dapat dicari lewat
-      <a href={u('/kalender-jawa/')}>Kalender Jawa</a>: temukan tanggal dengan pasaran {w.pasaran.nama} pada
-      hari {w.hari.nama}. Bila hendak menilai kecocokan dengan pasangan, jumlah neptu {w.neptu} ini
-      adalah bahan dasar <a href={u('/weton-jodoh/')}>petungan jodoh</a> — tambahkan dengan neptu weton
-      pasangan, lalu bagi delapan.
+      Bagi pemilik weton {w.nama}, putaran 35 hari berikutnya tercantum pada tabel kemunculan di atas,
+      dan dapat pula dicari lewat <a href={u('/kalender-jawa/')}>Kalender Jawa</a>: temukan tanggal dengan
+      pasaran {w.pasaran.nama} pada hari {w.hari.nama}. Bila hendak menilai kecocokan dengan pasangan,
+      jumlah neptu {w.neptu} ini adalah bahan dasar <a href={u('/weton-jodoh/')}>petungan jodoh</a> —
+      tambahkan dengan neptu weton pasangan, lalu bagi delapan.
     </p>
     <p class="kecil">
       <em>Uraian watak adalah bacaan tradisi primbon yang kami tulis kembali sebagai warisan budaya —

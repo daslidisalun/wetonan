@@ -1,0 +1,188 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { artikelBySlug } from '../../lib/blog.js';
+
+const artikel = artikelBySlug('sejarah-kalender-jawa-sultan-agung');
+const b = artikelBySlug('cara-menghitung-neptu');
+const f = artikelBySlug('windu-siklus-delapan-tahun');
+---
+<Almanak title={`${artikel.judul} | Wetonan`} description={artikel.ringkasan}>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Blog Almanak</p>
+    <h1>{artikel.judul}</h1>
+    <p class="kecil mono">Diterbitkan {artikel.tanggalTampil} · Blog Almanak Wetonan</p>
+
+    <p class="huruf-awal">
+      Setiap lembar kalender Jawa yang tergantung di dinding rumah, tercetak dalam almanak keraton,
+      atau tampil di layar ponsel hari ini berdiri di atas satu keputusan yang diambil hampir empat
+      abad silam. Pada tahun 1633, Sultan Agung — raja terbesar Kesultanan Mataram — mengubah
+      penanggalan resmi kerajaannya: angka tahunnya tetap memakai hitungan lama, tetapi kerangka bulan
+      dan tahunnya diganti mengikuti pola Hijriah. Keputusan itu tampak teknis, namun akibatnya
+      menentukan cara orang Jawa menandai tahun baru, memberi nama bulan, dan mencatat umur hingga
+      sekarang. Tulisan ini menelusuri keadaan sebelum reformasi itu, isi keputusannya, hal-hal yang
+      justru tidak diubahnya, dan jejak panjangnya sampai ke meja kita.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Sebelum 1633: Dua Sistem Berjalan Berdampingan</h2>
+    <p>
+      Sebelum 1633, penanggalan resmi di Jawa adalah kalender Saka, warisan pengaruh India yang telah
+      dipakai berabad-abad. Kalender Saka bersifat lunisolar: bulan-bulannya mengikuti peredaran bulan,
+      tetapi dari waktu ke waktu disisipkan bulan tambahan agar tahunnya tidak bergeser jauh dari
+      pergantian musim. Dengan kerangka itu, upacara dan perhitungan musim tanam dapat dijadwalkan
+      dengan cukup pasti tahun demi tahun. Ketika Sultan Agung naik takhta, hitungan tahun Saka sudah
+      mencapai angka 1555 — angka yang menunjukkan betapa tua dan mapannya sistem tersebut, dan betapa
+      melekatnya ia pada catatan resmi, silsilah, dan ingatan keraton.
+    </p>
+    <p>
+      Di pesisir dan di lingkungan masjid serta pesantren, masyarakat Muslim Jawa sehari-hari telah
+      berpegang pada kalender Hijriah yang murni lunar: dua belas bulan, 354 atau 355 hari, tanpa
+      penyelaras musim. Dua sistem itu berjalan berdampingan dan masing-masing sah di ruangnya, tetapi
+      perjumpaan keduanya menimbulkan kerumitan yang nyata. Awal puasa, hari raya, dan peringatan
+      Maulid dihitung dengan Hijriah, sementara surat perintah, catatan pajak, dan upacara keraton
+      bertarikh Saka. Setiap perjumpaan dua penanggalan menuntut penukaran tanggal, dan selisih pendapat
+      mengenai awal bulan dapat berarti selisih hari perayaan antara keraton dan rakyatnya. Bagi sebuah
+      kerajaan yang sedang menyatukan Jawa di bawah satu pemerintahan, waktu yang terbelah dua adalah
+      beban administratif sekaligus beban simbolik.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Mataram di Bawah Sultan Agung</h2>
+    <p>
+      Sultan Agung memerintah Mataram dari tahun 1613 sampai 1645. Pada masa pemerintahannya Mataram
+      tumbuh menjadi kekuatan terbesar di Jawa: daerah-daerah diatur dari ibu kota, wilayah pesisir
+      ditundukkan, dan keraton menjadi pusat politik sekaligus pusat kebudayaan. Tradisi keraton
+      mengingat masa ini sebagai zaman ketika tata negara, tata sastra, dan tata upacara disusun dengan
+      sengaja — kerajaan dipahami bukan semata-mata sebagai kekuasaan, melainkan sebagai penata
+      kehidupan bersama. Reformasi kalender lahir dari semangat yang sama: sebagaimana wilayah disatukan
+      di bawah satu pemerintahan, waktu pun disatukan di bawah satu penanggalan. Sebab bagi keraton,
+      tanggal bukanlah sekadar angka; tanggal adalah bahasa resmi negara — dipakai dalam surat,
+      perjanjian, dan upacara — dan bahasa itu tidak mungkin dibiarkan berbicara dalam dua dialek.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Keputusan Tahun 1633</h2>
+    <p>
+      Pada 1633 Sultan Agung menetapkan penanggalan baru yang berlaku di seluruh Mataram. Isi keputusan
+      itu dapat diringkas dalam dua langkah yang sama-sama cerdik. Langkah pertama, kerangka tahun
+      diganti: tahun Jawa yang baru adalah tahun lunar murni mengikuti pola Hijriah — dua belas bulan
+      yang panjangnya berselang-seling, berjumlah 354 hari pada tahun biasa dan 355 hari pada tahun
+      kabisat, dan tidak lagi diselaraskan kepada musim. Langkah kedua — dan inilah yang membuat
+      reformasi ini dapat diterima tanpa mengguncang catatan siapa pun — angka tahunnya tidak diganti.
+      Hitungan Saka yang sedang berjalan diteruskan begitu saja: tahun 1555 Saka menjadi tahun 1555
+      Anno Javanico, tahun Jawa. Tahun baru ditetapkan pada 1 Suro, yang disetarakan dengan 1 Muharram,
+      permulaan tahun Hijriah.
+    </p>
+    <p>
+      Dengan dua langkah itu kesinambungan tidak putus. Babad dan catatan lama tetap dapat dibaca dengan
+      angka tahun yang sama, silsilah keraton tidak perlu ditulis ulang, tetapi sejak saat itu keraton,
+      masjid, dan pasar bergerak dalam irama bulan yang sama persis. Tanggal 1 Suro 1555 AJ menjadi
+      hari pertama kalender baru — kalender yang, dengan segala perawatan generasi berikutnya, masih
+      menjadi kalender yang dipakai untuk menentukan weton dan tanggal Jawa sampai tulisan ini dibuat.
+      Jarang ada reformasi penanggalan di dunia yang berhasil mengganti sistem sambil mempertahankan
+      nomor tahunnya; di titik itulah keputusan 1633 menunjukkan kecermatannya.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Apa yang Berubah</h2>
+    <p>
+      Yang paling kasatmata berubah adalah bulan-bulannya. Panjang bulan kini tetap berselang-seling 30
+      dan 29 hari: Suro 30 hari, Sapar 29, Mulud 30, dan seterusnya sampai Besar, bulan kedua belas,
+      yang berumur 29 hari pada tahun biasa dan 30 hari pada tahun kabisat. Nama-nama bulannya adalah
+      hasil penyesuaian yang sampai sekarang masih dapat dibaca asal-usulnya: Suro berasal dari Asyura;
+      Sapar dari Safar; Mulud dari maulid, peringatan kelahiran Nabi yang jatuh pada bulan itu; Bakda
+      Mulud berarti "sesudah Mulud"; Jumadilawal dan Jumadilakir meneruskan nama Jumadil Ula dan Jumadil
+      Akhirah; Rejeb dari Rajab; Ruwah dikaitkan dengan arwah, mengenang para leluhur menjelang bulan
+      puasa; Poso berarti puasa itu sendiri; Sawal dari Syawal; Dulkangidah dari Zulkaidah — bulan yang
+      terjepit di antara dua bulan yang dianggap besar, sehingga juga dijuluki Sela atau Apit; dan Besar,
+      bulan haji dan kurban, perayaan besar umat Islam. Satu perubahan mendasar menyertai semuanya:
+      karena tahun lunar lebih pendek sekitar sebelas hari dari tahun matahari, bulan-bulan Jawa sejak
+      1633 tidak lagi terikat pada musim.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Apa yang Tidak Berubah</h2>
+    <p>
+      Akan tetapi reformasi 1633 hanya mengganti kerangka tahun dan bulan. Lapisan-lapisan penanggalan
+      yang paling khas Jawa justru dibiarkan utuh dan terus berjalan tanpa pernah putus. Pekan pasaran
+      lima hari — Legi, Pahing, Pon, Wage, Kliwon — tetap menjadi irama pasar dan penanda hari lahir;
+      putaran itu jauh lebih tua daripada reformasi ini dan tidak tersentuh sama sekali. Pekan tujuh
+      hari, saptawara, berjalan seperti biasa di sampingnya, sehingga setiap tanggal tetap mempunyai
+      weton: gabungan dina dan pasaran yang berputar dalam siklus 35 hari. Siklus windu delapan tahun
+      dipertahankan, dan malah menjadi tulang punggung aturan tahun kabisat kalender baru — tiga tahun
+      dalam satu windu, yaitu Ehe, Dal, dan Jimakir, ditetapkan berumur 355 hari, sedangkan lima tahun
+      lainnya 354 hari, sehingga satu windu genap berjumlah 2.835 hari. Adapun pawukon, putaran 30 wuku
+      yang genap 210 hari dan berjalan sendiri tanpa bulan dan tanpa tahun, terus berputar sebagaimana
+      sebelumnya. Dengan kata lain, yang diganti Sultan Agung adalah kulit tahun penanggalan; isi
+      Jawanya — pasaran, weton, windu, dan wuku — tetap hidup di dalamnya sampai hari ini.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Akibat Jangka Panjang</h2>
+    <p>
+      Sesudah 1633, satu kalender yang sama melayani keraton, masjid, dan pasar. Tahun baru pada 1 Suro
+      tumbuh menjadi peristiwa budaya yang besar, yang kelak di berbagai daerah dirayakan dengan kirab
+      pusaka, tirakat, dan lek-lekan sepanjang malam 1 Suro. Akibat lainnya bekerja perlahan tetapi
+      pasti: karena tahun Jawa lebih pendek kurang lebih sebelas hari dari tahun Masehi, tanggal 1 Suro
+      mundur terus terhadap musim — dari tahun ke tahun ia jatuh semakin awal, dan dalam waktu sekitar
+      33 tahun bulan-bulan Jawa telah bergilir melewati seluruh musim dan kembali lagi. Bulan Poso tidak
+      lagi selalu jatuh pada musim yang sama, dan nama bulan tidak dapat lagi dipakai sebagai penanda
+      musim tanam sebagaimana pada zaman Saka. Orang Jawa menerima keadaan ini sebagai kewajaran yang
+      berlangsung berabad-abad: kalender mereka adalah kalender bulan, sedangkan musim dibaca dari
+      tanda-tanda alam, bukan dari nama bulan.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Kurup: Koreksi dari Generasi Berikutnya</h2>
+    <p>
+      Kalender yang berjalan dengan tabel tetap seperti ini tidak selalu persis mengejar peredaran
+      bulan yang sesungguhnya di langit. Agar hitungan tahun Jawa tidak menyimpang jauh dari padanan
+      Hijriahnya dalam jangka yang sangat panjang, generasi-generasi sesudah Sultan Agung mengenal
+      kurup: suatu daur koreksi sepanjang 120 tahun — lima belas windu — di mana penyesuaian dilakukan
+      untuk mengembalikan keselarasan hitungan. Cukup disebut sekilas di sini bahwa kurup menjadi bukti
+      kalender ini tidak pernah dianggap beku: ia adalah kesepakatan bersama yang dirawat, dan bila
+      perlu dikoreksi, oleh para pemegang almanak dari zaman ke zaman.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Kalender Itu pada Hari Ini</h2>
+    <p>
+      Hari ini penanggalan hasil keputusan 1633 itu masih terbit setiap tahun. Almanak keraton
+      Yogyakarta dan Surakarta menyusunnya; kalender yang diterbitkan Kementerian Agama RI mencantumkan
+      padanan tanggal Jawanya; dan jutaan keluarga memakainya untuk keperluan sehari-hari — mencatat
+      weton kelahiran anak, menentukan tanggal peringatan leluhur, atau sekadar membaca kalender dinding
+      yang memuat tiga penanggalan sekaligus. Almanak digital ini pun menghitung dengan sistem yang
+      sama: setiap tanggal yang Anda periksa pada perkakas kami — lengkap dengan windu dan wukunya —
+      adalah kelanjutan langsung, hari demi hari tanpa putus, dari 1 Suro 1555 AJ.
+    </p>
+
+    <h2 style="margin-top:2.6rem">Perkakas &amp; Bacaan Terkait</h2>
+    <ul class="daftar-isi">
+      <li>
+        <a href={u('/kalender-jawa/')}>
+          <span class="nama">Kalender Jawa</span>
+          <span class="ket">telusuri padanan tanggal bulan demi bulan</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/kalkulator-weton/')}>
+          <span class="nama">Kalkulator Weton</span>
+          <span class="ket">weton dan neptu dari tanggal lahir</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u(`/blog/${b.slug}/`)}>
+          <span class="nama">{b.judul}</span>
+          <span class="ket">bacaan pendamping — metode hitung</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u(`/blog/${f.slug}/`)}>
+          <span class="nama">{f.judul}</span>
+          <span class="ket">bacaan pendamping — daur delapan tahun</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+</Almanak>

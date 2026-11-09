@@ -1,0 +1,221 @@
+---
+import { u } from '../../lib/base.js';
+import Almanak from '../../layouts/Almanak.astro';
+import { artikelBySlug } from '../../lib/blog.js';
+
+const artikel = artikelBySlug('cara-menghitung-neptu');
+const c = artikelBySlug('weton-jodoh-delapan-kategori');
+---
+<Almanak title={`${artikel.judul} | Wetonan`} description={artikel.ringkasan}>
+  <section class="bungkus-sempit judul-halaman">
+    <p class="kicker">Blog Almanak</p>
+    <h1>{artikel.judul}</h1>
+    <p class="kecil mono">Diterbitkan {artikel.tanggalTampil} · Blog Almanak Wetonan</p>
+
+    <p class="huruf-awal">
+      Di jantung hampir semua petungan Jawa ada satu angka kecil bernama neptu. Neptu adalah nilai yang
+      diberikan pakem primbon kepada setiap dina dan setiap pasaran: hari lahir menyumbang satu angka,
+      pasaran menyumbang angka lain, dan jumlah keduanyalah yang kemudian dibaca untuk watak, dipakai
+      dalam petungan jodoh, dan menjadi bahan menimbang hari baik. Tanpa memahami neptu, seluruh
+      bangunan petungan tampak seperti sulap; sesudah memahaminya, ternyata yang bekerja hanyalah
+      penjumlahan sederhana yang dapat diperiksa siapa pun. Tulisan ini membuka kedua tabelnya,
+      menunjukkan tiga langkah menghitungnya, memperlihatkan cara menemukan pasaran dari sebuah tanggal
+      acuan, dan menutup dengan kesalahan-kesalahan yang paling sering membuat hitungan orang meleset.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Dua Tabel yang Menjadi Pakem</h2>
+    <p>
+      Neptu tidak dihitung dari peredaran benda langit; ia adalah ketetapan tradisi, disalin dari
+      primbon ke primbon dengan susunan yang sama. Ada dua tabel. Tabel pertama memuat neptu dina —
+      ketujuh hari dalam sepekan, lengkap dengan nama Jawanya. Tabel kedua memuat neptu pasaran —
+      kelima hari dalam pekan pasar Jawa yang berputar tanpa henti di samping pekan tujuh hari.
+    </p>
+    <table class="fakta">
+      <tbody>
+        <tr><th>Minggu (Ngahad)</th><td class="angka">5</td></tr>
+        <tr><th>Senin (Senen)</th><td class="angka">4</td></tr>
+        <tr><th>Selasa</th><td class="angka">3</td></tr>
+        <tr><th>Rabu (Rebo)</th><td class="angka">7</td></tr>
+        <tr><th>Kamis (Kemis)</th><td class="angka">8</td></tr>
+        <tr><th>Jumat</th><td class="angka">6</td></tr>
+        <tr><th>Sabtu (Setu)</th><td class="angka">9</td></tr>
+      </tbody>
+    </table>
+    <table class="fakta">
+      <tbody>
+        <tr><th>Legi</th><td class="angka">5</td></tr>
+        <tr><th>Pahing</th><td class="angka">9</td></tr>
+        <tr><th>Pon</th><td class="angka">7</td></tr>
+        <tr><th>Wage</th><td class="angka">4</td></tr>
+        <tr><th>Kliwon</th><td class="angka">8</td></tr>
+      </tbody>
+    </table>
+    <p>
+      Perhatikan polanya — atau lebih tepatnya, ketiadaan polanya. Tidak ada hubungan antara urutan
+      hari dan besar angkanya: Selasa, hari ketiga, justru berneptu terkecil di antara dina, yaitu 3,
+      sedangkan Sabtu berneptu terbesar, 9. Pada pasaran, Wage terkecil dengan 4 dan Pahing terbesar
+      dengan 9. Angka-angka ini dihafal oleh para penghitung tradisional sebagaimana anak menghafal
+      tabel perkalian, sebab tanpa kedua tabel ini tidak ada satu pun petungan yang dapat dimulai.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Tiga Langkah Menghitung Neptu</h2>
+    <p>
+      Langkah pertama, tentukan dinanya. Ini bagian yang termudah: tanggal lahir mana pun dapat dicari
+      jatuh pada hari apa dari kalender Masehi biasa — Senin, Rabu, Jumat, dan seterusnya. Langkah
+      kedua, tentukan pasarannya. Inilah bagian yang memerlukan alat bantu, sebab pasaran tidak tercetak
+      pada kebanyakan kalender umum; ia harus dihitung dari sebuah tanggal acuan yang wetonnya sudah
+      pasti, sebagaimana ditunjukkan pada bagian berikutnya, atau dibaca dari almanak. Langkah ketiga,
+      jumlahkan neptu dina dan neptu pasaran itu. Hasilnya — sebuah bilangan antara 7 dan 18 — adalah
+      neptu weton orang tersebut. Selesai. Seluruh petungan lain dalam tradisi primbon, dari bacaan
+      watak sampai petungan jodoh, berangkat dari bilangan tunggal yang diperoleh dengan cara sesederhana
+      ini.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Menemukan Pasaran dari Tanggal Acuan</h2>
+    <p>
+      Pasaran berputar setiap lima hari tanpa pernah berhenti atau melompat, sama seperti dina berputar
+      setiap tujuh hari. Karena putarannya tidak pernah putus, pasaran tanggal mana pun dapat ditemukan
+      apabila kita mengetahui pasaran satu tanggal acuan beserta jarak hari di antara keduanya. Acuan
+      yang dipakai almanak ini — dan banyak primbon modern — adalah 17 Agustus 1945, hari Proklamasi
+      Kemerdekaan, yang wetonnya tercatat pasti: Jumat Legi.
+    </p>
+    <p>
+      Ambil contoh tanggal 1 Januari 2026. Jarak dari 17 Agustus 1945 sampai 1 Januari 2026 adalah
+      29.357 hari. Untuk pasarannya, bagi jarak itu dengan 5: 29.357 mod 5 = 2, artinya pasaran bergeser
+      dua langkah dari Legi — dari Legi ke Pahing adalah langkah pertama, dari Pahing ke Pon langkah
+      kedua — maka pasaran tanggal itu adalah Pon. Untuk memeriksa dinanya, bagi dengan 7: 29.357 mod 7
+      = 6, artinya hari bergeser enam langkah dari Jumat — Sabtu, Minggu, Senin, Selasa, Rabu, dan
+      akhirnya Kamis — maka harinya adalah Kamis. Kedua hitungan bertemu pada satu kesimpulan: 1 Januari
+      2026 adalah Kamis Pon. Cara yang sama berlaku maju maupun mundur, untuk tanggal berapa pun;
+      kalkulator di situs ini pada dasarnya menjalankan hitungan jarak-dan-sisa yang persis sama, hanya
+      jauh lebih cepat dan tanpa risiko salah hitung di tengah jalan.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Dua Contoh Terhitung Penuh</h2>
+    <h3 style="margin-top:1.4rem">Contoh pertama: 17 Agustus 1945</h3>
+    <p>
+      Tanggal Proklamasi ini jatuh pada hari Jumat dengan pasaran Legi. Neptu dinanya 6 dan neptu
+      pasarannya 5, maka neptu wetonnya 6 + 5 = 11. Tanggal ini sekaligus menunjukkan cara membaca satu
+      weton secara utuh dalam seluruh lapisannya: dalam penanggalan Jawa ia adalah tanggal 9 Poso tahun
+      1876, tahun Ehe, dan wukunya adalah Manahil. Neptu 11 inilah yang kelak dipakai dalam contoh
+      petungan jodoh pada tulisan pendamping tulisan ini — sebab contoh yang baik adalah contoh yang
+      dapat diperiksa dari segala sisinya.
+    </p>
+    <h3 style="margin-top:1.4rem">Contoh kedua: 1 Januari 2026</h3>
+    <p>
+      Tanggal 1 Januari 2026 adalah Kamis Pon, sebagaimana baru saja kita hitung dari acuan. Neptu
+      dinanya 8 dan neptu pasarannya 7, maka neptu wetonnya 8 + 7 = 15. Padanan Jawanya adalah tanggal
+      12 Rejeb tahun 1959, tahun Dal, dengan wuku Kuruwelut. Kedua contoh ini sengaja dipilih dari
+      tanggal-tanggal yang padanannya diterbitkan secara terbuka dan dapat diverifikasi oleh siapa pun —
+      keduanya juga menjadi titik kalibrasi bagi seluruh perhitungan di situs ini, sehingga angka yang
+      Anda temukan di sini akan sama dengan angka yang dihasilkan perkakas kami.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Rentang 7 sampai 18 — dan Mengapa Kebanyakan Orang Berbagi Angka</h2>
+    <p>
+      Karena neptu terkecil sebuah dina adalah 3 (Selasa) dan neptu terkecil sebuah pasaran adalah 4
+      (Wage), neptu weton terkecil yang mungkin terbentuk adalah 7 — dan ia hanya dimiliki satu weton
+      saja, yaitu Selasa Wage. Di ujung yang lain, 9 + 9 = 18 hanya dimiliki Sabtu Pahing. Di antara dua
+      ujung itu persebarannya tidak merata. Jumlah 12 dan 13 adalah yang paling umum, masing-masing
+      dapat dibentuk oleh lima weton: 12 oleh Minggu Pon, Senin Kliwon, Selasa Pahing, Rabu Legi, dan
+      Kamis Wage; sedangkan 13 oleh Minggu Kliwon, Senin Pahing, Kamis Legi, Jumat Pon, dan Sabtu Wage.
+      Jumlah-jumlah lain di tengah rentang umumnya dibentuk oleh tiga atau empat weton, sedangkan
+      jumlah-jumlah di tepi — 7, 8, 17, dan 18 — hanya oleh satu atau dua weton saja.
+    </p>
+    <p>
+      Artinya jelas: kebanyakan orang berbagi jumlah neptu dengan beberapa weton lain. Neptu adalah
+      golongan yang luas, bukan sidik jari yang khas bagi satu orang. Karena itu pula primbon tidak
+      pernah berhenti pada jumlahnya saja; bacaan watak disusun dari kombinasi dinanya, pasarannya, dan
+      jumlah ketiganya sekaligus — tiga lapisan yang bersama-sama jauh lebih rinci daripada satu angka
+      tunggal.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Untuk Apa Neptu Dipakai dalam Tradisi</h2>
+    <p>
+      Dalam pemakaian tradisional, neptu melayani setidaknya tiga keperluan. Pertama, bacaan watak:
+      menurut primbon, watak kelahiran dilukiskan berdasarkan dinanya, pasarannya, dan jumlah neptunya
+      — selalu sebagai gambaran menurut tradisi, bahan perenungan, bukan vonis tentang seseorang. Kedua,
+      petungan jodoh: neptu dua calon pengantin dijumlahkan lalu dibagi delapan untuk menentukan
+      golongannya, sebagaimana diuraikan tersendiri pada tulisan tentang delapan kategori hasil
+      perhitungan jodoh. Ketiga, menimbang hari: untuk keperluan seperti pernikahan, pindah rumah, atau
+      memulai pekerjaan penting, neptu hari yang dipilih dihitung dan dicocokkan dengan neptu kelahiran
+      orang yang berkepentingan menurut aturan masing-masing keperluan. Pada ketiga keperluan itu neptu
+      berfungsi sama: ia adalah satuan hitung yang membuat waktu dapat "ditimbang" dalam bahasa tradisi
+      — diubah dari sesuatu yang mengalir menjadi sesuatu yang dapat dibandingkan.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Kesalahan yang Paling Sering Terjadi</h2>
+    <h3 style="margin-top:1.4rem">Lupa batas magrib</h3>
+    <p>
+      Hari dalam penanggalan Jawa berganti pada saat matahari terbenam, bukan pada tengah malam.
+      Seseorang yang lahir pada Jumat malam sesudah magrib, menurut penanggalan Jawa sebenarnya sudah
+      memasuki hari Sabtu — wetonnya dihitung dengan dina Sabtu, meskipun tanggal Masehi pada akta
+      kelahirannya masih tertulis Jumat. Inilah sumber selisih yang paling umum antara hitungan keluarga
+      dan hitungan kalender sipil, dan ia hampir selalu menimpa kelahiran pada petang dan malam hari.
+      Bila weton Anda berbeda satu hari dari yang selama ini disebut keluarga, kemungkinan besar inilah
+      sebabnya — kedua pihak bisa sama-sama benar menurut batas harinya masing-masing.
+    </p>
+    <h3 style="margin-top:1.4rem">Hanya memakai neptu hari</h3>
+    <p>
+      Kesalahan kedua adalah berhenti pada langkah pertama: menyebut "lahir hari Kamis, neptunya 8" lalu
+      melupakan pasarannya sama sekali. Dengan cara itu separuh weton hilang, jumlah neptunya keliru,
+      dan semua petungan yang dibangun di atasnya — termasuk petungan jodoh — akan meleset seluruhnya.
+      Weton selalu terdiri dari dua unsur; neptu pun harus selalu dihitung dari keduanya.
+    </p>
+    <h3 style="margin-top:1.4rem">Menganggap neptu besar berarti lebih baik</h3>
+    <p>
+      Kesalahan ketiga adalah membaca neptu seperti nilai rapor, seolah 18 adalah nilai sempurna dan 7
+      adalah nilai kurang. Tradisi tidak menyusun peringkat kebaikan semacam itu. Menurut primbon,
+      setiap jumlah mempunyai lukisan watak dan catatan nasihatnya sendiri-sendiri: neptu besar dibaca
+      membawa kekuatan yang perlu diarahkan, neptu kecil dibaca membawa kesederhanaan yang menjadi
+      kelebihannya sendiri. Angka ini adalah alat penggolongan, bukan alat penilaian — ia menunjukkan
+      seseorang termasuk golongan yang mana, bukan seberapa baik orangnya.
+    </p>
+
+    <h2 style="margin-top:2.2rem">Sekarang Giliran Anda</h2>
+    <p>
+      Ambil tanggal lahir Anda dan cobalah sendiri. Cari dinanya dari kalender, lalu temukan pasarannya
+      lewat <a href={u('/kalkulator-weton/')}>Kalkulator Weton</a> — perkakas itu akan menunjukkan neptu
+      dina, neptu pasaran, dan jumlahnya dalam sekejap, dan Anda dapat memeriksa langkah-langkahnya
+      dengan cara yang telah diuraikan di atas. Sesudah itu, bukalah entri weton Anda di
+      <a href={u('/weton/')}>Indeks Weton</a> untuk membaca bagaimana tradisi melukiskan kombinasi dina
+      dan pasaran Anda, lengkap dengan catatan neptunya.
+    </p>
+
+    <h2 style="margin-top:2.6rem">Perkakas &amp; Bacaan Terkait</h2>
+    <ul class="daftar-isi">
+      <li>
+        <a href={u('/kalkulator-weton/')}>
+          <span class="nama">Kalkulator Weton</span>
+          <span class="ket">hitung neptu dari tanggal lahir Anda</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/weton/')}>
+          <span class="nama">Indeks Weton</span>
+          <span class="ket">35 weton beserta neptu dan uraiannya</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u(`/blog/${c.slug}/`)}>
+          <span class="nama">{c.judul}</span>
+          <span class="ket">bacaan pendamping — pemakaian neptu berdua</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+      <li>
+        <a href={u('/kalender-jawa/')}>
+          <span class="nama">Kalender Jawa</span>
+          <span class="ket">periksa pasaran tanggal demi tanggal</span>
+          <span class="titik"></span>
+          <span class="nopol">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+</Almanak>

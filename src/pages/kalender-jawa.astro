@@ -3,6 +3,21 @@ import Almanak from '../layouts/Almanak.astro';
 import { BULAN_JAWA, PANJANG_BULAN, WINDU, PANJANG_TAHUN_WINDU } from '../lib/jawa.js';
 import { kalenderHTML } from '../lib/entri.js';
 
+const CATATAN_BULAN_KAL = [
+  'Serapan Asyura; awal tahun yang diperingati dengan laku prihatin.',
+  'Pengikut Suro; namanya serumpun dengan Safar.',
+  'Bulan peringatan kelahiran Nabi, dari kata maulid.',
+  'Secara harfiah "setelah Mulud"; pasangan bulan ketiga.',
+  'Serapan Jumada pertama; bulan kelima Hijriah.',
+  'Serapan Jumada terakhir; menutup enam bulan pertama.',
+  'Serapan Rajab; termasuk bulan yang dihormati.',
+  'Musim nyadran: mendoakan leluhur sebelum Ramadan tiba.',
+  'Masa berpuasa penuh; namanya berarti puasa.',
+  'Hari raya Idulfitri jatuh di awal bulan ini.',
+  'Nama lainnya Sela atau Apit, karena posisinya mengapit.',
+  'Musim haji dan Iduladha, ditutup Grebeg Besar.',
+];
+
 const kini = new Date();
 const kalenderAwal = kalenderHTML(kini.getFullYear(), kini.getMonth() + 1);
 const nilaiBulanAwal = `${kini.getFullYear()}-${String(kini.getMonth() + 1).padStart(2, '0')}`;
@@ -44,6 +59,49 @@ const nilaiBulanAwal = `${kini.getFullYear()}-${String(kini.getMonth() + 1).padS
   </section>
 
   <section class="bungkus-sempit" style="margin-top:3rem">
+    <p class="kicker">Membaca Tabel</p>
+    <h2>Cara Membaca Tabel Bulan</h2>
+    <p>
+      Setiap sel pada tabel di atas memuat tiga lapis keterangan dalam satu tanggal. Yang paling
+      besar adalah <strong>tanggal Masehi</strong>-nya. Tepat di bawahnya tertulis
+      <strong>nama pasaran beserta neptu weton</strong> hari itu — dari baris inilah pembaca tahu
+      weton suatu tanggal tanpa membuka halaman lain. Baris ketiga, yang terkecil, adalah
+      <strong>tanggal dan bulan Jawa</strong>-nya. Tanggal hari berjalan diberi tanda merah bata
+      agar mudah ditemukan sekilas, dan mengetuk tanggal mana pun akan membuka entri kalkulator
+      hari itu lengkap dengan wuku dan tanggal Jawanya. Keterangan di kepala tabel menyebut bulan
+      Masehi beserta bulan-bulan Jawa yang terentang di dalamnya, sebab satu bulan Masehi hampir
+      selalu memuat akhir satu bulan Jawa dan awal bulan berikutnya.
+    </p>
+
+    <p class="kicker" style="margin-top:2.4rem">Di Balik Tabel</p>
+    <h2>Sistemnya Sekaligus: Tiga Putaran yang Bertumpuk</h2>
+    <p>
+      Kalender ini tampak padat karena tiga putaran berjalan di atas hari yang sama. Putaran
+      pertama adalah <strong>pasaran</strong> yang berputar setiap lima hari: Legi, Pahing, Pon,
+      Wage, Kliwon, lalu kembali ke Legi. Putaran kedua adalah pekan tujuh hari. Karena lima dan
+      tujuh tidak memiliki pembagi bersama, gabungan keduanya baru kembali ke pasangan yang sama
+      setelah 5 × 7 = <strong>35 hari</strong> — inilah putaran weton, dan setiap kombinasi muncul
+      tepat satu kali di dalamnya. Putaran ketiga adalah <strong>pawukon</strong> yang berumur
+      210 hari. Angka 210 adalah enam kali 35, sehingga dalam satu putaran pawukon weton yang sama
+      muncul enam kali; setiap kemunculan berikutnya melompat lima wuku dari kemunculan
+      sebelumnya, dan pasangan weton–wuku yang persis sama baru bertemu lagi setelah genap 210
+      hari. Menumpuknya ketiga putaran inilah yang membuat satu tanggal Jawa tidak pernah
+      benar-benar berulang dalam waktu dekat.
+    </p>
+    <p>
+      Dari ketiga putaran itu, pasaran adalah yang paling terasa dalam kehidupan sehari-hari.
+      Banyak pasar tradisional di Jawa hingga kini masih menyebut hari ramainya dengan nama
+      pasaran — pasar yang ramai tiap Legi, misalnya, atau tiap Pon — dan warga sekitar
+      menyesuaikan kunjungan belanjanya dengan irama lima hari itu, bukan dengan tanggal
+      Masehi. Nama pasaran juga melekat pada nama tempat dan nama hari dalam percakapan:
+      menyebut "besok Kliwon" sering cukup dimengerti tanpa menyebut tanggalnya. Tabel bulan
+      di halaman ini menjaga kebiasaan itu tetap terbaca: pasaran ditulis pada setiap tanggal,
+      berdampingan dengan padanan Jawanya, persis seperti almanak cetak yang dulu digantung
+      di dinding rumah.
+    </p>
+  </section>
+
+  <section class="bungkus-sempit" style="margin-top:3rem">
     <p class="kicker">Dua Belas Bulan</p>
     <h2>Bulan-Bulan dalam Kalender Jawa</h2>
     <p class="huruf-awal">
@@ -58,7 +116,7 @@ const nilaiBulanAwal = `${kini.getFullYear()}-${String(kini.getMonth() + 1).padS
         {BULAN_JAWA.map((b, i) => (
           <tr>
             <th>{i + 1}. {b.nama}</th>
-            <td>bertepatan bulan {b.alt} — {PANJANG_BULAN[i]} hari{i === 11 ? ' (30 pada tahun wuntu)' : ''}</td>
+            <td>bertepatan bulan {b.alt} — {PANJANG_BULAN[i]} hari{i === 11 ? ' (30 pada tahun wuntu)' : ''}. {CATATAN_BULAN_KAL[i]}</td>
           </tr>
         ))}
       </tbody>
@@ -89,6 +147,35 @@ const nilaiBulanAwal = `${kini.getFullYear()}-${String(kini.getMonth() + 1).padS
       misalnya malam 1 Suro 1959 dimulai Kamis senja, 26 Juni 2025, sedangkan tanggal 1 Suro-nya sendiri
       adalah Jumat, 27 Juni 2025. Kalender di halaman ini mengikuti padanan tanggal sipil resmi, sama
       seperti kalender Kementerian Agama RI.
+    </p>
+    <p>
+      Hari lebihan pada tahun kabisat selalu diletakkan di ujung tahun, pada bulan Besar, agar
+      urutan bulan-bulan sebelumnya tidak bergeser. Tahun <strong>1959 adalah tahun Dal</strong>,
+      salah satu dari tiga tahun wuntu dalam windu, sehingga Besar 1959 berumur 30 hari, bukan 29.
+      Konsekuensinya terasa pada tahun berikutnya: dengan satu hari tambahan itu, 1 Suro 1960
+      jatuh pada <strong>17 Juni 2026</strong>. Pembaca yang membandingkan kalender cetak lama
+      dengan tabel di halaman ini akan menemukan selisih justru pada titik-titik peralihan
+      seperti ini bila penanggal lamanya meletakkan hari lebihan di tempat lain.
+    </p>
+
+    <h2 style="margin-top:2.4rem">Mengubah Tanggal dengan Tangan</h2>
+    <p>
+      Sebagai penutup, mari ubah satu tanggal tanpa kalkulator: <strong>9 November 2026</strong>.
+      Jangkar terdekatnya adalah 1 Januari 2026, yang sudah kita ketahui bersama — Kamis Pon,
+      bertepatan dengan 12 Rejeb 1959, tahun Dal.
+    </p>
+    <ol>
+      <li><strong>Hitung selisihnya.</strong> Dari 1 Januari sampai 9 November 2026 terdapat <span class="mono">312</span> hari.</li>
+      <li><strong>Tentukan dinanya.</strong> 312 ÷ 7 menyisakan <span class="mono">4</span>. Maju empat hari dari Kamis — Jumat, Sabtu, Minggu, <strong>Senin</strong>.</li>
+      <li><strong>Tentukan pasarannya.</strong> 312 ÷ 5 menyisakan <span class="mono">2</span>. Maju dua pasaran dari Pon — Wage, lalu <strong>Kliwon</strong>.</li>
+      <li><strong>Jalankan tanggal Jawanya ke depan.</strong> Menghitung bulan demi bulan dari 12 Rejeb 1959 — melewati pergantian tahun ke 1960, tahun Be — sampailah pada <strong>28 Jumadilawal 1960</strong>.</li>
+      <li><strong>Lengkapi dengan wuku dan neptu.</strong> Pekan pawukon pada hari itu adalah <strong>Landep</strong>, dan neptunya Senin 4 + Kliwon 8 = <strong>12</strong>.</li>
+    </ol>
+    <p>
+      Hasil akhirnya: 9 November 2026 adalah <strong>Senin Kliwon</strong>, neptu 12, tanggal
+      28 Jumadilawal 1960 tahun Be, wuku Landep. Ketuk tanggal itu pada tabel di atas dan entri
+      yang terbuka akan menunjukkan angka yang sama — hitungan tangan dan almanak digital di
+      situs ini memang memakai jangkar serta putaran yang sama.
     </p>
   </section>
 
